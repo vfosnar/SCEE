@@ -55,6 +55,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import java.io.File
 import java.util.*
 import javax.inject.Inject
 import kotlin.math.PI
@@ -412,8 +413,59 @@ class MainFragment : Fragment(R.layout.fragment_main),
         }
     }
 
-    /* ------------------------------- CreateNoteFragment.Listener ------------------------------ */
+    override fun onCreatedNoteInstead(questId: Long, group: QuestGroup, questTitle: String, note: String) {
+        closeQuestDetailsFor(questId, group)
+        // the quest is deleted from DB on creating a note, so need to fetch quest before
+        val quest = questController.get(questId, group)
+        // how to get that ElementKey, so i can make a link?
+        // ...in CreateNotesUploader
+        if (quest != null)
+            onCreatedGpxNote("$questTitle: $note", quest.center)
+    }
 
+    /* ------------------------------- CreateNoteFragment.Listener ------------------------------ */
+    private fun onCreatedGpxNote(note: String, position: LatLon) {
+        val path = context?.getExternalFilesDir(null) ?: return
+        path.mkdirs()
+        val fileName = "notes.gpx"
+        val notefile = File(path,fileName)
+        val createdNoteFile = notefile.createNewFile()
+        if (createdNoteFile) // if this was a new file
+            notefile.writeText("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<gpx \n" +
+                " xmlns=\"http://www.topografix.com/GPX/1/1\" \n" +
+                " xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" \n" +
+                " xsi:schemaLocation=\"http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd\">\n" +
+                "</gpx>", Charsets.UTF_8)
+        // now delete the last 6 characters
+        val notetext = notefile.readText(Charsets.UTF_8).dropLast(6)
+        // then add gpx text
+        notefile.writeText(notetext +" <wpt lon=\"" + position.longitude + "\" lat=\"" + position.latitude + "\">\n" +
+            "  <name>" + note.replace("&","&amp;")
+            .replace("<","&lt;")
+            .replace(">","&gt;")
+            .replace("\"","&quot;")
+            .replace("'","&apos;") + "</name>\n" +
+            " </wpt>\n" +
+            "</gpx>", Charsets.UTF_8)
+    }
+
+    override fun onCreatedNote(note: String, screenPosition: Point) {
+        closeBottomSheet()
+
+        val mapFragment = mapFragment ?: return
+        val mapView = mapFragment.view ?: return
+
+        val mapPosition = mapView.getLocationInWindow().toPointF()
+        val notePosition = PointF(screenPosition)
+        notePosition.offset(-mapPosition.x, -mapPosition.y)
+        val position = mapFragment.getPositionAt(notePosition) ?: throw NullPointerException()
+
+        onCreatedGpxNote(note,position)
+
+        listener?.onCreatedNote(screenPosition)
+        showMarkerSolvedAnimation(R.drawable.ic_quest_create_note, PointF(screenPosition))
+    }
     override fun onCreatedNote(note: String, imagePaths: List<String>?, screenPosition: Point) {
         closeBottomSheet()
 

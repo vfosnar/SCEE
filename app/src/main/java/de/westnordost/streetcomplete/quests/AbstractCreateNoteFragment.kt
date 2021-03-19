@@ -14,7 +14,7 @@ import de.westnordost.streetcomplete.R
 import de.westnordost.streetcomplete.quests.note_discussion.AttachPhotoFragment
 import de.westnordost.streetcomplete.util.TextChangedWatcher
 import kotlinx.android.synthetic.main.form_leave_note.*
-import kotlinx.android.synthetic.main.quest_buttonpanel_done_cancel.*
+import kotlinx.android.synthetic.main.quest_buttonpanel_gpx_cancel_done.*
 
 /** Abstract base class for a bottom sheet that lets the user create a note */
 abstract class AbstractCreateNoteFragment : AbstractBottomSheetFragment() {
@@ -40,7 +40,8 @@ abstract class AbstractCreateNoteFragment : AbstractBottomSheetFragment() {
 
         val buttonPanel = view.findViewById<ViewGroup>(R.id.buttonPanel)
         buttonPanel.removeAllViews()
-        inflater.inflate(R.layout.quest_buttonpanel_done_cancel, buttonPanel)
+//        inflater.inflate(R.layout.quest_buttonpanel_done_cancel, buttonPanel)
+        inflater.inflate(R.layout.quest_buttonpanel_gpx_cancel_done, buttonPanel)
 
         return view
     }
@@ -56,6 +57,7 @@ abstract class AbstractCreateNoteFragment : AbstractBottomSheetFragment() {
 
         cancelButton.setOnClickListener { activity?.onBackPressed() }
         doneButton.setOnClickListener { onClickOk() }
+        gpxButton.setOnClickListener { onComposedNote(noteText) }
 
         updateDoneButtonEnablement()
     }
@@ -73,7 +75,10 @@ abstract class AbstractCreateNoteFragment : AbstractBottomSheetFragment() {
 
     private fun updateDoneButtonEnablement() {
         doneButton.isEnabled = !noteText.isEmpty()
+        gpxButton.isEnabled = !noteText.isEmpty()
     }
 
     protected abstract fun onComposedNote(text: String, imagePaths: List<String>?)
+
+    protected abstract fun onComposedNote(text: String)
 }
