@@ -134,6 +134,7 @@ class QuestPinLayerManager @Inject constructor(
                 "type" to "point",
                 "kind" to questIconName,
                 "importance" to getQuestImportance(quest).toString(),
+                "poi" to quest.type.dotColor,
                 MARKER_QUEST_GROUP to group.name,
                 MARKER_QUEST_ID to quest.id!!.toString()
             )
