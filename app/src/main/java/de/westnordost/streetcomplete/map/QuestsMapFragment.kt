@@ -190,6 +190,10 @@ class QuestsMapFragment : LocationAwareMapFragment() {
         centerCurrentPositionIfFollowing()
     }
 
+    fun invertQuests() {
+        questPinsManager?.invertQuestOrder()
+    }
+
     /* -------------------------  Markers for current quest (split way) ------------------------- */
 
     fun putMarkerForCurrentQuest(pos: LatLon, @DrawableRes drawableResId: Int) {

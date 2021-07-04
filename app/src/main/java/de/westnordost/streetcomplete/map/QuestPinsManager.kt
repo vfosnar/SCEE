@@ -33,6 +33,8 @@ class QuestPinsManager(
     // last displayed rect of (zoom 14) tiles
     private var lastDisplayedRect: TilesRect? = null
 
+    private var invertedOrder: Boolean = false
+
     // quest key -> [point, ...]
     private val quests: MutableMap<QuestKey, List<Pin>> = mutableMapOf()
 
@@ -165,6 +167,22 @@ class QuestPinsManager(
             val pins = synchronized(quests) { quests.values.flatten() }
             pinsMapComponent.showPins(pins)
         }
+    }
+
+    fun invertQuestOrder() {
+        if (invertedOrder) {
+            initializeQuestTypeOrders()
+            invertedOrder = false
+        } else {
+            var order = 0
+            questTypeOrders
+            for (questType in questTypeRegistry.all.toMutableList().asReversed()) {
+                questTypeOrders[questType] = order++
+            }
+            invertedOrder = true
+        }
+        clear()
+        onNewScreenPosition()
     }
 
     private fun initializeQuestTypeOrders() {
