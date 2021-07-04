@@ -17,6 +17,7 @@ class LeaveNoteInsteadFragment : AbstractCreateNoteFragment(), IsShowingQuestDet
 
     interface Listener {
         fun onCreatedNoteInstead(questKey: QuestKey, questTitle: String, note: String, imagePaths: List<String>)
+        fun onCreatedNoteInstead(questKey: QuestKey, questTitle: String, note: String)
     }
     private val listener: Listener? get() = parentFragment as? Listener ?: activity as? Listener
 
@@ -41,6 +42,10 @@ class LeaveNoteInsteadFragment : AbstractCreateNoteFragment(), IsShowingQuestDet
 
     override fun onComposedNote(text: String, imagePaths: List<String>) {
         listener?.onCreatedNoteInstead(questKey, questTitle, text, imagePaths)
+    }
+
+    override fun onComposedNote(text: String) {
+        listener?.onCreatedNoteInstead(questKey, questTitle, text)
     }
 
     companion object {
