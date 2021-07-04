@@ -176,6 +176,7 @@ import javax.inject.Singleton
     fun triggerAutoUpload() {
         if (!isAllowedByPreference) return
         if (!isConnected) return
+        if (!isAllowedByPreference) return
         if (!userController.isLoggedIn) return
 
         try {
