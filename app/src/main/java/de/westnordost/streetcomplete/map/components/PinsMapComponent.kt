@@ -49,7 +49,8 @@ class PinsMapComponent(private val ctx: Context, private val ctrl: KtMapControll
             Point(pin.position.toLngLat(), mapOf(
                 "type" to "point",
                 "kind" to pin.iconName,
-                "importance" to pin.importance.toString()
+                "importance" to pin.importance.toString(),
+                "poi" to pin.color
             ) + pin.properties)
         })
     }
@@ -124,5 +125,6 @@ data class Pin(
     val position: LatLon,
     val iconName: String,
     val properties: Map<String, String> = emptyMap(),
-    val importance: Int = 0
+    val importance: Int = 0,
+    val color: String = "no"
 )

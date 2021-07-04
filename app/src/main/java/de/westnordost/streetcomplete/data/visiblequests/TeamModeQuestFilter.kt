@@ -32,6 +32,7 @@ import javax.inject.Singleton
 
     fun isVisible(quest: Quest): Boolean =
         !isEnabled ||
+        quest.type.dotColor != "no" ||
         quest.stableId < 0 ||
         quest is OsmQuest && createdElementsSource.contains(quest.elementType, quest.elementId) ||
         quest.stableId % teamSize == indexInTeam.toLong()
