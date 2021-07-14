@@ -32,6 +32,7 @@ import de.westnordost.streetcomplete.data.quest.*
 import de.westnordost.streetcomplete.ktx.geometryType
 import de.westnordost.streetcomplete.ktx.isArea
 import de.westnordost.streetcomplete.ktx.isSomeKindOfShop
+import de.westnordost.streetcomplete.ktx.popIn
 import de.westnordost.streetcomplete.quests.shop_type.ShopGoneDialog
 import kotlinx.android.synthetic.main.fragment_quest_answer.*
 import kotlinx.serialization.decodeFromString
@@ -168,6 +169,9 @@ abstract class AbstractQuestAnswerFragment<T> : AbstractBottomSheetFragment(), I
         }
 
         if (defaultExpanded) expand()
+
+        hideButton.popIn()
+        hideButton.setOnClickListener { skipQuest() }
     }
 
     private fun assembleOtherAnswers() : List<OtherAnswer> {

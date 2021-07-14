@@ -175,6 +175,19 @@
         android:scaleY="0.5"
         android:alpha="0"/>
 
+    <TextView
+        android:id="@+id/hideButton"
+        android:text="hide"
+        style="@style/RoundAccentButton"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="8dp"
+        android:scaleX="0.5"
+        android:scaleY="0.5"
+        android:alpha="0"/>
+
 </de.westnordost.streetcomplete.view.SlidingRelativeLayout>
 
 
