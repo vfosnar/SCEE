@@ -1,14 +1,21 @@
 package de.westnordost.streetcomplete.quests.roof_shape
 
-import de.westnordost.streetcomplete.data.osm.mapdata.MapDataWithGeometry
+import android.app.AlertDialog
+import android.content.Context
+import android.content.SharedPreferences
+import android.text.InputType
+import android.widget.EditText
+import androidx.core.widget.addTextChangedListener
 import de.westnordost.streetcomplete.R
 import de.westnordost.streetcomplete.data.elementfilter.toElementFilterExpression
 import de.westnordost.streetcomplete.data.meta.CountryInfos
 import de.westnordost.streetcomplete.data.osm.edits.update_tags.StringMapChangesBuilder
 import de.westnordost.streetcomplete.data.osm.mapdata.Element
+import de.westnordost.streetcomplete.data.osm.mapdata.MapDataWithGeometry
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmElementQuestType
+import de.westnordost.streetcomplete.ktx.numberOrNull
 
-class AddRoofShape(private val countryInfos: CountryInfos) : OsmElementQuestType<RoofShape> {
+class AddRoofShape(private val countryInfos: CountryInfos, private val prefs: SharedPreferences) : OsmElementQuestType<RoofShape> {
 
     private val filter by lazy { """
         ways, relations with (building:levels or roof:levels)
@@ -52,7 +59,31 @@ class AddRoofShape(private val countryInfos: CountryInfos) : OsmElementQuestType
         val roofLevels = tags["roof:levels"]?.toFloatOrNull() ?: 0f
         val buildingLevels = tags["building:levels"]?.toFloatOrNull() ?: return null
         if (roofLevels < 0f || buildingLevels < 0f) return null
-        return buildingLevels / (roofLevels + 2f) < 2f
+        return buildingLevels / (roofLevels + 2f) < prefs.getFloat(PREF_ROOF_SHAPE_SHOW,2f)
+    }
+
+    override val hasQuestSettings = true
+
+    override fun getQuestSettingsDialog(context: Context): AlertDialog? {
+        var dialog: AlertDialog? = null
+        val numberInput = EditText(context)
+        // need to set both InputTypes to work, https://developer.android.com/reference/android/widget/TextView#attr_android:inputType
+        numberInput.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
+        numberInput.setText(prefs.getFloat(PREF_ROOF_SHAPE_SHOW, 2f).toString())
+        numberInput.addTextChangedListener {
+            val button = dialog?.getButton(AlertDialog.BUTTON_POSITIVE)
+            button?.isEnabled = numberInput.numberOrNull != null
+        }
+        numberInput.setPaddingRelative(30,10,30,10)
+        dialog = AlertDialog.Builder(context)
+            .setMessage("set x, quest shown if: buildingLevels/(roofLevels + 2) < x")
+            .setView(numberInput)
+            .setPositiveButton(android.R.string.ok) { _, _ ->
+                numberInput.numberOrNull?.let { prefs.edit().putFloat(PREF_ROOF_SHAPE_SHOW, it.toFloat()).apply() }
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .create()
+        return dialog
     }
 
     private fun roofsAreUsuallyFlatAt(element: Element, mapData: MapDataWithGeometry): Boolean? {
@@ -60,3 +91,5 @@ class AddRoofShape(private val countryInfos: CountryInfos) : OsmElementQuestType
         return countryInfos.get(center.longitude, center.latitude).isRoofsAreUsuallyFlat
     }
 }
+
+private const val PREF_ROOF_SHAPE_SHOW = "quest_roof_shape_show"

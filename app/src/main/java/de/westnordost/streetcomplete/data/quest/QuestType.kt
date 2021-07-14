@@ -1,5 +1,7 @@
 package de.westnordost.streetcomplete.data.quest
 
+import android.app.AlertDialog
+import android.content.Context
 import de.westnordost.streetcomplete.quests.AbstractQuestAnswerFragment
 
 interface QuestType<T> {
@@ -9,6 +11,9 @@ interface QuestType<T> {
 
     /** the title resource id used to display the quest's question */
     val title: Int
+
+    fun getQuestSettingsDialog(context: Context): AlertDialog? = null
+    val hasQuestSettings: Boolean get() = false // how to avoid? checking getQuestSettings requires context (in questSelectionAdapter)
 
     /** returns the string resource id that explains why this quest is disabled by default or zero
      * if it is not disabled by default */

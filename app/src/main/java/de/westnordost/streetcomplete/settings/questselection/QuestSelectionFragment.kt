@@ -11,12 +11,9 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.lifecycleScope
-import de.westnordost.streetcomplete.DisplaysTitle
-import de.westnordost.streetcomplete.HasTitle
+import de.westnordost.streetcomplete.*
 
 import javax.inject.Inject
-import de.westnordost.streetcomplete.Injector
-import de.westnordost.streetcomplete.R
 import de.westnordost.streetcomplete.data.quest.QuestType
 import de.westnordost.streetcomplete.data.quest.QuestTypeRegistry
 import de.westnordost.streetcomplete.data.osmnotes.notequests.OsmNoteQuestType
@@ -24,6 +21,7 @@ import de.westnordost.streetcomplete.data.quest.getVisible
 import de.westnordost.streetcomplete.data.visiblequests.QuestTypeOrderList
 import de.westnordost.streetcomplete.data.visiblequests.VisibleQuestTypeController
 import de.westnordost.streetcomplete.data.visiblequests.VisibleQuestTypeSource
+import kotlinx.android.synthetic.main.row_quest_selection.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -119,6 +117,11 @@ class QuestSelectionFragment : Fragment(R.layout.fragment_quest_selection),
         lifecycleScope.launch(Dispatchers.IO) {
             visibleQuestTypeController.setVisible(questType, visible)
         }
+    }
+
+    override fun onOpenQuestSettings(questType: QuestType<*>) {
+        val settings = questType.getQuestSettingsDialog(requireContext()) ?: return
+        settings.show()
     }
 
     override fun onQuestTypeVisibilitiesChanged() {
