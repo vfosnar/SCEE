@@ -159,7 +159,7 @@ import javax.inject.Singleton
         AddRecyclingContainerMaterials(),
         AddSport(),
         AddRoadSurface(), // used by BRouter, OsmAnd, OSRM, graphhopper, HOT map style...
-        AddMaxSpeed(), // should best be after road surface because it excludes unpaved roads
+        AddMaxSpeed(prefs), // should best be after road surface because it excludes unpaved roads
         AddMaxHeight(), // OSRM and other routing engines
         AddLanes(), // abstreet, certainly most routing engines
         AddRailwayCrossingBarrier(), // useful for routing
