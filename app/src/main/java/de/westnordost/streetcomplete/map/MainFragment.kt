@@ -644,11 +644,11 @@ class MainFragment : Fragment(R.layout.fragment_main),
         }
     }
 
-    private fun onClickZoomOut() {
+    fun onClickZoomOut() {
         mapFragment?.updateCameraPosition(300) { zoomBy = -1f }
     }
 
-    private fun onClickZoomIn() {
+    fun onClickZoomIn() {
         mapFragment?.updateCameraPosition(300) { zoomBy = +1f }
     }
 

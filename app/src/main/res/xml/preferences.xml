@@ -100,6 +100,13 @@
             android:title="@string/pref_title_quests_restore_hidden"
             />
 
+        <SwitchPreference
+            android:key="volume_button_zoom"
+            android:title="Volume button zoom"
+            android:summary="zoom in and out using volume buttons"
+            android:persistent="true"
+            />
+
         <de.westnordost.streetcomplete.settings.NumberPickerPreference
             android:key="map.tilecache"
             android:title="@string/pref_title_map_cache"
