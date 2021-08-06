@@ -29,16 +29,11 @@ class AddContactPhone : OsmFilterQuestType<String>() {
             "tourism" to arrayOf(
                 // common
                 "zoo", "aquarium", "gallery", "museum",
-
-                // name & wheelchair
-                "hotel", "guest_house", "motel", "hostel", "alpine_hut", "apartment", "resort", "camp_site", "caravan_site", "chalet" // accommodations
-
-                // and tourism = information, see above
             ),
             "shop" to arrayOf(
                 // common
                 "beauty", "massage", "hairdresser","boutique","wool","tattoo","electrical","florist","glaziery",
-                "locksmith","computer","electronics","hifi","mobile_phone","bicycle","outdoor","sports","clothing","art","craft","model",
+                "computer","electronics","hifi","bicycle","outdoor","sports","clothing","art","craft","model",
                 "musical_instrument","camera","books","travel_agency","cheese","chocolate","coffee","health_food"
             ),
             "leisure" to arrayOf(
@@ -55,7 +50,7 @@ class AddContactPhone : OsmFilterQuestType<String>() {
             "craft" to arrayOf(
                 // common
                 "carpenter", "shoemaker", "tailor", "photographer", "dressmaker",
-                "electronics_repair", "key_cutter", "stonemason","winery"
+                "electronics_repair", "stonemason","winery"
             )
         ).map { it.key + " ~ " + it.value.joinToString("|") }.joinToString("\n or ") +
         "\n) and !phone and !contact:phone and !contact:mobile and !brand and name"

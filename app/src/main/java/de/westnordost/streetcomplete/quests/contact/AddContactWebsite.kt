@@ -31,9 +31,6 @@ class AddContactWebsite : OsmFilterQuestType<String>() {
             "tourism" to arrayOf(
                 // common
                 "zoo", "aquarium", "gallery", "museum",
-
-                // name & wheelchair
-                "hotel", "guest_house", "motel", "hostel", "alpine_hut", "apartment", "resort", "camp_site", "caravan_site", "chalet" // accommodations
             ),
             "shop" to arrayOf(
                 // common
@@ -56,7 +53,7 @@ class AddContactWebsite : OsmFilterQuestType<String>() {
             "craft" to arrayOf(
                 // common
                 "carpenter", "shoemaker", "tailor", "photographer", "dressmaker",
-                "electronics_repair", "key_cutter", "stonemason","winery"
+                "electronics_repair", "stonemason","winery"
             )
         ).map { it.key + " ~ " + it.value.joinToString("|") }.joinToString("\n or ") +
         "\n) and !website and !contact:website and !contact:facebook and !contact:instagram and !brand and name"

@@ -1,25 +1,26 @@
 package de.westnordost.streetcomplete.quests.contact
 
 import android.os.Bundle
+import android.text.InputType
 import android.view.View
 
 import de.westnordost.streetcomplete.R
 import de.westnordost.streetcomplete.quests.AbstractQuestFormAnswerFragment
 import de.westnordost.streetcomplete.util.TextChangedWatcher
-import kotlinx.android.synthetic.main.quest_phone.*
+import kotlinx.android.synthetic.main.quest_contact.*
 
 
 class AddContactPhoneForm : AbstractQuestFormAnswerFragment<String>() {
 
-    override val contentLayoutResId = R.layout.quest_phone
+    override val contentLayoutResId = R.layout.quest_contact
 
     private val contact get() = nameInput?.text?.toString().orEmpty().trim()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        nameInput.inputType = InputType.TYPE_CLASS_PHONE
 
-        val prefill = "+" // maybe store or do better?
-        nameInput.setText(prefill)
+        nameInput.setText(PREFILL)
         nameInput.addTextChangedListener(TextChangedWatcher { checkIsFormComplete() })
     }
 
@@ -28,5 +29,7 @@ class AddContactPhoneForm : AbstractQuestFormAnswerFragment<String>() {
     }
 
 
-    override fun isFormComplete() = contact.isNotEmpty()
+    override fun isFormComplete() = contact.isNotEmpty() && contact != PREFILL
 }
+
+private const val PREFILL = "+"
