@@ -70,6 +70,7 @@ import de.westnordost.streetcomplete.quests.drinking_water.AddDrinkingWater
 import de.westnordost.streetcomplete.quests.existence.CheckExistence
 import de.westnordost.streetcomplete.quests.lanes.AddLanes
 import de.westnordost.streetcomplete.quests.kerb_height.AddKerbHeight
+import de.westnordost.streetcomplete.quests.level.AddPlaceLevel
 import de.westnordost.streetcomplete.quests.orchard_produce.AddOrchardProduce
 import de.westnordost.streetcomplete.quests.parking_access.AddBikeParkingAccess
 import de.westnordost.streetcomplete.quests.parking_access.AddParkingAccess
@@ -254,6 +255,7 @@ import javax.inject.Singleton
         AddBenchStatusOnBusStop(),
         AddBinStatusOnBusStop(),
         AddBusStopLit(),
+        AddPlaceLevel(featureDictionaryFuture),
         AddBenchBackrest(),
         AddTrafficSignalsButton(),
         AddPostboxRoyalCypher(),
