@@ -1,5 +1,8 @@
 package de.westnordost.streetcomplete.quests.sidewalk
 
+import android.app.AlertDialog
+import android.content.Context
+import android.content.SharedPreferences
 import de.westnordost.streetcomplete.data.osm.mapdata.MapDataWithGeometry
 import de.westnordost.streetcomplete.R
 import de.westnordost.streetcomplete.data.elementfilter.toElementFilterExpression
@@ -10,8 +13,9 @@ import de.westnordost.streetcomplete.data.osm.geometry.ElementPolylinesGeometry
 import de.westnordost.streetcomplete.data.osm.mapdata.Element
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmElementQuestType
 import de.westnordost.streetcomplete.util.isNearAndAligned
+import de.westnordost.streetcomplete.quests.singleTypeElementSelectionDialog
 
-class AddSidewalk : OsmElementQuestType<SidewalkAnswer> {
+class AddSidewalk(private val prefs: SharedPreferences) : OsmElementQuestType<SidewalkAnswer> {
 
     /* the filter additionally filters out ways that are unlikely to have sidewalks:
      *
@@ -25,7 +29,7 @@ class AddSidewalk : OsmElementQuestType<SidewalkAnswer> {
     * */
     private val filter by lazy { """
         ways with
-          highway ~ trunk|trunk_link|primary|primary_link|secondary|secondary_link|tertiary|tertiary_link|unclassified|residential
+          highway ~ ${ROADS_WITH_SIDEWALK.joinToString("|")}
           and area != yes
           and motorroad != yes
           and !sidewalk and !sidewalk:left and !sidewalk:right and !sidewalk:both
@@ -103,6 +107,12 @@ class AddSidewalk : OsmElementQuestType<SidewalkAnswer> {
         changes.add("sidewalk", getSidewalkValue(answer))
     }
 
+
+    override val hasQuestSettings = true
+
+    override fun getQuestSettingsDialog(context: Context): AlertDialog =
+        singleTypeElementSelectionDialog(context, prefs, PREF_SIDEWALK_HIGHWAY_SELECTION, ROADS_WITH_SIDEWALK.joinToString("|"), "set highways eligible for this quest, comma separated")
+
     private fun getSidewalkValue(answer: SidewalkAnswer) =
         when (answer) {
             is SeparatelyMapped -> "separate"
@@ -114,3 +124,9 @@ class AddSidewalk : OsmElementQuestType<SidewalkAnswer> {
             }
         }
 }
+
+private val ROADS_WITH_SIDEWALK = arrayOf(
+    "primary","primary_link","secondary","secondary_link",
+    "tertiary","tertiary_link","unclassified","residential")
+
+private const val PREF_SIDEWALK_HIGHWAY_SELECTION = "quest_sidewalk_highway_selection"

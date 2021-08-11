@@ -1,5 +1,8 @@
 package de.westnordost.streetcomplete.quests.place_name
 
+import android.app.AlertDialog
+import android.content.Context
+import android.content.SharedPreferences
 import de.westnordost.streetcomplete.data.osm.mapdata.MapDataWithGeometry
 import de.westnordost.osmfeatures.FeatureDictionary
 import de.westnordost.streetcomplete.R
@@ -8,10 +11,13 @@ import de.westnordost.streetcomplete.data.elementfilter.toElementFilterExpressio
 import de.westnordost.streetcomplete.data.osm.mapdata.Element
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmElementQuestType
 import de.westnordost.streetcomplete.ktx.arrayOfNotNull
+import de.westnordost.streetcomplete.quests.fullElementSelectionDialog
+import de.westnordost.streetcomplete.quests.getStringFor
 import java.util.concurrent.FutureTask
 
 class AddPlaceName(
-    private val featureDictionaryFuture: FutureTask<FeatureDictionary>
+    private val featureDictionaryFuture: FutureTask<FeatureDictionary>,
+    private val prefs: SharedPreferences
 ) : OsmElementQuestType<PlaceNameAnswer> {
 
     private val filter by lazy { ("""
@@ -20,6 +26,7 @@ class AddPlaceName(
           shop and shop !~ no|vacant
           or craft
           or office
+          ${getStringFor(prefs, PREF_PLACE_NAME_ADDITIONS)}
           or tourism = information and information = office
           or """.trimIndent() +
 
@@ -124,6 +131,14 @@ class AddPlaceName(
         }
     }
 
+    override val hasQuestSettings = true
+
+    override fun getQuestSettingsDialog(context: Context): AlertDialog {
+        return fullElementSelectionDialog(context, prefs, PREF_PLACE_NAME_ADDITIONS, "add elements for this quest")
+    }
+
     private fun hasFeatureName(tags: Map<String, String>): Boolean =
         featureDictionaryFuture.get().byTags(tags).find().isNotEmpty()
 }
+
+private const val PREF_PLACE_NAME_ADDITIONS = "quest_place_name_additions"

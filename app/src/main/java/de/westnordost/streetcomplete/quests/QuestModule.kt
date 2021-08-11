@@ -1,5 +1,6 @@
 package de.westnordost.streetcomplete.quests
 
+import android.content.SharedPreferences
 import dagger.Module
 import dagger.Provides
 import de.westnordost.osmfeatures.FeatureDictionary
@@ -124,7 +125,8 @@ import javax.inject.Singleton
         trafficFlowSegmentsApi: TrafficFlowSegmentsApi,
         trafficFlowDao: WayTrafficFlowDao,
         featureDictionaryFuture: FutureTask<FeatureDictionary>,
-        countryInfos: CountryInfos
+        countryInfos: CountryInfos,
+        prefs: SharedPreferences
     ): QuestTypeRegistry = QuestTypeRegistry(listOf<QuestType<*>>(
 
         // ↓ 1. notes
@@ -132,7 +134,7 @@ import javax.inject.Singleton
 
         // ↓ 2. important data that is used by many data consumers
         AddRoadName(),
-        AddPlaceName(featureDictionaryFuture),
+        AddPlaceName(featureDictionaryFuture, prefs),
         AddOneway(),
         // not that useful as such, but should be shown before CheckExistence because this is
         // basically the check whether the postbox is still there in countries in which it is enabled
@@ -141,7 +143,7 @@ import javax.inject.Singleton
         AddSuspectedOneway(trafficFlowSegmentsApi, trafficFlowDao),
         AddBarrierType(), // basically any more detailed rendering and routing: OSM Carto, mapy.cz, OSMand for start
         AddCycleway(), // for any cyclist routers (and cyclist maps)
-        AddSidewalk(), // for any pedestrian routers
+        AddSidewalk(prefs), // for any pedestrian routers
         AddBusStopName(),
         AddBusStopRef(),
         AddIsBuildingUnderground(), //to avoid asking AddHousenumber and other for underground buildings
@@ -158,7 +160,7 @@ import javax.inject.Singleton
         AddRecyclingContainerMaterials(),
         AddSport(),
         AddRoadSurface(), // used by BRouter, OsmAnd, OSRM, graphhopper, HOT map style...
-        AddMaxSpeed(), // should best be after road surface because it excludes unpaved roads
+        AddMaxSpeed(prefs), // should best be after road surface because it excludes unpaved roads
         AddMaxHeight(), // OSRM and other routing engines
         AddLanes(), // abstreet, certainly most routing engines
         AddRailwayCrossingBarrier(), // useful for routing
@@ -169,7 +171,7 @@ import javax.inject.Singleton
         AddProhibitedForPedestrians(), // uses info from AddSidewalk quest, should be after it
         AddCrossingType(),
         AddCrossingIsland(),
-        AddBuildingLevels(),
+        AddBuildingLevels(prefs),
         AddBusStopShelter(), // at least OsmAnd
         AddVegetarian(),
         AddVegan(),
@@ -211,7 +213,7 @@ import javax.inject.Singleton
         AddKerbHeight(), // Should be visible while waiting to cross
         AddTrafficSignalsSound(), // Sound needs to be done as or after you're crossing
         AddTrafficSignalsVibration(),
-        AddRoofShape(countryInfos),
+        AddRoofShape(countryInfos, prefs),
         AddWheelchairAccessPublicTransport(),
         AddWheelchairAccessOutside(),
         AddTactilePavingBusStop(),

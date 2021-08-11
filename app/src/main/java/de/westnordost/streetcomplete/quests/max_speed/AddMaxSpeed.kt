@@ -1,5 +1,8 @@
 package de.westnordost.streetcomplete.quests.max_speed
 
+import android.app.AlertDialog
+import android.content.Context
+import android.content.SharedPreferences
 import de.westnordost.streetcomplete.R
 import de.westnordost.streetcomplete.data.meta.ANYTHING_UNPAVED
 import de.westnordost.streetcomplete.data.meta.MAXSPEED_TYPE_KEYS
@@ -7,7 +10,7 @@ import de.westnordost.streetcomplete.data.osm.osmquests.OsmFilterQuestType
 import de.westnordost.streetcomplete.data.osm.edits.update_tags.StringMapChangesBuilder
 import de.westnordost.streetcomplete.data.quest.AllCountriesExcept
 
-class AddMaxSpeed : OsmFilterQuestType<MaxSpeedAnswer>() {
+class AddMaxSpeed(private val prefs: SharedPreferences) : OsmFilterQuestType<MaxSpeedAnswer>() {
 
     override val elementFilter = """
         ways with highway ~ motorway|trunk|primary|primary_link|secondary|secondary_link|tertiary|tertiary_link|unclassified|residential
@@ -42,21 +45,21 @@ class AddMaxSpeed : OsmFilterQuestType<MaxSpeedAnswer>() {
         when(answer) {
             is MaxSpeedSign -> {
                 changes.add("maxspeed", answer.value.toString())
-                changes.add("maxspeed:type", "sign")
+                changes.add(prefs.getString(PREF_MAXSPEED_TAG, MAXSPEED_TYPE)!!, "sign")
             }
             is MaxSpeedZone -> {
                 changes.add("maxspeed", answer.value.toString())
-                changes.add("maxspeed:type", answer.countryCode + ":" + answer.roadType)
+                changes.add(prefs.getString(PREF_MAXSPEED_TAG, MAXSPEED_TYPE)!!, answer.countryCode + ":" + answer.roadType)
             }
             is AdvisorySpeedSign -> {
                 changes.add("maxspeed:advisory", answer.value.toString())
-                changes.add("maxspeed:type:advisory", "sign")
+                changes.add("${prefs.getString(PREF_MAXSPEED_TAG, MAXSPEED_TYPE)!!}:advisory", "sign")
             }
             is IsLivingStreet -> {
                 changes.modify("highway", "living_street")
             }
             is ImplicitMaxSpeed -> {
-                changes.add("maxspeed:type", answer.countryCode + ":" + answer.roadType)
+                changes.add(prefs.getString(PREF_MAXSPEED_TAG, MAXSPEED_TYPE)!!, answer.countryCode + ":" + answer.roadType)
                 // Lit is either already set or has been answered by the user, so this wouldn't change the value of the lit tag
                 if (answer.lit != null) {
                     if (answer.lit) {
@@ -68,4 +71,22 @@ class AddMaxSpeed : OsmFilterQuestType<MaxSpeedAnswer>() {
             }
         }
     }
+
+    override val hasQuestSettings = true
+
+    override fun getQuestSettingsDialog(context: Context): AlertDialog? {
+        return AlertDialog.Builder(context)
+            .setTitle("select maxspeed tag")
+            .setNegativeButton(android.R.string.cancel, null)
+            .setItems(arrayOf(MAXSPEED_TYPE, SOURCE_MAXSPEED)) { dialogInterface, i ->
+                prefs.edit()
+                    .putString(PREF_MAXSPEED_TAG, if (i == 0) MAXSPEED_TYPE else SOURCE_MAXSPEED)
+                    .apply()
+            }
+            .create()
+    }
 }
+
+private const val MAXSPEED_TYPE = "maxspeed:type"
+private const val SOURCE_MAXSPEED = "source:maxspeed"
+private const val PREF_MAXSPEED_TAG = "source:maxspeed"

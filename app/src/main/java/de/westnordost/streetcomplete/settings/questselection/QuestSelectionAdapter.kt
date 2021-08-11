@@ -8,10 +8,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
-import android.widget.CompoundButton
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.core.view.isInvisible
@@ -54,6 +51,7 @@ class QuestSelectionAdapter @Inject constructor(
     interface Listener {
         fun onReorderedQuests(before: QuestType<*>, after: QuestType<*>)
         fun onChangedQuestVisibility(questType: QuestType<*>, visible: Boolean)
+        fun onOpenQuestSettings(questType: QuestType<*>)
     }
     var listener: Listener? = null
 
@@ -129,6 +127,7 @@ class QuestSelectionAdapter @Inject constructor(
         private val dragHandle: ImageView = itemView.dragHandle
         private val questIcon: ImageView = itemView.questIcon
         private val questTitle: TextView = itemView.questTitle
+        private val questSettingsButton: ImageButton = itemView.questSettings
         private val visibilityCheckBox: CheckBox = itemView.visibilityCheckBox
         private val countryDisabledText: TextView = itemView.countryDisabledText
         lateinit var item: QuestVisibility
@@ -155,6 +154,9 @@ class QuestSelectionAdapter @Inject constructor(
             visibilityCheckBox.isChecked = item.visible
             visibilityCheckBox.isEnabled = item.isInteractionEnabled
             visibilityCheckBox.setOnCheckedChangeListener(this)
+            questSettingsButton.visibility = if (item.questType.hasQuestSettings) View.VISIBLE else View.GONE
+            questSettingsButton.setOnClickListener { listener?.onOpenQuestSettings(item.questType) }
+            questSettingsButton.setImageResource(R.drawable.ic_settings_48dp) // for some reason it's not displayed when it's just in the xml
 
             dragHandle.isInvisible = !item.isInteractionEnabled
             dragHandle.setOnTouchListener { v, event ->
