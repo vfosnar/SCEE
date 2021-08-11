@@ -26,6 +26,7 @@ object Prefs {
     const val IS_SYNCHRONIZING_STATISTICS = "is_synchronizing_statistics"
     const val TEAM_MODE_INDEX_IN_TEAM = "team_mode.index_in_team"
     const val TEAM_MODE_TEAM_SIZE = "team_mode.team_size"
+    const val VOLUME_ZOOM = "volume_button_zoom"
 
     // not shown anywhere directly
     const val QUEST_ORDER = "quests.order"
