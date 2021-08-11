@@ -171,6 +171,7 @@ import javax.inject.Singleton
         AddVegetarian(),
         AddVegan(),
         AddInternetAccess(), // used by OsmAnd
+        RemoveWrongSurface(), // mine, tested
         AddParkingFee(), // used by OsmAnd
         AddMotorcycleParkingCapacity(),
         AddPathSurface(), // used by OSM Carto, BRouter, OsmAnd, OSRM, graphhopper...
