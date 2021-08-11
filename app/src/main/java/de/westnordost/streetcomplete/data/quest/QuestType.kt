@@ -19,4 +19,6 @@ interface QuestType<T> {
 
     /** The quest type can clean it's metadata that is older than the given timestamp here, if any  */
     fun deleteMetadataOlderThan(timestamp: Long) {}
+
+    val dotColor: String get() = "no"
 }

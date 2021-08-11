@@ -190,8 +190,9 @@ class QuestPinsManager(
     private fun createQuestPins(quest: Quest): List<Pin> {
         val iconName = resources.getResourceEntryName(quest.type.icon)
         val props = quest.key.toProperties()
+        val color = quest.type.dotColor
         val importance = getQuestImportance(quest)
-        return quest.markerLocations.map { Pin(it, iconName, props, importance) }
+        return quest.markerLocations.map { Pin(it, iconName, props, importance, color) }
     }
 
     /** returns values from 0 to 100000, the higher the number, the more important */
