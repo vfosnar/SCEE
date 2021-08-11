@@ -47,7 +47,6 @@ class ElementEditsUploader @Inject constructor(
             uploadedChangeListener?.onUploaded(questTypeName, edit.position)
 
             elementEditsController.synced(edit, updates)
-            mapDataController.updateAll(updates)
 
         } catch (e: ConflictException) {
             Log.d(TAG, "Dropped a $editActionClassName: ${e.message}")
