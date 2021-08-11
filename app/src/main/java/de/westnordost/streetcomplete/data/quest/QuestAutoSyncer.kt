@@ -154,6 +154,7 @@ import javax.inject.Singleton
     fun triggerAutoDownload() {
         val pos = pos ?: return
         if (!isConnected) return
+        if (!isAllowedByPreference) return
         if (downloadController.isDownloadInProgress) return
 
         Log.i(TAG, "Checking whether to automatically download new quests at ${pos.latitude.format(7)},${pos.longitude.format(7)}")
