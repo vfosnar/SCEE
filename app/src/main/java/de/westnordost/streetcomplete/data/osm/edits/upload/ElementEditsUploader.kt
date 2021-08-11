@@ -49,12 +49,6 @@ class ElementEditsUploader @Inject constructor(
             elementEditsController.synced(edit, updates)
             mapDataController.updateAll(updates)
 
-            if (edit.action is IsRevertAction) {
-                statisticsUpdater.subtractOne(questTypeName, edit.position)
-            } else {
-                statisticsUpdater.addOne(questTypeName, edit.position)
-            }
-
         } catch (e: ConflictException) {
             Log.d(TAG, "Dropped a $editActionClassName: ${e.message}")
             uploadedChangeListener?.onDiscarded(questTypeName, edit.position)
