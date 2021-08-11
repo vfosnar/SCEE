@@ -6,6 +6,7 @@ import android.location.LocationManager
 import android.location.LocationManager.GPS_PROVIDER
 import android.location.LocationManager.NETWORK_PROVIDER
 import android.os.Looper
+import android.os.SystemClock
 import androidx.annotation.RequiresPermission
 
 /** Convenience wrapper around the location manager with easier API, making use of both the GPS
@@ -36,13 +37,29 @@ class FineLocationManager(private val mgr: LocationManager, private var location
     @RequiresPermission(ACCESS_FINE_LOCATION)
     fun requestUpdates(minTime: Long, minDistance: Float) {
         if (deviceHasGPS)
-            mgr.requestLocationUpdates(GPS_PROVIDER, minTime, minDistance, locationListener, Looper.getMainLooper())
+            mgr.requestLocationUpdates(GPS_PROVIDER, minTime/2, minDistance, locationListener, Looper.getMainLooper())
         if (deviceHasNetworkLocationProvider)
-            mgr.requestLocationUpdates(NETWORK_PROVIDER, minTime, minDistance, locationListener, Looper.getMainLooper())
+            mgr.requestLocationUpdates(NETWORK_PROVIDER, minTime*5, minDistance, locationListener, Looper.getMainLooper())
+    }
+
+    @RequiresPermission(ACCESS_FINE_LOCATION)
+    fun getLastLocation() : Location? {
+        var loc = mgr.getLastKnownLocation(GPS_PROVIDER)
+        if (loc != null && loc.elapsedRealtimeNanos/1000000 > SystemClock.elapsedRealtime() - 20000)
+            return loc
+        loc = mgr.getLastKnownLocation(NETWORK_PROVIDER)
+        if (loc != null && loc.elapsedRealtimeNanos/1000000 > SystemClock.elapsedRealtime() - 20000 && loc.accuracy < 200)
+            return loc
+        return null
     }
 
     @RequiresPermission(ACCESS_FINE_LOCATION)
     fun requestSingleUpdate() {
+        val lastLoc = getLastLocation()
+        if (lastLoc != null) {
+            locationUpdateCallback(lastLoc)
+            return
+        }
         if (deviceHasGPS)
             mgr.requestSingleUpdate(GPS_PROVIDER,  singleLocationListener, Looper.getMainLooper())
         if (deviceHasNetworkLocationProvider)
