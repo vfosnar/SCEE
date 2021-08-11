@@ -10,7 +10,6 @@ class AddCameraType : OsmFilterQuestType<CameraType>() {
     override val elementFilter = """
         nodes with
          surveillance:type = camera
-         and surveillance ~ public|outdoor|traffic
          and !camera:type
     """
     override val commitMessage = "Add camera type"

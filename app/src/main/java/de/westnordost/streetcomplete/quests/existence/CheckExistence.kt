@@ -27,6 +27,10 @@ class CheckExistence(
             or amenity = telephone
             or amenity = vending_machine and vending !~ fuel|parking_tickets|public_transport_tickets
             or amenity = public_bookcase
+            or (
+              man_made = surveillance and surveillance:type = camera
+              and !highway
+            )
           )
           and (${lastChecked(2.0)}) and (!seasonal or seasonal=no)
         ) or (
@@ -43,10 +47,6 @@ class CheckExistence(
             or (highway = emergency_access_point or emergency = access_point) and ref
             or emergency = life_ring
             or emergency = phone
-            or (
-              man_made = surveillance and surveillance:type = camera and surveillance ~ outdoor|public
-              and !highway
-            )
           )
           and (${lastChecked(4.0)}) and (!seasonal or seasonal=no)
         ) or (
