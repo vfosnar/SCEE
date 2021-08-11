@@ -161,6 +161,7 @@ class MainFragment : Fragment(R.layout.fragment_main),
         gpsTrackingButton.setOnClickListener { onClickTrackingButton() }
         zoomInButton.setOnClickListener { onClickZoomIn() }
         zoomOutButton.setOnClickListener { onClickZoomOut() }
+        invertButton.setOnClickListener { onClickInvert() }
 
         updateMapQuestOffsets()
     }
@@ -578,6 +579,17 @@ class MainFragment : Fragment(R.layout.fragment_main),
 
     fun onClickMainMenu() {
         mainMenuButtonFragment?.onClickMainMenu()
+    }
+
+    private fun onClickInvert() {
+        mapFragment?.invertQuests()
+        if (invertButton.imageAlpha == 254) {
+            invertButton.setBackgroundResource(R.drawable.ic_zoom_plus_black_24dp)
+            invertButton.imageAlpha = 255
+        } else {
+            invertButton.setBackgroundResource(R.drawable.ic_zoom_minus_black_24dp)
+            invertButton.imageAlpha = 254
+        }
     }
 
     private fun onClickZoomOut() {
