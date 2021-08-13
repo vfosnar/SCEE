@@ -177,13 +177,17 @@ class QuestPinsManager(
 
     private fun initializeQuestTypeOrders() {
         // this needs to be reinitialized when the quest order changes
-        val questTypes = if (invertedOrder)
-            questTypeRegistry.all.toMutableList().asReversed()
-        else
-            questTypeRegistry.all.toMutableList()
-        questTypeOrderList.sort(questTypes)
-        questTypes.forEachIndexed { index, questType ->
-            questTypeOrders[questType] = index
+        if (invertedOrder) {
+            var order = 0
+            for (questType in questTypeRegistry.all.toMutableList().asReversed()) {
+                questTypeOrders[questType] = order++
+            }
+        } else {
+            val questTypes = questTypeRegistry.all.toMutableList()
+            questTypeOrderList.sort(questTypes)
+            questTypes.forEachIndexed { index, questType ->
+                questTypeOrders[questType] = index
+            }
         }
     }
 
