@@ -52,6 +52,10 @@ class AddPathSurface : OsmFilterQuestType<SurfaceAnswer>() {
                 changes.updateWithCheckDate("surface", answer.value.osmValue)
                 changes.addOrModify("surface:note", answer.note)
             }
+            is PrivateAnswer -> {
+                changes.addOrModify("access", "private")
+                return
+            }
         }
         changes.deleteIfExists("source:surface")
     }

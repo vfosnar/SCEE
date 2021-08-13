@@ -2,10 +2,15 @@ package de.westnordost.streetcomplete.quests.tracktype
 
 import de.westnordost.streetcomplete.R
 import de.westnordost.streetcomplete.quests.AImageListQuestAnswerFragment
+import de.westnordost.streetcomplete.quests.OtherAnswer
 import de.westnordost.streetcomplete.quests.tracktype.Tracktype.*
 import de.westnordost.streetcomplete.view.image_select.Item
 
 class AddTracktypeForm : AImageListQuestAnswerFragment<Tracktype, Tracktype>() {
+
+    override val otherAnswers = listOf(
+        OtherAnswer(R.string.quest_way_private) { applyAnswer(PRIVATE) }
+    )
 
     override val items = listOf(
         Item(GRADE1, R.drawable.tracktype_grade1, R.string.quest_tracktype_grade1),

@@ -60,7 +60,10 @@ class AddWayLit : OsmFilterQuestType<WayLit>() {
     override fun createForm() = WayLitForm()
 
     override fun applyAnswerTo(answer: WayLit, changes: StringMapChangesBuilder) {
-        changes.updateWithCheckDate("lit", answer.osmValue)
+        if (answer.osmValue == "private")
+            changes.addOrModify("access", "private")
+        else
+            changes.updateWithCheckDate("lit", answer.osmValue)
     }
 
     companion object {

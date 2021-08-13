@@ -9,6 +9,7 @@ class WayLitForm : AYesNoQuestAnswerFragment<WayLit>() {
 
     override val otherAnswers = listOf(
         OtherAnswer(R.string.quest_way_lit_24_7) { applyAnswer(NIGHT_AND_DAY) },
+        OtherAnswer(R.string.quest_way_private) { applyAnswer(PRIVATE) },
         OtherAnswer(R.string.quest_way_lit_automatic) { applyAnswer(AUTOMATIC) }
     )
 
