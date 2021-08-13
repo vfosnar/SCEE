@@ -57,6 +57,10 @@ fun BuildingType.asItem(): Item<BuildingType?> = when(this) {
     FARM_AUXILIARY -> Item(this, R.drawable.ic_building_barn, R.string.quest_buildingType_farm_auxiliary, R.string.quest_buildingType_farm_auxiliary_description)
     SILO -> Item(this, R.drawable.ic_building_silo, R.string.quest_buildingType_silo)
     GREENHOUSE -> Item(this, R.drawable.ic_building_greenhouse, R.string.quest_buildingType_greenhouse)
+    BARN -> Item(this, R.drawable.ic_building_barn, R.string.quest_buildingType_barn)
+    COWSHED -> Item(this, R.drawable.ic_building_barn, R.string.quest_buildingType_cowshed)
+    STABLE -> Item(this, R.drawable.ic_building_barn, R.string.quest_buildingType_stable)
+    STY -> Item(this, R.drawable.ic_building_barn, R.string.quest_buildingType_sty)
 
     SHED -> Item(this, R.drawable.ic_building_shed, R.string.quest_buildingType_shed)
     BOATHOUSE -> Item(this, R.drawable.ic_building_boathouse, R.string.quest_buildingType_boathouse)
@@ -64,6 +68,7 @@ fun BuildingType.asItem(): Item<BuildingType?> = when(this) {
     ROOF -> Item(this, R.drawable.ic_building_roof, R.string.quest_buildingType_roof)
     TOILETS -> Item(this, R.drawable.ic_building_toilets, R.string.quest_buildingType_toilets)
     SERVICE -> Item(this, R.drawable.ic_building_service, R.string.quest_buildingType_service, R.string.quest_buildingType_service_description)
+    TRANSFORMER_TOWER -> Item(this, R.drawable.ic_building_service, R.string.quest_buildingType_transformer_tower)
     HANGAR -> Item(this, R.drawable.ic_building_hangar, R.string.quest_buildingType_hangar, R.string.quest_buildingType_hangar_description)
     BUNKER -> Item(this, R.drawable.ic_building_bunker, R.string.quest_buildingType_bunker)
     HISTORIC -> Item(this, R.drawable.ic_building_historic, R.string.quest_buildingType_historic, R.string.quest_buildingType_historic_description)

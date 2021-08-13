@@ -624,7 +624,7 @@ Otherwise, you can download another keyboard in the app store. Popular keyboards
     <string name="quest_buildingType_answer_multiple_types">It has multiple purposes</string>
     <string name="quest_buildingType_answer_multiple_types_description">Simply select the main purpose of this building. E.g. if there is a shop on the ground floor with apartments above it, it is still mainly an apartment building.</string>
     <string name="quest_buildingType_answer_construction_site">It is still being constructed</string>
-    <string name="quest_buildingType_answer_demolished">It is demolished (traces visible or construction site)</string>
+    <string name="quest_buildingType_answer_demolished">It is demolished (traces visible)</string>
     <string name="quest_buildingType_residential">Residential</string>
     <string name="quest_buildingType_residential_description">building where people live</string>
     <string name="quest_buildingType_house">House</string>
@@ -687,6 +687,10 @@ Otherwise, you can download another keyboard in the app store. Popular keyboards
     <string name="quest_buildingType_farm_auxiliary_description">any building on a farm that is not a residential building</string>
     <string name="quest_buildingType_silo">Silo</string>
     <string name="quest_buildingType_greenhouse">Greenhouse</string>
+    <string name="quest_buildingType_barn">Barn</string>
+    <string name="quest_buildingType_cowshed">Cowshed</string>
+    <string name="quest_buildingType_stable">Stable</string>
+    <string name="quest_buildingType_sty">Sty</string>
     <string name="quest_buildingType_other">Other</string>
     <string name="quest_buildingType_shed">Shed</string>
     <string name="quest_buildingType_boathouse">Boathouse</string>
@@ -698,6 +702,7 @@ Otherwise, you can download another keyboard in the app store. Popular keyboards
     <string name="quest_buildingType_roof">Roof</string>
     <string name="quest_buildingType_service">Service building</string>
     <string name="quest_buildingType_service_description">building with machinery like pumps or transformers</string>
+    <string name="quest_buildingType_transformer_tower">Transformer tower</string>
     <string name="quest_buildingType_hangar">Hangar</string>
     <string name="quest_buildingType_hangar_description">storage for airplanes, helicopters or spacecraft</string>
     <string name="quest_buildingType_bunker">Bunker</string>
