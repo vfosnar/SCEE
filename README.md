@@ -18,6 +18,7 @@ This is my personal edition of StreetComplete, including a bunch of modification
   * notes file must be copied manually from Android/data/de.westnordost.streetcomplete.h3/files
 * optional volume button zoom
 * quest profiles (to be removed with the upcoming better implementation in SC)
+  * when using, first disable all quests and then reset to make them work properly
 * don't let manual download override cache
 * auto-download happens only if auto-upload is allowed
 * button to temporarily reverse quest order: to show additional quests without hiding or changing quest visibility/order
@@ -26,3 +27,5 @@ This is my personal edition of StreetComplete, including a bunch of modification
 * enable satellite images
 * adjust dark theme: more contrast for better visiblity during the day, more natural colors for water, grass and forest areas
 * improve location services: higher GPS frequency, use last known location as initial location
+
+Most of these modifications are not thoroughly testes, and some even have known bugs.
