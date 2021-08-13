@@ -13,6 +13,7 @@ This is my personal edition of StreetComplete, including a bunch of modification
   * per-quest-settings (only few quests): allows modification of elements the quest is asked for
   * add "private" other answer to track type, way surface and way lit quests
   * add "demolished" other answer to building type quest
+  * some additional building types
 * allow creating text notes in a gpx file
   * notes file must be copied manually from Android/data/de.westnordost.streetcomplete.h3/files
 * optional volume button zoom
