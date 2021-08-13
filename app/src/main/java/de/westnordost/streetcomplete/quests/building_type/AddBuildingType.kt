@@ -38,6 +38,9 @@ class AddBuildingType : OsmFilterQuestType<BuildingType>() {
         if (answer.osmKey == "man_made") {
             changes.delete("building")
             changes.add("man_made", answer.osmValue)
+        } else if (answer.osmKey == "demolished:building") {
+            changes.delete("building")
+            changes.addOrModify(answer.osmKey, answer.osmValue)
         } else if (answer.osmKey != "building") {
             changes.addOrModify(answer.osmKey, answer.osmValue)
         } else {

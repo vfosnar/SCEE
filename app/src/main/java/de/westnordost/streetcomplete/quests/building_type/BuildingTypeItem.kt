@@ -76,6 +76,7 @@ fun BuildingType.asItem(): Item<BuildingType?> = when(this) {
     RELIGIOUS -> BuildingTypeCategory.RELIGIOUS.asItem()
 
     CONSTRUCTION -> Item(null) // This does not need details, as it's part of "Other answers"
+    DEMOLISHED -> Item(null) // This does not need details, as it's part of "Other answers"
 }
 
 fun Array<BuildingTypeCategory>.toItems() = this.map { it.asItem() }
