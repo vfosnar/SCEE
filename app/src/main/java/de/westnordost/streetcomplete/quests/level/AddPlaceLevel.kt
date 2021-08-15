@@ -105,7 +105,7 @@ private val placesWithoutLevel by lazy { """
        or craft
        or amenity
       )
-      and !level and !level:ref
+      and !level and !level:ref and !addr:floor
     """.toElementFilterExpression()}
 
     private val places by lazy { """
