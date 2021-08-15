@@ -36,6 +36,7 @@ class FineLocationManager(private val mgr: LocationManager, private var location
 
     @RequiresPermission(ACCESS_FINE_LOCATION)
     fun requestUpdates(minTime: Long, minDistance: Float) {
+        getLastLocation()?.let { locationListener.onLocationChanged(it) }
         if (deviceHasGPS)
             mgr.requestLocationUpdates(GPS_PROVIDER, minTime/2, minDistance, locationListener, Looper.getMainLooper())
         if (deviceHasNetworkLocationProvider)
@@ -44,12 +45,18 @@ class FineLocationManager(private val mgr: LocationManager, private var location
 
     @RequiresPermission(ACCESS_FINE_LOCATION)
     fun getLastLocation() : Location? {
-        var loc = mgr.getLastKnownLocation(GPS_PROVIDER)
-        if (loc != null && loc.elapsedRealtimeNanos/1000000 > SystemClock.elapsedRealtime() - 20000)
-            return loc
-        loc = mgr.getLastKnownLocation(NETWORK_PROVIDER)
-        if (loc != null && loc.elapsedRealtimeNanos/1000000 > SystemClock.elapsedRealtime() - 20000 && loc.accuracy < 200)
-            return loc
+        if (deviceHasGPS) {
+            mgr.getLastKnownLocation(GPS_PROVIDER)?.let {
+                if (it.elapsedRealtimeNanos / 1000000 > SystemClock.elapsedRealtime() - 30000)
+                    return it
+            }
+        }
+        if (deviceHasNetworkLocationProvider) {
+            mgr.getLastKnownLocation(NETWORK_PROVIDER)?.let {
+                if (it.elapsedRealtimeNanos / 1000000 > SystemClock.elapsedRealtime() - 30000)
+                    return it
+            }
+        }
         return null
     }
 
