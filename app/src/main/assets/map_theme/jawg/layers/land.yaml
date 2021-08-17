@@ -56,12 +56,12 @@ layers:
             buildings-style:
                 order: 100
                 color: global.building_color
-                extrude: true
+                extrude: false
             buildings-outline-style:
                 order: 101
                 color: global.building_outline_color
                 width: [[16, 1px], [18,2px], [19,4px]]
-                extrude: true
+                extrude: false
 
     landuse:
         data: { source: jawg, layer: landuse }
