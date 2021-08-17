@@ -3,7 +3,7 @@ This is my personal edition of StreetComplete, including a bunch of modification
 * show POIs (tap colored dots for details) and adjust quest dot and pin offsets
   * in some rare casesy, existing POIs are not shown. no idea why
 * new quests
-  * ask for level of shops and other places/things inside mall or retail buildings
+  * ask for level of shops and other places/things inside malls, retail buildings and train stations
   * contact quests for phone and website
   * re-ask/remove surface for badly tagged tracks (by matkoniecz, https://github.com/matkoniecz/Zazolc)
 * quest changes
@@ -27,5 +27,6 @@ This is my personal edition of StreetComplete, including a bunch of modification
 * enable satellite images
 * adjust dark theme: more contrast for better visiblity during the day, more natural colors for water, grass and forest areas
 * improve location services: higher GPS frequency, use last known location as initial location
+* level filter: only show quests on the chosen level (this is rather slow)
 
 Most of these modifications are not thoroughly testes, and some even have known bugs.
