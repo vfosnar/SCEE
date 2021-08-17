@@ -1,7 +1,7 @@
 This is my personal edition of StreetComplete, including a bunch of modifications:
 * renamed: allows install parallel to StreetComplete, and shows a different name in changesets
 * show POIs (tap colored dots for details) and adjust quest dot and pin offsets
-  * in some rare casesy, existing POIs are not shown. no idea why
+  * in some rare cases, existing POIs are not shown. No idea why...
 * new quests
   * ask for level of shops and other places/things inside malls, retail buildings and train stations
   * contact quests for phone and website
@@ -14,6 +14,7 @@ This is my personal edition of StreetComplete, including a bunch of modification
   * add "private" other answer to track type, way surface and way lit quests
   * add "demolished" other answer to building type quest
   * some additional building types
+  * add "zebra" answer to crossing quest
 * allow creating text notes in a gpx file
   * notes file must be copied manually from Android/data/de.westnordost.streetcomplete.h3/files
 * optional volume button zoom
@@ -28,5 +29,8 @@ This is my personal edition of StreetComplete, including a bunch of modification
 * adjust dark theme: more contrast for better visiblity during the day, more natural colors for water, grass and forest areas
 * improve location services: higher GPS frequency, use last known location as initial location
 * level filter: only show quests on the chosen level (this is rather slow)
+* switch off 3D buildings: allows to better determine position of quests inside or close to buildings
+  * currently no option to re-enable, don't know how to do this
+* increase map tile cache time from 12 hours to 8 days: tiles will now not be re-downloaded for 8 days, even if manual download was initiated
 
 Most of these modifications are not thoroughly testes, and some even have known bugs.
