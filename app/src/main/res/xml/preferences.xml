@@ -47,6 +47,11 @@
             android:persistent="true"
             />
 
+        <Preference
+            android:key="quests.levelFilter"
+            android:title="Level filter"
+            />
+
         <SwitchPreference
             android:key="display.nonQuestionNotes"
             android:title="@string/pref_title_show_notes_not_phrased_as_questions"

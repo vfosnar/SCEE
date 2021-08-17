@@ -3,11 +3,13 @@ package de.westnordost.streetcomplete.settings
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.InputType
 import android.view.LayoutInflater
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.SwitchCompat
+import androidx.core.content.edit
 import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
@@ -26,6 +28,7 @@ import de.westnordost.streetcomplete.data.osmnotes.NoteController
 import de.westnordost.streetcomplete.data.quest.QuestController
 import de.westnordost.streetcomplete.data.quest.QuestTypeRegistry
 import de.westnordost.streetcomplete.data.quest.getVisible
+import de.westnordost.streetcomplete.data.visiblequests.LevelFilter
 import de.westnordost.streetcomplete.data.visiblequests.VisibleQuestTypeSource
 import de.westnordost.streetcomplete.data.visiblequests.QuestTypeOrderList
 import de.westnordost.streetcomplete.data.visiblequests.VisibleQuestTypeController
@@ -49,6 +52,7 @@ class SettingsFragment : PreferenceFragmentCompat(), HasTitle,
     @Inject internal lateinit var visibleQuestTypeSource: VisibleQuestTypeSource
     @Inject internal lateinit var questTypeOrderList: QuestTypeOrderList
     @Inject internal lateinit var visibleQuestTypeController: VisibleQuestTypeController
+    @Inject internal lateinit var levelFilter: LevelFilter
 
     interface Listener {
         fun onClickedQuestSelection()
@@ -102,7 +106,66 @@ class SettingsFragment : PreferenceFragmentCompat(), HasTitle,
             startActivity(Intent(context, ShowQuestFormsActivity::class.java))
             true
         }
+
+        findPreference<Preference>("quests.levelFilter")?.setOnPreferenceClickListener {
+            showLevelFilterDialog()
+            true
+        }
+
     }
+
+    private fun showLevelFilterDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Choose tags to check")
+        val linearLayout = LinearLayout(context)
+        linearLayout.orientation = LinearLayout.VERTICAL
+        val levelTags = prefs.getString(Prefs.ALLOWED_LEVEL_TAGS, "level,level:ref")!!.split(",")
+
+        val level = EditText(context)
+        level.inputType = InputType.TYPE_CLASS_TEXT
+        level.hint = "leave empty to show not tagged"
+        level.setText(prefs.getString(Prefs.ALLOWED_LEVEL, ""))
+
+        val enable = SwitchCompat(requireContext())
+        enable.text = "enable level filter"
+        enable.isChecked = levelFilter.isEnabled
+
+        val tagLevel = CheckBox(requireContext())
+        tagLevel.text = "level"
+        tagLevel.isChecked = levelTags.contains("level")
+
+        val tagLevelRef = CheckBox(requireContext())
+        tagLevelRef.text = "level:ref"
+        tagLevelRef.isChecked = levelTags.contains("level:ref")
+
+        val tagAddrFloor = CheckBox(requireContext())
+        tagAddrFloor.text = "addr:floor"
+        tagAddrFloor.isChecked = levelTags.contains("addr:floor")
+
+        linearLayout.addView(tagLevel)
+        linearLayout.addView(tagLevelRef)
+        linearLayout.addView(tagAddrFloor)
+        linearLayout.addView(level)
+        linearLayout.addView(enable)
+        linearLayout.setPadding(30,10,30,10)
+        builder.setView(linearLayout)
+        builder.setNegativeButton(android.R.string.cancel, null)
+        builder.setPositiveButton(android.R.string.ok) { _, _ ->
+            val levelTagList = mutableListOf<String>()
+            if (tagLevel.isChecked) levelTagList.add("level")
+            if (tagLevelRef.isChecked) levelTagList.add("level:ref")
+            if (tagAddrFloor.isChecked) levelTagList.add("addr:floor")
+            prefs.edit {
+                putString(Prefs.ALLOWED_LEVEL_TAGS, levelTagList.joinToString(","))
+                putString(Prefs.ALLOWED_LEVEL, level.text.toString())
+            }
+            levelFilter.isEnabled = enable.isChecked
+            levelFilter.reload()
+            visibleQuestTypeController.reload()
+        }
+        builder.show()
+    }
+
 
     override fun onStart() {
         super.onStart()

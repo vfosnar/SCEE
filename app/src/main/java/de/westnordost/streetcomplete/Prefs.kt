@@ -27,6 +27,8 @@ object Prefs {
     const val TEAM_MODE_INDEX_IN_TEAM = "team_mode.index_in_team"
     const val TEAM_MODE_TEAM_SIZE = "team_mode.team_size"
     const val VOLUME_ZOOM = "volume_button_zoom"
+    const val ALLOWED_LEVEL_TAGS = "allowed_level_tags"
+    const val ALLOWED_LEVEL = "allowed_level"
 
     // not shown anywhere directly
     const val QUEST_ORDER = "quests.order"
