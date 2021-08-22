@@ -6,6 +6,8 @@ This is my personal edition of StreetComplete, including a bunch of modification
   * ask for level of shops and other places/things inside malls, retail buildings and train stations
   * contact quests for phone and website
   * re-ask/remove surface for badly tagged tracks (by matkoniecz, https://github.com/matkoniecz/Zazolc)
+  * service building operator (no proper auto-complete list like ATM operator)
+  * service building type (can only answer substation or hide, answering `no` just crashes the app)
 * quest changes
   * allow "paved" surface without note (because one lane concrete, one lane asphalt is too common)
   * ask for more surveillance cameras
