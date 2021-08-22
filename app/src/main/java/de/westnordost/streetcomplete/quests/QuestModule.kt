@@ -96,6 +96,8 @@ import de.westnordost.streetcomplete.quests.religion.AddReligionToWaysideShrine
 import de.westnordost.streetcomplete.quests.roof_shape.AddRoofShape
 import de.westnordost.streetcomplete.quests.segregated.AddCyclewaySegregation
 import de.westnordost.streetcomplete.quests.self_service.AddSelfServiceLaundry
+import de.westnordost.streetcomplete.quests.service_building.AddServiceBuildingOperator
+import de.westnordost.streetcomplete.quests.service_building.AddServiceBuildingType
 import de.westnordost.streetcomplete.quests.shop_type.CheckShopType
 import de.westnordost.streetcomplete.quests.shop_type.SpecifyShopType
 import de.westnordost.streetcomplete.quests.sidewalk.AddSidewalk
@@ -265,6 +267,8 @@ import javax.inject.Singleton
 
         AddContactPhone(),
         AddContactWebsite(),
+        AddServiceBuildingOperator(),
+        AddServiceBuildingType(),
         ShowBikeParking(),
         ShowBench(),
         ShowBusiness(),
