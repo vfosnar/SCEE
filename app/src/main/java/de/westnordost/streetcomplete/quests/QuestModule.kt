@@ -191,9 +191,9 @@ import javax.inject.Singleton
         AddBikeParkingAccess(),
         AddBikeParkingFee(),
         AddStepsRamp(),
-        AddWheelchairAccessToilets(), // used by wheelmap, OsmAnd, MAPS.ME
+        AddWheelchairAccessToilets(), // used by wheelmap, OsmAnd, Organic Maps
         AddPlaygroundAccess(), //late as in many areas all needed access=private is already mapped
-        AddWheelchairAccessBusiness(featureDictionaryFuture), // used by wheelmap, OsmAnd, MAPS.ME
+        AddWheelchairAccessBusiness(featureDictionaryFuture), // used by wheelmap, OsmAnd, Organic Maps
         AddToiletAvailability(), //OSM Carto, shown in OsmAnd descriptions
         AddFerryAccessPedestrian(),
         AddFerryAccessMotorVehicle(),
@@ -213,8 +213,13 @@ import javax.inject.Singleton
         AddBikeParkingCover(), // used by OsmAnd in the object description
         AddDrinkingWater(), // used by AnyFinder
         AddTactilePavingCrosswalk(), // Paving can be completed while waiting to cross
+        AddKerbHeight(), /* deliberately before AddTactilePavingKerb:
+        * - Also should be visible while waiting to cross
+        * - Some people are not interpreting flush or lowered kerb as a kerb on their own,
+        * and would be confused about asking about tactile status on kerb without kerb
+        * but with this quest first they are OK with such interpretation
+        */
         AddTactilePavingKerb(), // Paving can be completed while waiting to cross
-        AddKerbHeight(), // Should be visible while waiting to cross
         AddTrafficSignalsSound(), // Sound needs to be done as or after you're crossing
         AddTrafficSignalsVibration(),
         AddRoofShape(countryInfos, prefs),
@@ -223,14 +228,14 @@ import javax.inject.Singleton
         AddTactilePavingBusStop(),
         AddBridgeStructure(),
         AddReligionToWaysideShrine(),
-        AddCyclewaySegregation(),
-        MarkCompletedBuildingConstruction(),
+        AddCyclewaySegregation(), //Cyclosm, Valhalla, Bike Citizens Bicycle Navigation...
+        MarkCompletedBuildingConstruction(), // unlocks AddBuildingType which unlocks address and building detail quests
         AddGeneralFee(),
         AddSelfServiceLaundry(),
         AddStepsIncline(), // can be gathered while walking perpendicular to the way e.g. the other side of the road or when running/cycling past
         AddHandrail(), // for accessibility of pedestrian routing, can be gathered when walking past
         AddStepCount(), // can only be gathered when walking along this way, also needs the most effort and least useful
-        AddInformationToTourism(),
+        AddInformationToTourism(), // OSM Carto
         AddAtmOperator(),
         AddChargingStationCapacity(),
         AddChargingStationOperator(),

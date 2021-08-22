@@ -120,7 +120,7 @@ class AddSidewalk(private val prefs: SharedPreferences) : OsmElementQuestType<Si
                 answer.left && answer.right -> "both"
                 answer.left -> "left"
                 answer.right -> "right"
-                else -> "none"
+                else -> "no"
             }
         }
 }
