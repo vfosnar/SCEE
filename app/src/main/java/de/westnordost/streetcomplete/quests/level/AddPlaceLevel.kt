@@ -77,6 +77,11 @@ class AddPlaceLevel (
             // assume if more than 5 places in one building, it's a shopping mall
             if (maybePlaceNodes.size > 5)
                 placeNodes2 += maybePlaceNodes
+
+            // return empty list if no place in the suspected shopping center has a level tag
+            // assumption: if no level is tagged, it's not necessary (may be refined if necessary)
+            if (maybePlaceNodes.none { hasLevel.matches(it) })
+                return emptyList()
         }
         // idea: check maybePlaceNodes if they have levels, and return empty list if no or only one level
         //  to catch cases like train stations with shops on one level only
@@ -110,10 +115,17 @@ private val placesWithoutLevel by lazy { """
       and !level and !level:ref and !addr:floor
     """.toElementFilterExpression()}
 
-    private val places by lazy { """
+private val places by lazy { """
     nodes with
       (shop
        or craft
        or amenity
       )
+    """.toElementFilterExpression()}
+
+private val hasLevel by lazy { """
+    nodes with
+      level
+      or level:ref
+      or addr:floor
     """.toElementFilterExpression()}
