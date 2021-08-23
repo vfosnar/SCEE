@@ -5,14 +5,21 @@ import de.westnordost.streetcomplete.quests.ANameWithSuggestionsForm
 class AddServiceBuildingOperatorForm : ANameWithSuggestionsForm<String>() {
 
     // TODO: make proper list like atm operators
-    override val suggestions: List<String>? get() = listOf(
-        "Wiener Netze", "EVN", "Netz OÖ", "Salzburg AG", "KNG-Kärnten Netz GmbH", "Energie Steiermark", // power austria
-        "ÖBB", "GKB", // rail austria
-        "e.on", // power cz
-        "DPMB", // brno public transport, maybe also for power?
-    )
+    override val suggestions: List<String>? get() = POWER + TRANSPORT
 
     override fun onClickOk() {
         applyAnswer(name)
     }
 }
+
+// separate power and others for the current implementation of service building type quest
+// actually public transport could also have power, but this would probably not be a minor distribution substation
+val POWER = listOf(
+    "Wiener Netze", "EVN", "Netz OÖ", "Salzburg AG", "KNG-Kärnten Netz GmbH", "Energie Steiermark", // austria
+    "e.on", // cz
+)
+
+val TRANSPORT = listOf(
+    "ÖBB", "GKB", "Wiener Linien", // austria
+    "DPMB", // cz
+)
