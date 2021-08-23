@@ -7,7 +7,7 @@ This is my personal edition of StreetComplete, including a bunch of modification
   * contact quests for phone and website
   * re-ask/remove surface for badly tagged tracks (by matkoniecz, https://github.com/matkoniecz/Zazolc)
   * service building operator (no proper auto-complete list like ATM operator)
-  * service building type (can only answer substation or hide, answering `no` just crashes the app)
+  * service building type (currently can only answer substation or hide)
 * quest changes
   * allow "paved" surface without note (because one lane concrete, one lane asphalt is too common)
   * ask for more surveillance cameras
@@ -17,6 +17,7 @@ This is my personal edition of StreetComplete, including a bunch of modification
   * add "demolished" other answer to building type quest
   * some additional building types
   * add "zebra" answer to crossing quest
+  * ask for step count only for steps shorter than 15 m
 * allow creating text notes in a gpx file
   * notes file must be copied manually from Android/data/de.westnordost.streetcomplete.h3/files
 * optional volume button zoom
