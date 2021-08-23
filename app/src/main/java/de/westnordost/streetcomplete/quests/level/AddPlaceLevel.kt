@@ -75,13 +75,9 @@ class AddPlaceLevel (
                     maybePlaceNodes.add(place)
             }
             // assume if more than 5 places in one building, it's a shopping mall
-            if (maybePlaceNodes.size > 5)
+            // but require at least one place with level tagged
+            if (maybePlaceNodes.size > 5 && maybePlaceNodes.any { hasLevel.matches(it) })
                 placeNodes2 += maybePlaceNodes
-
-            // return empty list if no place in the suspected shopping center has a level tag
-            // assumption: if no level is tagged, it's not necessary (may be refined if necessary)
-            if (maybePlaceNodes.none { hasLevel.matches(it) })
-                return emptyList()
         }
         // idea: check maybePlaceNodes if they have levels, and return empty list if no or only one level
         //  to catch cases like train stations with shops on one level only
