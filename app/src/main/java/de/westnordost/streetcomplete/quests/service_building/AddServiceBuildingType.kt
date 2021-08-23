@@ -5,7 +5,7 @@ import de.westnordost.streetcomplete.data.osm.edits.update_tags.StringMapChanges
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmFilterQuestType
 import de.westnordost.streetcomplete.quests.YesNoQuestAnswerFragment
 
-class AddServiceBuildingType : OsmFilterQuestType<Boolean>() {
+class AddServiceBuildingType : OsmFilterQuestType<Unit>() {
 
     // todo: only ask for energy operators for now, but they contain spaces -> how to escape?
     override val elementFilter = "nodes, ways, relations with building = service and operator and !power and !service"
@@ -19,17 +19,11 @@ class AddServiceBuildingType : OsmFilterQuestType<Boolean>() {
         return arrayOf(tags["operator"] ?: "")
     }
 
-    override fun createForm() = YesNoQuestAnswerFragment()
+    override fun createForm() = AddServiceBuildingTypeForm()
 
-    override fun applyAnswerTo(answer: Boolean, changes: StringMapChangesBuilder) {
-        if (answer) {
-            changes.add("power", "substation")
-            changes.add("substation", "minor_distribution")
-        } else {
-            // do nothing
-            // this crashes SC, but whatever...
-            // can I hide the quest here?
-        }
+    override fun applyAnswerTo(answer: Unit, changes: StringMapChangesBuilder) {
+        changes.add("power", "substation")
+        changes.add("substation", "minor_distribution")
     }
 
 }
