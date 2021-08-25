@@ -24,8 +24,8 @@ global:
     forest_color: '#375436'
     town_color: '#211d2b'
 
-    building_color: [0.16, 0.36, 0.36, 0.75]
-    building_outline_color: [0.26, 0.6, 0.6, 0.75]
+    building_color: [0.16, 0.36, 0.36, 0.35]
+    building_outline_color: [0.26, 0.6, 0.6, 0.7]
 
     boundary_color: '#e72'
 
