@@ -29,15 +29,6 @@ class LevelFilter @Inject internal constructor(
         allowedLevelTags = prefs.getString(Prefs.ALLOWED_LEVEL_TAGS, "level,level:ref")!!.split(",")
     }
 
-    // need to reload on change! how to best do it? try preferenceListener?
-    // or simply do a reload in SettingsFragment?
-/*    val changeListener = Preference.OnPreferenceChangeListener{ pref, _ ->
-        when (pref.key) {
-            Prefs.ALLOWED_LEVEL, Prefs.ALLOWED_LEVEL_TAGS -> reload()
-        }
-        true
-    }
-*/
     fun isVisible(quest: Quest): Boolean =
         !isEnabled ||
             (quest is OsmQuest && quest.levelAllowed())
