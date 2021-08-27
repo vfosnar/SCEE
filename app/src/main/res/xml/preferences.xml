@@ -43,6 +43,14 @@
             />
 
         <SwitchPreference
+            android:key="quests.dayNightFilter"
+            android:title="enable daytime quest filter"
+            android:summaryOn="show certain quest only at night or day"
+            android:summaryOff="always show quests independent of time"
+            android:persistent="true"
+            />
+
+        <SwitchPreference
             android:key="display.nonQuestionNotes"
             android:title="@string/pref_title_show_notes_not_phrased_as_questions"
             android:summaryOn="@string/pref_summaryOn_show_notes_not_phrased_as_questions"

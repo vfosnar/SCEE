@@ -1,5 +1,7 @@
 package de.westnordost.streetcomplete.data.visiblequests
 
+import android.content.SharedPreferences
+import de.westnordost.streetcomplete.Prefs
 import de.westnordost.streetcomplete.data.osm.mapdata.LatLon
 import de.westnordost.streetcomplete.data.quest.DayNightCycle.*
 import de.westnordost.streetcomplete.data.quest.Quest
@@ -10,10 +12,13 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.math.round
 
-@Singleton class DayNightQuestFilter @Inject internal constructor() {
+@Singleton class DayNightQuestFilter @Inject internal constructor(
+    prefs: SharedPreferences
+) {
     /* This is a singleton because it owns an in-memory cache, no need to duplicate that */
 
     private val cache: MutableMap<LatLon, DaylightTimes> = mutableMapOf()
+    var enabled = prefs.getBoolean(Prefs.DAY_NIGHT_FILTER, true)
 
     private fun isDaylightAt(pos: LatLon): Boolean {
         // using low precision lat lons (~ city level) because the sun and the earth is big
@@ -23,6 +28,7 @@ import kotlin.math.round
     }
 
     fun isVisible(quest: Quest): Boolean {
+        if (!enabled) return true
         return when (quest.type.dayNightVisibility) {
             DAY_AND_NIGHT -> true
             ONLY_DAY -> isDaylightAt(quest.position)

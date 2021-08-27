@@ -16,6 +16,7 @@ object Prefs {
     const val THEME_BACKGROUND = "theme.background_type"
 
     const val RESURVEY_INTERVALS = "quests.resurveyIntervals"
+    const val DAY_NIGHT_FILTER = "quests.dayNightFilter"
 
     const val OSM_USER_ID = "osm.userid"
     const val OSM_USER_NAME = "osm.username"

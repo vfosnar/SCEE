@@ -27,10 +27,7 @@ import de.westnordost.streetcomplete.data.osm.mapdata.MapDataController
 import de.westnordost.streetcomplete.data.osmnotes.NoteController
 import de.westnordost.streetcomplete.data.quest.QuestController
 import de.westnordost.streetcomplete.data.quest.QuestTypeRegistry
-import de.westnordost.streetcomplete.data.visiblequests.QuestPresetsSource
-import de.westnordost.streetcomplete.data.visiblequests.LevelFilter
-import de.westnordost.streetcomplete.data.visiblequests.VisibleQuestTypeController
-import de.westnordost.streetcomplete.data.visiblequests.VisibleQuestTypeSource
+import de.westnordost.streetcomplete.data.visiblequests.*
 import de.westnordost.streetcomplete.ktx.format
 import de.westnordost.streetcomplete.ktx.toast
 import kotlinx.coroutines.*
@@ -52,6 +49,7 @@ class SettingsFragment : PreferenceFragmentCompat(), HasTitle,
     @Inject internal lateinit var levelFilter: LevelFilter
     @Inject internal lateinit var questPresetsSource: QuestPresetsSource
     @Inject internal lateinit var visibleQuestTypeController: VisibleQuestTypeController
+    @Inject internal lateinit var dayNightQuestFilter: DayNightQuestFilter
 
     interface Listener {
         fun onClickedQuestSelection()
@@ -199,6 +197,10 @@ class SettingsFragment : PreferenceFragmentCompat(), HasTitle,
             }
             Prefs.RESURVEY_INTERVALS -> {
                 resurveyIntervalsUpdater.update()
+            }
+            Prefs.DAY_NIGHT_FILTER -> {
+                dayNightQuestFilter.enabled = prefs.getBoolean(Prefs.DAY_NIGHT_FILTER, true)
+                visibleQuestTypeController.clear()
             }
         }
     }
