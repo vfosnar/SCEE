@@ -46,7 +46,6 @@ class SettingsFragment : PreferenceFragmentCompat(), HasTitle,
     @Inject internal lateinit var resurveyIntervalsUpdater: ResurveyIntervalsUpdater
     @Inject internal lateinit var questTypeRegistry: QuestTypeRegistry
     @Inject internal lateinit var visibleQuestTypeSource: VisibleQuestTypeSource
-    @Inject internal lateinit var levelFilter: LevelFilter
     @Inject internal lateinit var questPresetsSource: QuestPresetsSource
     @Inject internal lateinit var visibleQuestTypeController: VisibleQuestTypeController
     @Inject internal lateinit var dayNightQuestFilter: DayNightQuestFilter
@@ -104,65 +103,7 @@ class SettingsFragment : PreferenceFragmentCompat(), HasTitle,
             true
         }
 
-        findPreference<Preference>("quests.levelFilter")?.setOnPreferenceClickListener {
-            showLevelFilterDialog()
-            true
-        }
-
     }
-
-    private fun showLevelFilterDialog() {
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Choose tags to check")
-        val linearLayout = LinearLayout(context)
-        linearLayout.orientation = LinearLayout.VERTICAL
-        val levelTags = prefs.getString(Prefs.ALLOWED_LEVEL_TAGS, "level,level:ref")!!.split(",")
-
-        val level = EditText(context)
-        level.inputType = InputType.TYPE_CLASS_TEXT
-        level.hint = "leave empty to show not tagged"
-        level.setText(prefs.getString(Prefs.ALLOWED_LEVEL, ""))
-
-        val enable = SwitchCompat(requireContext())
-        enable.text = "enable level filter"
-        enable.isChecked = levelFilter.isEnabled
-
-        val tagLevel = CheckBox(requireContext())
-        tagLevel.text = "level"
-        tagLevel.isChecked = levelTags.contains("level")
-
-        val tagLevelRef = CheckBox(requireContext())
-        tagLevelRef.text = "level:ref"
-        tagLevelRef.isChecked = levelTags.contains("level:ref")
-
-        val tagAddrFloor = CheckBox(requireContext())
-        tagAddrFloor.text = "addr:floor"
-        tagAddrFloor.isChecked = levelTags.contains("addr:floor")
-
-        linearLayout.addView(tagLevel)
-        linearLayout.addView(tagLevelRef)
-        linearLayout.addView(tagAddrFloor)
-        linearLayout.addView(level)
-        linearLayout.addView(enable)
-        linearLayout.setPadding(30,10,30,10)
-        builder.setView(linearLayout)
-        builder.setNegativeButton(android.R.string.cancel, null)
-        builder.setPositiveButton(android.R.string.ok) { _, _ ->
-            val levelTagList = mutableListOf<String>()
-            if (tagLevel.isChecked) levelTagList.add("level")
-            if (tagLevelRef.isChecked) levelTagList.add("level:ref")
-            if (tagAddrFloor.isChecked) levelTagList.add("addr:floor")
-            prefs.edit {
-                putString(Prefs.ALLOWED_LEVEL_TAGS, levelTagList.joinToString(","))
-                putString(Prefs.ALLOWED_LEVEL, level.text.toString())
-            }
-            levelFilter.isEnabled = enable.isChecked
-            levelFilter.reload()
-            visibleQuestTypeController.clear()
-        }
-        builder.show()
-    }
-
 
     override fun onStart() {
         super.onStart()

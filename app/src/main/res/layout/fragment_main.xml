@@ -147,7 +147,7 @@
             tools:ignore="RtlHardcoded,RtlSymmetry">
 
             <ImageButton
-                android:id="@+id/invertButton"
+                android:id="@+id/quickSettingsButton"
                 android:layout_width="@dimen/map_button_size"
                 android:layout_height="@dimen/map_button_size"
                 android:scaleType="center"

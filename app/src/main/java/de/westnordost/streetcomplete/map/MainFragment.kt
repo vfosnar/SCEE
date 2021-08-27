@@ -10,6 +10,7 @@ import android.graphics.RectF
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
@@ -19,6 +20,7 @@ import android.widget.Toast
 import androidx.annotation.AnyThread
 import androidx.annotation.DrawableRes
 import androidx.annotation.UiThread
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.getSystemService
 import androidx.core.graphics.minus
@@ -43,6 +45,8 @@ import de.westnordost.streetcomplete.data.osm.mapdata.LatLon
 import de.westnordost.streetcomplete.data.osm.mapdata.Way
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmQuest
 import de.westnordost.streetcomplete.data.quest.*
+import de.westnordost.streetcomplete.data.visiblequests.LevelFilter
+import de.westnordost.streetcomplete.data.visiblequests.QuestPresetsController
 import de.westnordost.streetcomplete.edithistory.EditHistoryFragment
 import de.westnordost.streetcomplete.ktx.*
 import de.westnordost.streetcomplete.location.FineLocationManager
@@ -90,6 +94,8 @@ class MainFragment : Fragment(R.layout.fragment_main),
     @Inject internal lateinit var visibleQuestsSource: VisibleQuestsSource
     @Inject internal lateinit var soundFx: SoundFx
     @Inject internal lateinit var prefs: SharedPreferences
+    @Inject internal lateinit var levelFilter: LevelFilter
+    @Inject internal lateinit var questPresetsController: QuestPresetsController
 
     private lateinit var locationManager: FineLocationManager
 
@@ -110,6 +116,8 @@ class MainFragment : Fragment(R.layout.fragment_main),
         childFragmentManagerOrNull?.findFragmentByTag(EDIT_HISTORY) as? EditHistoryFragment
 
     private var mapOffsetWithOpenBottomSheet: RectF = RectF(0f, 0f, 0f, 0f)
+
+    private var inverted = false
 
     interface Listener {
         fun onQuestSolved(quest: Quest, source: String?)
@@ -162,7 +170,7 @@ class MainFragment : Fragment(R.layout.fragment_main),
         gpsTrackingButton.setOnClickListener { onClickTrackingButton() }
         zoomInButton.setOnClickListener { onClickZoomIn() }
         zoomOutButton.setOnClickListener { onClickZoomOut() }
-        invertButton.setOnClickListener { onClickInvert() }
+        quickSettingsButton.setOnClickListener { onClickQuickSettings() }
 
         updateMapQuestOffsets()
     }
@@ -633,15 +641,42 @@ class MainFragment : Fragment(R.layout.fragment_main),
         mainMenuButtonFragment?.onClickMainMenu()
     }
 
-    private fun onClickInvert() {
-        mapFragment?.invertQuests()
-        if (invertButton.imageAlpha == 254) {
-            invertButton.setBackgroundResource(R.drawable.ic_zoom_plus_black_24dp)
-            invertButton.imageAlpha = 255
-        } else {
-            invertButton.setBackgroundResource(R.drawable.ic_zoom_minus_black_24dp)
-            invertButton.imageAlpha = 254
+    private fun onClickQuickSettings() {
+        val popupMenu = PopupMenu(requireContext(), quickSettingsButton)
+        popupMenu.menu.add(Menu.NONE, 1, Menu.NONE, "switch profile (not yet)")
+        popupMenu.menu.add(Menu.NONE, 2, Menu.NONE, "level filter")
+        popupMenu.menu.add(Menu.NONE, 3, Menu.NONE, if (inverted) "normal quest order" else "reversed quest order")
+        popupMenu.setOnMenuItemClickListener { item ->
+            when(item.itemId) {
+                3 -> {
+                    mapFragment?.invertQuests()
+                    inverted != inverted
+                }
+                2 -> this.context?.let { levelFilter.showLevelFilterDialog(it) }
+                1 -> showProfileSelector()
+            }
+            true
         }
+        popupMenu.show()
+    }
+
+    private fun showProfileSelector() {
+        val c = context ?: return
+        val presets = questPresetsController.getAllQuestPresets()
+        var selected = -1
+        presets.forEachIndexed { index, questPreset ->
+            if (questPreset.id == questPresetsController.selectedQuestPresetId)
+                selected = index
+        }
+        val array = presets.map { it.name }.toTypedArray()
+        val builder = AlertDialog.Builder(c)
+            .setTitle("Choose profile")
+            .setSingleChoiceItems(array, selected, null)
+            .setNegativeButton(android.R.string.cancel, null)
+            .setPositiveButton(android.R.string.ok) { _, i ->
+                questPresetsController.selectedQuestPresetId = presets[i].id
+            }
+        builder.show()
     }
 
     fun onClickZoomOut() {

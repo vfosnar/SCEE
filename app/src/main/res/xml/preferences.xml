@@ -37,11 +37,6 @@
             android:persistent="true"
             />
 
-        <Preference
-            android:key="quests.levelFilter"
-            android:title="Level filter"
-            />
-
         <SwitchPreference
             android:key="quests.dayNightFilter"
             android:title="enable daytime quest filter"
