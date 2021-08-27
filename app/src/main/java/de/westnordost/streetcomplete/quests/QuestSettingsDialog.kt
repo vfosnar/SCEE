@@ -25,6 +25,9 @@ fun singleTypeElementSelectionDialog(context: Context, prefs: SharedPreferences,
         .setPositiveButton(android.R.string.ok) { _, _ ->
             prefs.edit().putString(pref, textInput.text.toString().lowercase().filter { !it.isWhitespace() }.replace(",","|")).apply()
         }
+        .setNeutralButton("reset") { _, _ ->
+            prefs.edit().remove(pref).apply()
+        }
         .create()
     return dialog
 }
@@ -50,6 +53,9 @@ fun fullElementSelectionDialog(context: Context, prefs: SharedPreferences, pref:
     dialog = dialog(context, message, prefs.getString(pref, "") ?: "", textInput)
         .setPositiveButton(android.R.string.ok) { _, _ ->
             prefs.edit().putString(pref, textInput.text.toString().lowercase()).apply()
+        }
+        .setNeutralButton("reset") { _, _ ->
+            prefs.edit().remove(pref).apply()
         }
         .create()
     return dialog
