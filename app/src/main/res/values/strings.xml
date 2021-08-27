@@ -573,7 +573,7 @@ Otherwise, you can download another keyboard in the app store. Popular keyboards
     <string name="quest_thisIsBusiness_name_title">Show POI: %2$s (%1$s)</string>
     <string name="quest_thisIsAtm_title">Show POI: ATM</string>
     <string name="quest_thisIsVendingMachine_title">Show POI: Vending Machine: %s</string>
-    <string name="quest_thisIsVacant_title">Show POI: Vacant Place</string>
+    <string name="quest_thisIsVacant_title">Show POI: Vacant Place: %s</string>
     <string name="quest_thisIsOther_title">Show POI: %s</string>
     <string name="quest_fixme_title">Show FixMe: %1$s (%2$s)</string>
     <string name="quest_fixme_remove">remove this fixme</string>
