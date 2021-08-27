@@ -46,6 +46,7 @@ import de.westnordost.streetcomplete.data.osm.mapdata.Way
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmQuest
 import de.westnordost.streetcomplete.data.quest.*
 import de.westnordost.streetcomplete.data.visiblequests.LevelFilter
+import de.westnordost.streetcomplete.data.visiblequests.QuestPreset
 import de.westnordost.streetcomplete.data.visiblequests.QuestPresetsController
 import de.westnordost.streetcomplete.edithistory.EditHistoryFragment
 import de.westnordost.streetcomplete.ktx.*
@@ -643,14 +644,14 @@ class MainFragment : Fragment(R.layout.fragment_main),
 
     private fun onClickQuickSettings() {
         val popupMenu = PopupMenu(requireContext(), quickSettingsButton)
-        popupMenu.menu.add(Menu.NONE, 1, Menu.NONE, "switch profile (not yet)")
-        popupMenu.menu.add(Menu.NONE, 2, Menu.NONE, "level filter")
-        popupMenu.menu.add(Menu.NONE, 3, Menu.NONE, if (inverted) "normal quest order" else "reversed quest order")
+        popupMenu.menu.add(Menu.NONE, 1, Menu.NONE, "Switch profile")
+        popupMenu.menu.add(Menu.NONE, 2, Menu.NONE, "Level filter")
+        popupMenu.menu.add(Menu.NONE, 3, Menu.NONE, (if (inverted) "Back to normal" else "Reverse") + " quest order")
         popupMenu.setOnMenuItemClickListener { item ->
             when(item.itemId) {
                 3 -> {
+                    inverted = !inverted
                     mapFragment?.invertQuests()
-                    inverted != inverted
                 }
                 2 -> this.context?.let { levelFilter.showLevelFilterDialog(it) }
                 1 -> showProfileSelector()
@@ -662,21 +663,25 @@ class MainFragment : Fragment(R.layout.fragment_main),
 
     private fun showProfileSelector() {
         val c = context ?: return
-        val presets = questPresetsController.getAllQuestPresets()
+        val presets = mutableListOf<QuestPreset>()
+        presets.add(QuestPreset(0, c.getString(R.string.quest_presets_default_name)))
+        presets.addAll(questPresetsController.getAllQuestPresets())
         var selected = -1
-        presets.forEachIndexed { index, questPreset ->
+        (presets).forEachIndexed { index, questPreset ->
             if (questPreset.id == questPresetsController.selectedQuestPresetId)
                 selected = index
         }
+        var dialog: AlertDialog? = null
         val array = presets.map { it.name }.toTypedArray()
         val builder = AlertDialog.Builder(c)
             .setTitle("Choose profile")
-            .setSingleChoiceItems(array, selected, null)
-            .setNegativeButton(android.R.string.cancel, null)
-            .setPositiveButton(android.R.string.ok) { _, i ->
+            .setSingleChoiceItems(array, selected) { _, i ->
                 questPresetsController.selectedQuestPresetId = presets[i].id
+                dialog?.dismiss()
             }
-        builder.show()
+            .setNegativeButton(android.R.string.cancel, null)
+        dialog = builder.create()
+        dialog.show()
     }
 
     fun onClickZoomOut() {
