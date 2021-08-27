@@ -26,9 +26,9 @@ This is my personal edition of StreetComplete, including a bunch of modification
 * don't let manual download override cache
 * auto-download happens only if auto-upload is allowe
 * quick settings button (+)
-  * level filter: only show quests on the chosen level (this is rather slow)
-  * temporarily reverse quest order: to show additional quests without hiding or changing quest visibility/order
-  * switch quest profile/preset (warning: currently just crashes)
+  * level filter: only show quests on the chosen level (this may take a few seconds to initialize)
+  * temporarily reverse quest order: to show different quests without hiding or changing quest visibility/order
+  * quest profile/preset switcher
 * hide button when answering a quest (shortcut for can't say -> no, just hide)
 * don't update statistics on upload: they are not counted anyway when uploading with this version (due to different name)
 * enable satellite images
