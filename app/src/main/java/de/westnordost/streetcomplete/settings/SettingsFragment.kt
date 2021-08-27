@@ -30,8 +30,6 @@ import de.westnordost.streetcomplete.data.quest.QuestTypeRegistry
 import de.westnordost.streetcomplete.data.quest.getVisible
 import de.westnordost.streetcomplete.data.visiblequests.LevelFilter
 import de.westnordost.streetcomplete.data.visiblequests.VisibleQuestTypeSource
-import de.westnordost.streetcomplete.data.visiblequests.QuestTypeOrderList
-import de.westnordost.streetcomplete.data.visiblequests.VisibleQuestTypeController
 import de.westnordost.streetcomplete.ktx.format
 import de.westnordost.streetcomplete.ktx.toast
 import kotlinx.coroutines.*
@@ -50,8 +48,6 @@ class SettingsFragment : PreferenceFragmentCompat(), HasTitle,
     @Inject internal lateinit var resurveyIntervalsUpdater: ResurveyIntervalsUpdater
     @Inject internal lateinit var questTypeRegistry: QuestTypeRegistry
     @Inject internal lateinit var visibleQuestTypeSource: VisibleQuestTypeSource
-    @Inject internal lateinit var questTypeOrderList: QuestTypeOrderList
-    @Inject internal lateinit var visibleQuestTypeController: VisibleQuestTypeController
     @Inject internal lateinit var levelFilter: LevelFilter
 
     interface Listener {
@@ -206,10 +202,6 @@ class SettingsFragment : PreferenceFragmentCompat(), HasTitle,
             }
             Prefs.RESURVEY_INTERVALS -> {
                 resurveyIntervalsUpdater.update()
-            }
-            Prefs.QUEST_PROFILE -> {
-                questTypeOrderList.reload()
-                visibleQuestTypeController.reload()
             }
         }
     }
