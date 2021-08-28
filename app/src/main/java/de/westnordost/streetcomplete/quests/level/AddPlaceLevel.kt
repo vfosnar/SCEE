@@ -51,10 +51,10 @@ class AddPlaceLevel (
 
         val placeNodes = mapData.nodes.filter { places.matches(it) && hasName(it.tags) }
 
-        /** filter: only places within specific areas with building:levels != 1 */
+        /** filter: only places within buildings with building:levels != 1 */
 
         val buildings = mapData.filter {
-            mallFilter.matches(it)
+            buildingFilter.matches(it)
         }
 
         if (buildings.isEmpty() || placeNodes.isEmpty()) return listOf()
@@ -74,13 +74,12 @@ class AddPlaceLevel (
                 if (place.position.isInMultipolygon(buildingGeometry.polygons))
                     maybePlaceNodes.add(place)
             }
-            // assume if more than 5 places in one building, it's a shopping mall
-            // but require at least one place with level tagged
+            // assume if more than 5 places in one building, it's something like a shopping mall
+            // but require at least one place with level already tagged
+            //  assumption: if someone tagged a level, it is because places can be on more than one level
             if (maybePlaceNodes.size > 5 && maybePlaceNodes.any { hasLevel.matches(it) })
                 placeNodes2 += maybePlaceNodes
         }
-        // idea: check maybePlaceNodes if they have levels, and return empty list if no or only one level
-        //  to catch cases like train stations with shops on one level only
 
         // return only places without level (but use all places to determine whether quest should be shown, so a single element without level can be detected
         return placeNodes2.filter { placesWithoutLevel.matches(it) }
@@ -96,9 +95,9 @@ class AddPlaceLevel (
     }
 }
 
-private val mallFilter by lazy { """
+private val buildingFilter by lazy { """
     ways, relations with
-      (building ~ retail|train_station or shop = mall)
+      building
       and building:levels != 1
     """.toElementFilterExpression()}
 
