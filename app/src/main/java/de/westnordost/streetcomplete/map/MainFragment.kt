@@ -651,7 +651,7 @@ class MainFragment : Fragment(R.layout.fragment_main),
             when(item.itemId) {
                 3 -> {
                     inverted = !inverted
-                    mapFragment?.invertQuests()
+                    lifecycleScope.launch { mapFragment?.invertQuests() }
                 }
                 2 -> this.context?.let { levelFilter.showLevelFilterDialog(it) }
                 1 -> showProfileSelector()
