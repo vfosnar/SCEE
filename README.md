@@ -3,7 +3,7 @@ This is my personal edition of StreetComplete, including a bunch of modification
 * show POIs (tap colored dots for details) and adjust quest dot and pin offsets
   * in some rare cases, existing POIs are not shown. No idea why...
 * new quests
-  * ask for level of shops and other places/things inside malls, retail buildings and train stations
+  * ask for level of shops and other places/things inside buildings (if there are at least 5 candidates, and at least one has a level tagged)
   * contact quests for phone and website
   * re-ask/remove surface for badly tagged tracks (by matkoniecz, https://github.com/matkoniecz/Zazolc)
   * service building operator (no proper auto-complete list like ATM operator)
@@ -20,6 +20,10 @@ This is my personal edition of StreetComplete, including a bunch of modification
   * some additional building types
   * add "zebra" answer to crossing quest
   * ask for step count only for steps shorter than 15 m
+  * building type quest is split into two quests
+    * one for buildings that definitely have an address
+    * one for buildings that probably have no address (not using the entire address quest logic, so some buildings may actually have an address)
+    * for some reason the added quest icon for buildings with address is not displayed on the map, so the quest shows as large light blue dots (like the dots for POIs)
 * allow creating text notes in a gpx file
   * notes file must be copied manually from Android/data/de.westnordost.streetcomplete.h3/files
 * optional volume button zoom
