@@ -60,6 +60,7 @@ import de.westnordost.streetcomplete.quests.atm_operator.AddAtmOperator
 import de.westnordost.streetcomplete.quests.barrier_type.AddBarrierType
 import de.westnordost.streetcomplete.quests.barrier_type.AddStileType
 import de.westnordost.streetcomplete.quests.bollard_type.AddBollardType
+import de.westnordost.streetcomplete.quests.building_type.AddBuildingWithAddressType
 import de.westnordost.streetcomplete.quests.bus_stop_bin.AddBinStatusOnBusStop
 import de.westnordost.streetcomplete.quests.camera_type.AddCameraType
 import de.westnordost.streetcomplete.quests.charging_station_capacity.AddChargingStationCapacity
@@ -365,8 +366,9 @@ import javax.inject.Singleton
         AddRoofShape(countryInfos, prefs),
 
         AddStepCount(), // can only be gathered when walking along this way, also needs the most effort and least useful
-        
+
         // my added quests
+        AddBuildingWithAddressType(),
         RemoveWrongSurface(), // by matkoniecz
         AddPlaceLevel(featureDictionaryFuture),
         AddContactPhone(),

@@ -187,7 +187,7 @@ private val buildingTypesThatShouldHaveAddresses = listOf(
     "kindergarten", "train_station", "hotel", "retail", "shop", "commercial", "office"
 )
 
-private fun Element.containsAnyNode(nodeIds: Set<Long>, mapData: MapDataWithGeometry): Boolean =
+fun Element.containsAnyNode(nodeIds: Set<Long>, mapData: MapDataWithGeometry): Boolean =
     when (this) {
         is Way -> this.nodeIds.any { it in nodeIds }
         is Relation -> containsAnyNode(nodeIds, mapData)
@@ -195,7 +195,7 @@ private fun Element.containsAnyNode(nodeIds: Set<Long>, mapData: MapDataWithGeom
     }
 
 /** return whether any way contained in this relation contains any of the nodes with the given ids */
-private fun Relation.containsAnyNode(nodeIds: Set<Long>, mapData: MapDataWithGeometry): Boolean =
+fun Relation.containsAnyNode(nodeIds: Set<Long>, mapData: MapDataWithGeometry): Boolean =
     members
         .filter { it.type == ElementType.WAY }
         .any { member ->
