@@ -168,9 +168,9 @@ import javax.inject.Singleton
         // bus stop quests
         AddBusStopLit(),
         AddBusStopShelter(),  // used by at least OsmAnd
-        AddTactilePavingBusStop(),
-        AddBenchStatusOnBusStop(),
-        AddBinStatusOnBusStop(),
+        AddBenchStatusOnBusStop(), // can be seen from across the street
+        AddBinStatusOnBusStop(), // can be seen from across the street
+        AddTactilePavingBusStop(), // requires you to be very close to it
         AddBusStopName(), // requires text input
         AddBusStopRef(), // requires text input
 
@@ -197,7 +197,7 @@ import javax.inject.Singleton
         // steps
         AddHandrail(), // for accessibility of pedestrian routing, can be gathered when walking past
         AddStepsRamp(),
-        AddStepsIncline(), // can be gathered while walking perpendicular to the way e.g. the other side of the road or when running/cycling past
+        AddStepsIncline(), // can be gathered while walking perpendicular to the way e.g. the other side of the road or when running/cycling past, confuses some people, so not as high as it theoretically should be
 
         AddReligionToPlaceOfWorship(), // icons on maps are different - OSM Carto, mapy.cz, OsmAnd, Sputnik etc
         AddReligionToWaysideShrine(),
@@ -226,8 +226,8 @@ import javax.inject.Singleton
 
         // crossing quests: A little later because they are not all solvable from a distance
         AddCrossing(),
+        AddCrossingIsland(), // can be done at a glance
         AddCrossingType(),
-        AddCrossingIsland(),
         AddTactilePavingCrosswalk(),
         AddTrafficSignalsSound(), // Sound needs to be done as or after you're crossing
         AddTrafficSignalsVibration(),
@@ -291,8 +291,8 @@ import javax.inject.Singleton
         AddChargingStationOperator(),
 
         // postboxes (collection times are further up, see comment)
-        AddPostboxRef(),
-        AddPostboxRoyalCypher(),
+        AddPostboxRoyalCypher(), // can be glanced across the road (if postbox facing the right way)
+        AddPostboxRef(), // requires text input
 
         AddWheelchairAccessOutside(),
 
@@ -344,9 +344,9 @@ import javax.inject.Singleton
 
         // roads
         AddWayLit(), //  used by OsmAnd if "Street lighting" is enabled. (Configure map, Map rendering, Details)
-        AddRoadSurface(), // used by BRouter, OsmAnd, OSRM, graphhopper, HOT map style...
+        AddSidewalk(prefs), // for any pedestrian routers, needs minimal thinking
+        AddRoadSurface(), // used by BRouter, OsmAnd, OSRM, graphhopper, HOT map style... - sometimes requires way to be split
         AddTracktype(), // widely used in map rendering - OSM Carto, OsmAnd...
-        AddSidewalk(prefs), // for any pedestrian routers
         AddCycleway(countryInfos), // for any cyclist routers (and cyclist maps)
         AddLanes(), // abstreet, certainly most routing engines - often requires way to be split
 
