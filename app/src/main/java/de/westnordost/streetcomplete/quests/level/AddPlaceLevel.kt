@@ -114,7 +114,7 @@ private val places by lazy { """
     nodes with
       (shop
        or craft
-       or amenity
+       or amenity and amenity != parking and amenity != parking_entrance
       )
     """.toElementFilterExpression()}
 
