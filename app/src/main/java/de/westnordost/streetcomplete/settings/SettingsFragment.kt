@@ -9,6 +9,7 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SwitchCompat
+import androidx.core.app.ActivityCompat
 import androidx.core.content.edit
 import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
@@ -134,7 +135,7 @@ class SettingsFragment : PreferenceFragmentCompat(), HasTitle,
             Prefs.THEME_SELECT -> {
                 val theme = Prefs.Theme.valueOf(prefs.getString(Prefs.THEME_SELECT, "AUTO")!!)
                 AppCompatDelegate.setDefaultNightMode(theme.appCompatNightMode)
-                activity?.recreate()
+                activity?.let { ActivityCompat.recreate(it) }
             }
             Prefs.RESURVEY_INTERVALS -> {
                 resurveyIntervalsUpdater.update()
