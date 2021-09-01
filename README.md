@@ -13,7 +13,7 @@ New quests may require knowledge about the changed/added OSM tags.
   * re-ask/remove surface for badly tagged tracks (by matkoniecz, https://github.com/matkoniecz/Zazolc)
   * service building operator (no proper auto-complete list like ATM operator)
   * service building type (currently can only answer substation or hide)
-  * ask for cuisine of restaurants and fast food, including some auto-complete function
+  * ask for cuisine of restaurants and fast food, including some auto-complete function for very common values
 * quest changes
   * allow "paved" surface without note (because one lane concrete, one lane asphalt is too common)
   * ask type for more surveillance cameras
@@ -33,6 +33,7 @@ New quests may require knowledge about the changed/added OSM tags.
   * reduced auto-completion threshold (suggestions will appear after the first letter)
 * allow creating text notes in a gpx file
   * notes file must be copied manually from Android/data/de.westnordost.streetcomplete.h3/files
+* option to show quest geometries even without selecting a quest pin (ways are always shown, areas only at high zoom)
 * optional zoom using volume buttons
 * auto-download happens only if auto-upload is allowed
 * quick settings button (+)
