@@ -75,7 +75,7 @@ class QuestsMapFragment : LocationAwareMapFragment() {
         pinsMapComponent = PinsMapComponent(requireContext(), ctrl)
         geometryMapComponent = ElementGeometryMapComponent(ctrl)
 
-        questPinsManager = QuestPinsManager(ctrl, pinsMapComponent!!, questTypeOrderSource, questTypeRegistry, resources, visibleQuestsSource)
+        questPinsManager = QuestPinsManager(ctrl, pinsMapComponent!!, questTypeOrderSource, questTypeRegistry, resources, visibleQuestsSource, sharedPrefs)
         lifecycle.addObserver(questPinsManager!!)
         questPinsManager!!.isActive = pinMode == PinMode.QUESTS
 

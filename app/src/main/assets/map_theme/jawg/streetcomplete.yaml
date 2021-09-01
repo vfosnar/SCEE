@@ -1,5 +1,6 @@
 global:
     geometry_color: '#44D14000' # accent color + alpha
+    quest_geometry_color: '#330092D1' # complementary to accent, more transparent
 
 textures:
     pins:
@@ -135,3 +136,27 @@ layers:
                     size: 32px
                     collide: false
                     order: 1000
+    streetcomplete_quests_geometry:
+        data: { source: streetcomplete_quests_geometry }
+        line:
+            filter: { type: line }
+            draw:
+                geometry-lines:
+                    color: global.quest_geometry_color
+                    width: 16px
+                    collide: false
+                    order: 1000
+                    cap: round
+                    join: round
+        poly:
+            filter:
+                type: poly
+                $zoom: { min: 19 }
+            draw:
+                geometry-polygons:
+                    color: global.quest_geometry_color
+                    width: 16px
+                    collide: false
+                    order: 1000
+                    cap: round
+                    join: round

@@ -46,6 +46,13 @@
             />
 
         <SwitchPreference
+            android:key="display.questGeometries"
+            android:title="show quest geometries"
+            android:summary="highlights ways with quests (and areas on high zoom)"
+            android:persistent="true"
+            />
+
+        <SwitchPreference
             android:key="display.nonQuestionNotes"
             android:title="@string/pref_title_show_notes_not_phrased_as_questions"
             android:summaryOn="@string/pref_summaryOn_show_notes_not_phrased_as_questions"

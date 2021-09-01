@@ -144,6 +144,9 @@ class SettingsFragment : PreferenceFragmentCompat(), HasTitle,
                 dayNightQuestFilter.enabled = prefs.getBoolean(Prefs.DAY_NIGHT_FILTER, true)
                 visibleQuestTypeController.clear()
             }
+            Prefs.SHOW_QUEST_GEOMETRIES -> {
+                visibleQuestTypeController.clear()
+            }
         }
     }
 

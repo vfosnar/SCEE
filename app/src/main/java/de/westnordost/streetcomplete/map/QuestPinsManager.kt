@@ -1,10 +1,15 @@
 package de.westnordost.streetcomplete.map
 
+import android.content.SharedPreferences
 import android.content.res.Resources
 import android.graphics.RectF
+import android.util.Log
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
+import de.westnordost.streetcomplete.Prefs
+import de.westnordost.streetcomplete.R
+import de.westnordost.streetcomplete.data.osm.geometry.ElementPointGeometry
 import de.westnordost.streetcomplete.data.osm.mapdata.ElementType
 import de.westnordost.streetcomplete.data.quest.*
 import de.westnordost.streetcomplete.data.visiblequests.QuestTypeOrderSource
@@ -23,7 +28,8 @@ class QuestPinsManager(
     private val questTypeOrderSource: QuestTypeOrderSource,
     private val questTypeRegistry: QuestTypeRegistry,
     private val resources: Resources,
-    private val visibleQuestsSource: VisibleQuestsSource
+    private val visibleQuestsSource: VisibleQuestsSource,
+    private val prefs: SharedPreferences
 ): LifecycleObserver {
 
     // draw order in which the quest types should be rendered on the map
@@ -196,7 +202,12 @@ class QuestPinsManager(
         val props = quest.key.toProperties()
         val color = quest.type.dotColor
         val importance = getQuestImportance(quest)
-        return quest.markerLocations.map { Pin(it, iconName, props, importance, color) }
+        val geometry = if (prefs.getBoolean(Prefs.SHOW_QUEST_GEOMETRIES, false) &&
+            quest.geometry !is ElementPointGeometry && quest.type.dotColor == "no")
+                quest.geometry
+            else
+                null
+        return quest.markerLocations.map { Pin(it, iconName, props, importance, color, geometry) }
     }
 
     /** returns values from 0 to 100000, the higher the number, the more important */
