@@ -16,6 +16,8 @@ class AddCrossingTypeForm : AImageListQuestAnswerFragment<CrossingType, Crossing
 
     override val itemsPerRow = 3
 
+    override val moveFavoritesToFront = false
+
     override fun onClickOk(selectedItems: List<CrossingType>) {
         applyAnswer(selectedItems.single())
     }
