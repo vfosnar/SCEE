@@ -139,7 +139,9 @@ layers:
     streetcomplete_quests_geometry:
         data: { source: streetcomplete_quests_geometry }
         line:
-            filter: { type: line }
+            filter:
+                type: line
+                $zoom: { min: 16 }
             draw:
                 geometry-lines:
                     color: global.quest_geometry_color
