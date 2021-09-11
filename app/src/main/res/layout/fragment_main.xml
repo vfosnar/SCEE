@@ -152,7 +152,7 @@
                 android:layout_height="@dimen/map_button_size"
                 android:scaleType="center"
                 style="@style/RoundWhiteButton"
-                android:src="@drawable/ic_zoom_plus_black_24dp"/>
+                android:src="@drawable/ic_add_24dp"/>
 
             <fragment
                 android:id="@+id/undo_button_fragment"
