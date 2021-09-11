@@ -38,14 +38,11 @@ class AddStepCount : OsmElementQuestType<Int> {
     // remove steps with length over 15 meters (they will have too many steps)
     override fun getApplicableElements(mapData: MapDataWithGeometry): Iterable<Element> {
         return mapData.filter { elementFilter.matches(it) }
-            .filter {
-                var length = 0.0
-                val g = mapData.getWayGeometry(it.id) as? ElementPolylinesGeometry
-                g?.polylines?.forEach { line ->
-                    length += line.measuredLength()
-                    if (length > MAX_STEP_LENGTH)
-                        return@filter false
-                }
+            .filter { element ->
+                val geometry = mapData.getWayGeometry(element.id) as? ElementPolylinesGeometry
+                val totalLength = geometry?.polylines?.sumOf { it.measuredLength() } ?: return@filter true
+                if (totalLength > MAX_STEP_LENGTH)
+                    return@filter false
                 true
             }
     }
