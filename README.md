@@ -24,7 +24,7 @@ New quests may require knowledge about the changed/added OSM tags.
   * add "private" other answer to track type, way surface and way lit quests
   * add "demolished" other answer to building type quest
   * some additional building types
-  * add "zebra" answer to crossing quest
+  * crossing type quest: keep order of answers constant, add "zebra" answer
   * ask for step count only for steps shorter than 15 m
   * building type quest is split into two quests
     * one for buildings that definitely have an address
@@ -33,7 +33,7 @@ New quests may require knowledge about the changed/added OSM tags.
   * reduced auto-completion threshold (suggestions will appear after the first letter)
 * allow creating text notes in a gpx file
   * notes file must be copied manually from Android/data/de.westnordost.streetcomplete.h3/files
-* option to show quest geometries even without selecting a quest pin (ways are always shown, areas only at high zoom)
+* option to show quest geometries even without selecting a quest pin (ways are shown at intermediate zoom, areas at high zoom)
 * optional zoom using volume buttons
 * auto-download happens only if auto-upload is allowed
 * quick settings button (+)
