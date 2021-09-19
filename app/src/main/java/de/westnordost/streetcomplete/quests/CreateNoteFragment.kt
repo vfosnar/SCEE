@@ -108,7 +108,7 @@ class CreateNoteFragment : AbstractCreateNoteFragment() {
     override fun onComposedNote(text: String, imagePaths: List<String>) {
         /* pressing once on "OK" should first only close the keyboard, so that the user can review
            the position of the note he placed */
-        if (contentBinding.noteInput.hideKeyboard() == true) return
+//        if (contentBinding.noteInput.hideKeyboard() == true) return
 
         val screenPos = binding.markerCreateLayout.createNoteMarker.getLocationInWindow()
         screenPos.offset(
@@ -122,10 +122,13 @@ class CreateNoteFragment : AbstractCreateNoteFragment() {
     }
 
     override fun onComposedNote(text: String) {
-        val screenPos = createNoteMarker.getLocationInWindow()
-        screenPos.offset(createNoteMarker.width / 2, createNoteMarker.height / 2)
+        val screenPos = binding.markerCreateLayout.createNoteMarker.getLocationInWindow()
+        screenPos.offset(
+            binding.markerCreateLayout.createNoteMarker.width / 2,
+            binding.markerCreateLayout.createNoteMarker.height / 2
+        )
 
-        markerLayoutContainer?.visibility = View.INVISIBLE
+        binding.markerCreateLayout.markerLayoutContainer.visibility = View.INVISIBLE
 
         listener?.onCreatedNote(text, screenPos)
     }

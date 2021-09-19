@@ -4,7 +4,7 @@ import de.westnordost.streetcomplete.R
 import de.westnordost.streetcomplete.data.osm.edits.update_tags.StringMapChangesBuilder
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmFilterQuestType
 
-class AddServiceBuildingType : OsmFilterQuestType<Unit>() {
+class AddServiceBuildingType : OsmFilterQuestType<Boolean>() {
 
     override val elementFilter = """nodes, ways, relations with building = service and operator ~ "${
         POWER.joinToString("|")
@@ -21,9 +21,11 @@ class AddServiceBuildingType : OsmFilterQuestType<Unit>() {
 
     override fun createForm() = AddServiceBuildingTypeForm()
 
-    override fun applyAnswerTo(answer: Unit, changes: StringMapChangesBuilder) {
-        changes.add("power", "substation")
-        changes.add("substation", "minor_distribution")
+    override fun applyAnswerTo(answer: Boolean, changes: StringMapChangesBuilder) {
+        if (answer) {
+            changes.add("power", "substation")
+            changes.add("substation", "minor_distribution")
+        }
     }
 
 }

@@ -176,7 +176,7 @@ class MainFragment : Fragment(R.layout.fragment_main),
         binding.gpsTrackingButton.setOnClickListener { onClickTrackingButton() }
         binding.zoomInButton.setOnClickListener { onClickZoomIn() }
         binding.zoomOutButton.setOnClickListener { onClickZoomOut() }
-        quickSettingsButton.setOnClickListener { onClickQuickSettings() }
+        binding.quickSettingsButton.setOnClickListener { onClickQuickSettings() }
 
         updateMapQuestOffsets()
     }
@@ -654,7 +654,7 @@ class MainFragment : Fragment(R.layout.fragment_main),
     }
 
     private fun onClickQuickSettings() {
-        val popupMenu = PopupMenu(requireContext(), quickSettingsButton)
+        val popupMenu = PopupMenu(requireContext(), binding.quickSettingsButton)
         popupMenu.menu.add(Menu.NONE, 1, Menu.NONE, "Switch profile")
         popupMenu.menu.add(Menu.NONE, 2, Menu.NONE, "Level filter")
         popupMenu.menu.add(Menu.NONE, 3, Menu.NONE, (if (inverted) "Back to normal" else "Reverse") + " quest order")

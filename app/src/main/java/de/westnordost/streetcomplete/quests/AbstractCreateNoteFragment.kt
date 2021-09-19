@@ -19,6 +19,7 @@ abstract class AbstractCreateNoteFragment : AbstractBottomSheetFragment() {
 
     protected abstract val noteInput: EditText
     protected abstract val okButton: View
+    protected abstract val gpxButton: View
 
     private val attachPhotoFragment: AttachPhotoFragment?
         get() = childFragmentManager.findFragmentById(R.id.attachPhotoFragment) as AttachPhotoFragment?
@@ -38,13 +39,17 @@ abstract class AbstractCreateNoteFragment : AbstractBottomSheetFragment() {
 
         noteInput.addTextChangedListener(TextChangedWatcher { updateOkButtonEnablement() })
         okButton.setOnClickListener { onClickOk() }
-        gpxButton.setOnClickListener { onComposedNote(noteText) }
+        gpxButton.setOnClickListener { onClickGpx() }
 
         updateOkButtonEnablement()
     }
 
     private fun onClickOk() {
         onComposedNote(noteText, attachPhotoFragment?.imagePaths.orEmpty())
+    }
+
+    private fun onClickGpx() {
+        onComposedNote(noteText)
     }
 
     override fun onDiscard() {
@@ -57,8 +62,10 @@ abstract class AbstractCreateNoteFragment : AbstractBottomSheetFragment() {
     private fun updateOkButtonEnablement() {
         if (noteText.isNotEmpty()) {
             okButton.popIn()
+            gpxButton.popIn()
         } else {
             okButton.popOut()
+            gpxButton.popOut()
         }
     }
 

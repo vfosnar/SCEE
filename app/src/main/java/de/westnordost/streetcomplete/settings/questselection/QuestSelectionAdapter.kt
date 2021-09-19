@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.MotionEvent
+import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.content.ContextCompat
@@ -238,7 +239,6 @@ class QuestSelectionAdapter @Inject constructor(
     inner class QuestVisibilityViewHolder(private val binding: RowQuestSelectionBinding) :
         RecyclerView.ViewHolder(binding.root), CompoundButton.OnCheckedChangeListener {
 
-        private val questSettingsButton: ImageButton = itemView.questSettings
         lateinit var item: QuestVisibility
 
         private val isEnabledOnlyAtNight: Boolean
@@ -268,12 +268,12 @@ class QuestSelectionAdapter @Inject constructor(
             binding.visibilityCheckBox.isChecked = item.visible
             binding.visibilityCheckBox.isEnabled = item.isInteractionEnabled
             binding.visibilityCheckBox.setOnCheckedChangeListener(this)
-            questSettingsButton.visibility = if (item.questType.hasQuestSettings) View.VISIBLE else View.GONE
-            questSettingsButton.setOnClickListener {
+            binding.questSettingsButton.visibility = if (item.questType.hasQuestSettings) View.VISIBLE else View.GONE
+            binding.questSettingsButton.setOnClickListener {
                 val settings = item.questType.getQuestSettingsDialog(it.context)
                 settings?.show()
             }
-            questSettingsButton.setImageResource(R.drawable.ic_settings_48dp) // for some reason it's not displayed when it's just in the xml
+            binding.questSettingsButton.setImageResource(R.drawable.ic_settings_48dp) // for some reason it's not displayed when it's just in the xml
 
             binding.dragHandle.isInvisible = !item.isInteractionEnabled
             binding.dragHandle.setOnTouchListener { v, event ->
