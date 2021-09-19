@@ -15,7 +15,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.OvershootInterpolator
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.AnyThread
 import androidx.annotation.DrawableRes
@@ -47,6 +46,8 @@ import de.westnordost.streetcomplete.data.osm.osmquests.OsmQuest
 import de.westnordost.streetcomplete.data.quest.*
 import de.westnordost.streetcomplete.data.visiblequests.LevelFilter
 import de.westnordost.streetcomplete.data.visiblequests.QuestPreset
+import de.westnordost.streetcomplete.databinding.EffectQuestPlopBinding
+import de.westnordost.streetcomplete.databinding.FragmentMainBinding
 import de.westnordost.streetcomplete.data.visiblequests.QuestPresetsController
 import de.westnordost.streetcomplete.edithistory.EditHistoryFragment
 import de.westnordost.streetcomplete.ktx.*
@@ -60,7 +61,6 @@ import de.westnordost.streetcomplete.map.tangram.CameraPosition
 import de.westnordost.streetcomplete.quests.*
 import de.westnordost.streetcomplete.util.*
 import de.westnordost.streetcomplete.view.insets_animation.respectSystemInsets
-import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -101,6 +101,8 @@ class MainFragment : Fragment(R.layout.fragment_main),
     @Inject internal lateinit var questPresetsController: QuestPresetsController
 
     private lateinit var locationManager: FineLocationManager
+
+    private val binding by viewBinding(FragmentMainBinding::bind)
 
     private var wasFollowingPosition = true
     private var wasCompassMode = false
@@ -165,14 +167,15 @@ class MainFragment : Fragment(R.layout.fragment_main),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mapControls.respectSystemInsets(View::setMargins)
+        binding.mapControls.respectSystemInsets(View::setMargins)
         view.respectSystemInsets { windowInsets = it }
 
-        locationPointerPin.setOnClickListener { onClickLocationPointer() }
-        compassView.setOnClickListener { onClickCompassButton() }
-        gpsTrackingButton.setOnClickListener { onClickTrackingButton() }
-        zoomInButton.setOnClickListener { onClickZoomIn() }
-        zoomOutButton.setOnClickListener { onClickZoomOut() }
+        binding.locationPointerPin.setOnClickListener { onClickLocationPointer() }
+
+        binding.compassView.setOnClickListener { onClickCompassButton() }
+        binding.gpsTrackingButton.setOnClickListener { onClickTrackingButton() }
+        binding.zoomInButton.setOnClickListener { onClickZoomIn() }
+        binding.zoomOutButton.setOnClickListener { onClickZoomOut() }
         quickSettingsButton.setOnClickListener { onClickQuickSettings() }
 
         updateMapQuestOffsets()
@@ -251,14 +254,14 @@ class MainFragment : Fragment(R.layout.fragment_main),
     override fun onMapInitialized() {
         val isFollowingPosition = mapFragment?.isFollowingPosition ?: false
         val isPositionKnown = mapFragment?.displayedLocation != null
-        gpsTrackingButton.isActivated = isFollowingPosition
-        gpsTrackingButton.visibility = if (isFollowingPosition && isPositionKnown) View.INVISIBLE else View.VISIBLE
+        binding.gpsTrackingButton.isActivated = isFollowingPosition
+        binding.gpsTrackingButton.visibility = if (isFollowingPosition && isPositionKnown) View.INVISIBLE else View.VISIBLE
         updateLocationPointerPin()
     }
 
     override fun onMapIsChanging(position: LatLon, rotation: Float, tilt: Float, zoom: Float) {
-        compassNeedleView.rotation = (180 * rotation / Math.PI).toFloat()
-        compassNeedleView.rotationX = (180 * tilt / Math.PI).toFloat()
+        binding.compassNeedleView.rotation = (180 * rotation / Math.PI).toFloat()
+        binding.compassNeedleView.rotationX = (180 * tilt / Math.PI).toFloat()
 
         updateLocationPointerPin()
 
@@ -282,8 +285,8 @@ class MainFragment : Fragment(R.layout.fragment_main),
         val position = mapFragment?.getPositionAt(point) ?: return
         if (bottomSheetFragment != null || editHistoryFragment != null) return
 
-        contextMenuView.translationX = x
-        contextMenuView.translationY = y
+        binding.contextMenuView.translationX = x
+        binding.contextMenuView.translationY = y
 
         showMapContextMenu(position)
     }
@@ -483,8 +486,6 @@ class MainFragment : Fragment(R.layout.fragment_main),
     /* ------------------------------- CreateNoteFragment.Listener ------------------------------ */
 
     override fun onCreatedNote(note: String, imagePaths: List<String>, screenPosition: Point) {
-        closeBottomSheet()
-
         val mapFragment = mapFragment ?: return
         val mapView = mapFragment.view ?: return
 
@@ -492,6 +493,12 @@ class MainFragment : Fragment(R.layout.fragment_main),
         val notePosition = PointF(screenPosition)
         notePosition.offset(-mapPosition.x, -mapPosition.y)
         val position = mapFragment.getPositionAt(notePosition) ?: throw NullPointerException()
+
+        /* closing the bottom sheet must happen after getting the position because on closing the
+           bottom sheet, the view will immediately follow the user's location again (if that setting
+           is on) #3284
+         */
+        closeBottomSheet()
 
         lifecycleScope.launch { questController.createNote(note, imagePaths, position) }
 
@@ -596,7 +603,7 @@ class MainFragment : Fragment(R.layout.fragment_main),
     //region Location - Request location and update location status
 
     private fun updateLocationAvailability() {
-        if (isLocationEnabled(requireContext())) {
+        if (requireContext().isLocationEnabled) {
             onLocationIsEnabled()
         } else {
             onLocationIsDisabled()
@@ -605,8 +612,8 @@ class MainFragment : Fragment(R.layout.fragment_main),
 
     @SuppressLint("MissingPermission")
     private fun onLocationIsEnabled() {
-        gpsTrackingButton.visibility = View.VISIBLE
-        gpsTrackingButton.state = LocationState.SEARCHING
+        binding.gpsTrackingButton.visibility = View.VISIBLE
+        binding.gpsTrackingButton.state = LocationState.SEARCHING
         mapFragment!!.startPositionTracking()
 
         setIsFollowingPosition(wasFollowingPosition)
@@ -614,18 +621,18 @@ class MainFragment : Fragment(R.layout.fragment_main),
     }
 
     private fun onLocationIsDisabled() {
-        gpsTrackingButton.visibility = View.VISIBLE
-        gpsTrackingButton.state = if (hasLocationPermission(requireContext()))
+        binding.gpsTrackingButton.visibility = View.VISIBLE
+        binding.gpsTrackingButton.state = if (requireContext().hasLocationPermission)
             LocationState.ALLOWED else LocationState.DENIED
-        locationPointerPin.visibility = View.GONE
+        binding.locationPointerPin.visibility = View.GONE
         mapFragment!!.stopPositionTracking()
         locationManager.removeUpdates()
     }
 
     private fun onLocationRequestFinished(state: LocationState) {
         if (activity == null) return
-        gpsTrackingButton.visibility = View.VISIBLE
-        gpsTrackingButton.state = state
+        binding.gpsTrackingButton.visibility = View.VISIBLE
+        binding.gpsTrackingButton.state = state
         if (state.isEnabled) {
             updateLocationAvailability()
         }
@@ -633,8 +640,8 @@ class MainFragment : Fragment(R.layout.fragment_main),
 
     private fun onLocationChanged(location: Location) {
         val isFollowingPosition = mapFragment?.isFollowingPosition ?: false
-        gpsTrackingButton?.visibility = if (isFollowingPosition) View.INVISIBLE else View.VISIBLE
-        gpsTrackingButton?.state = LocationState.UPDATING
+        binding.gpsTrackingButton.visibility = if (isFollowingPosition) View.INVISIBLE else View.VISIBLE
+        binding.gpsTrackingButton.state = LocationState.UPDATING
         updateLocationPointerPin()
     }
 
@@ -732,7 +739,7 @@ class MainFragment : Fragment(R.layout.fragment_main),
 
     private fun onClickTrackingButton() {
         val mapFragment = mapFragment ?: return
-        if (gpsTrackingButton.state.isEnabled) {
+        if (binding.gpsTrackingButton.state.isEnabled) {
             setIsFollowingPosition(!mapFragment.isFollowingPosition)
         } else {
             val tag = LocationRequestFragment::class.java.simpleName
@@ -744,16 +751,16 @@ class MainFragment : Fragment(R.layout.fragment_main),
     private fun setIsFollowingPosition(follow: Boolean) {
         val mapFragment = mapFragment ?: return
         mapFragment.isFollowingPosition = follow
-        gpsTrackingButton.isActivated = follow
+        binding.gpsTrackingButton.isActivated = follow
         val isPositionKnown = mapFragment.displayedLocation != null
-        gpsTrackingButton?.visibility = if (isPositionKnown && follow) View.INVISIBLE else View.VISIBLE
+        binding.gpsTrackingButton.visibility = if (isPositionKnown && follow) View.INVISIBLE else View.VISIBLE
         if (!follow) setIsCompassMode(false)
     }
 
     /* -------------------------------------- Context Menu -------------------------------------- */
 
     private fun showMapContextMenu(position: LatLon) {
-        val popupMenu = PopupMenu(requireContext(), contextMenuView)
+        val popupMenu = PopupMenu(requireContext(), binding.contextMenuView)
         popupMenu.inflate(R.menu.menu_map_context)
         popupMenu.setOnMenuItemClickListener { item ->
             when(item.itemId) {
@@ -810,7 +817,7 @@ class MainFragment : Fragment(R.layout.fragment_main),
 
         val location = mapFragment.displayedLocation
         if (location == null) {
-            locationPointerPin.visibility = View.GONE
+            binding.locationPointerPin.visibility = View.GONE
             return
         }
         val displayedPosition = LatLon(location.latitude, location.longitude)
@@ -819,22 +826,22 @@ class MainFragment : Fragment(R.layout.fragment_main),
         windowInsets?.let {
             target -= PointF(it.left.toFloat(), it.top.toFloat())
         }
-        val intersection = findClosestIntersection(mapControls, target)
+        val intersection = findClosestIntersection(binding.mapControls, target)
         if (intersection != null) {
             val intersectionPosition = mapFragment.getPositionAt(intersection)
-            locationPointerPin.isGone = intersectionPosition == null
+            binding.locationPointerPin.isGone = intersectionPosition == null
             if (intersectionPosition != null) {
                 val angleAtIntersection = position.initialBearingTo(intersectionPosition)
-                locationPointerPin.pinRotation = angleAtIntersection.toFloat() + (180 * rotation / PI).toFloat()
+                binding.locationPointerPin.pinRotation = angleAtIntersection.toFloat() + (180 * rotation / PI).toFloat()
 
                 val a = angleAtIntersection * PI / 180f + rotation
-                val offsetX = (sin(a) / 2.0 + 0.5) * locationPointerPin.width
-                val offsetY = (-cos(a) / 2.0 + 0.5) * locationPointerPin.height
-                locationPointerPin.x = intersection.x - offsetX.toFloat()
-                locationPointerPin.y = intersection.y - offsetY.toFloat()
+                val offsetX = (sin(a) / 2.0 + 0.5) * binding.locationPointerPin.width
+                val offsetY = (-cos(a) / 2.0 + 0.5) * binding.locationPointerPin.height
+                binding.locationPointerPin.x = intersection.x - offsetX.toFloat()
+                binding.locationPointerPin.y = intersection.y - offsetY.toFloat()
             }
         } else {
-            locationPointerPin.visibility = View.GONE
+            binding.locationPointerPin.visibility = View.GONE
         }
     }
 
@@ -985,7 +992,7 @@ class MainFragment : Fragment(R.layout.fragment_main),
         }
 
         val root = activity.window.decorView as ViewGroup
-        val img = layoutInflater.inflate(R.layout.effect_quest_plop, root, false) as ImageView
+        val img = EffectQuestPlopBinding.inflate(layoutInflater, root, false).root
         img.x = startScreenPos.x
         img.y = startScreenPos.y
         img.setImageResource(iconResId)

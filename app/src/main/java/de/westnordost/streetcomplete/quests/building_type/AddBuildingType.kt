@@ -35,9 +35,10 @@ class AddBuildingType : OsmElementQuestType<BuildingType> {
     }
 }
 
-// in the case of man_made, historic, military and power, these tags already contain
-// information about the purpose of the building, so no need to force asking it
-// same goes (more or less) for tourism, amenity, leisure. See #1854, #1891
+    // in the case of man_made, historic, military, aeroway and power, these tags already contain
+    // information about the purpose of the building, so no need to force asking it
+    // or question would be confusing as there is no matching reply in available answers
+    // same goes (more or less) for tourism, amenity, leisure. See #1854, #1891, #3233
 val buildingFilter = """
         ways, relations with (building = yes or building = unclassified)
          and !man_made
@@ -48,6 +49,7 @@ val buildingFilter = """
          and !attraction
          and !amenity
          and !leisure
+         and !aeroway
          and !description
          and location != underground
          and abandoned != yes

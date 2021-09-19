@@ -4,7 +4,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.InputType
-import android.view.LayoutInflater
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
@@ -29,6 +28,7 @@ import de.westnordost.streetcomplete.data.osmnotes.NoteController
 import de.westnordost.streetcomplete.data.quest.QuestController
 import de.westnordost.streetcomplete.data.quest.QuestTypeRegistry
 import de.westnordost.streetcomplete.data.visiblequests.*
+import de.westnordost.streetcomplete.databinding.DialogDeleteCacheBinding
 import de.westnordost.streetcomplete.ktx.format
 import de.westnordost.streetcomplete.ktx.toast
 import kotlinx.coroutines.*
@@ -72,20 +72,16 @@ class SettingsFragment : PreferenceFragmentCompat(), HasTitle,
         }
 
         findPreference<Preference>("delete_cache")?.setOnPreferenceClickListener {
-            context?.let { ctx ->
-                val view = LayoutInflater.from(ctx).inflate(R.layout.dialog_delete_cache, null) as TextView
-                view.text = resources.getString(R.string.delete_cache_dialog_message,
-                    (1.0 * REFRESH_DATA_AFTER / (24 * 60 * 60 * 1000)).format(Locale.getDefault(), 1),
-                    (1.0 * DELETE_OLD_DATA_AFTER / (24 * 60 * 60 * 1000)).format(Locale.getDefault(), 1)
-                )
-                AlertDialog.Builder(ctx)
-                    .setView(view)
-                    .setPositiveButton(R.string.delete_confirmation) { _, _ ->
-                        lifecycleScope.launch { deleteCache() }
-                    }
-                    .setNegativeButton(android.R.string.cancel, null)
-                    .show()
-            }
+            val dialogBinding = DialogDeleteCacheBinding.inflate(layoutInflater)
+            dialogBinding.descriptionText.text = resources.getString(R.string.delete_cache_dialog_message,
+                (1.0 * REFRESH_DATA_AFTER / (24 * 60 * 60 * 1000)).format(Locale.getDefault(), 1),
+                (1.0 * DELETE_OLD_DATA_AFTER / (24 * 60 * 60 * 1000)).format(Locale.getDefault(), 1)
+            )
+            AlertDialog.Builder(requireContext())
+                .setView(dialogBinding.root)
+                .setPositiveButton(R.string.delete_confirmation) { _, _ -> lifecycleScope.launch { deleteCache() }}
+                .setNegativeButton(android.R.string.cancel, null)
+                .show()
             true
         }
 
@@ -125,9 +121,8 @@ class SettingsFragment : PreferenceFragmentCompat(), HasTitle,
         when(key) {
             Prefs.AUTOSYNC -> {
                 if (Prefs.Autosync.valueOf(prefs.getString(Prefs.AUTOSYNC, "ON")!!) != Prefs.Autosync.ON) {
-                    val view = LayoutInflater.from(activity).inflate(R.layout.dialog_tutorial_upload, null)
                     AlertDialog.Builder(requireContext())
-                        .setView(view)
+                        .setView(layoutInflater.inflate(R.layout.dialog_tutorial_upload, null))
                         .setPositiveButton(android.R.string.ok, null)
                         .show()
                 }

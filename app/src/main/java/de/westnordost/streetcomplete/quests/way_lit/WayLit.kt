@@ -7,5 +7,3 @@ enum class WayLit(val osmValue: String) {
     NO("no"),
     PRIVATE("private"),
 }
-
-fun Boolean.toWayLit(): WayLit = if (this) WayLit.YES else WayLit.NO
