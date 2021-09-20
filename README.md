@@ -50,6 +50,7 @@ New quests may require knowledge about the changed/added OSM tags.
 * switch off 3D buildings: allows to better determine position of quests inside or close to buildings
   * currently no option to re-enable, I don't know how to do this
   * works only on map tiles downloaded after this modification
-* don't let manual download override cache
-* increase map tile cache time from 12 hours to 8 days: tiles will now not be re-downloaded for 8 days, even if manual download was initiated
+  * and even for these it doesn't work for all tiles... this is a weird problem / bug
+* don't let manual download override cache: OSM data will only be re-downloaded if older than 12 hours
+* increase map tile cache time from 12 hours to 8 days: map tiles will now not be re-downloaded for 8 days, even if manual download was initiated
 * improve location services: higher GPS frequency, use last known location as initial location
