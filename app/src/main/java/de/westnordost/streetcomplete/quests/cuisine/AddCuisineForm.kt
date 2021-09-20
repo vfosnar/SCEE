@@ -6,14 +6,16 @@ import android.widget.ArrayAdapter
 import de.westnordost.streetcomplete.R
 import de.westnordost.streetcomplete.quests.AbstractQuestFormAnswerFragment
 import de.westnordost.streetcomplete.util.TextChangedWatcher
-import kotlinx.android.synthetic.main.quest_cuisine_suggestion.*
+import de.westnordost.streetcomplete.databinding.QuestCuisineSuggestionBinding
 
 class AddCuisineForm : AbstractQuestFormAnswerFragment<String>() {
 
     override val contentLayoutResId = R.layout.quest_cuisine_suggestion
+    private val binding by contentViewBinding(QuestCuisineSuggestionBinding::bind)
+
     val cuisines = mutableListOf<String>()
 
-    val cuisine get() = cuisineInput?.text?.toString().orEmpty().trim()
+    val cuisine get() = binding.cuisineInput?.text?.toString().orEmpty().trim()
 
     val suggestions = listOf("vietnamese", "italian", "indian", "japanese", "chinese", "asian", "russian", "french", "american", "mexican",
         "regional", "georgian", "czech", "heuriger", "korean", "spanish", "thai", "greek", "turkish",
@@ -24,7 +26,7 @@ class AddCuisineForm : AbstractQuestFormAnswerFragment<String>() {
         super.onViewCreated(view, savedInstanceState)
 
         suggestions?.let {
-            cuisineInput.setAdapter(
+            binding.cuisineInput.setAdapter(
                 ArrayAdapter(
                 requireContext(),
                 android.R.layout.simple_dropdown_item_1line, it
@@ -32,13 +34,13 @@ class AddCuisineForm : AbstractQuestFormAnswerFragment<String>() {
             )
         }
 
-        cuisineInput.addTextChangedListener(TextChangedWatcher { checkIsFormComplete() })
+        binding.cuisineInput.addTextChangedListener(TextChangedWatcher { checkIsFormComplete() })
 
-        addCuisineButton.setOnClickListener {
+        binding.addCuisineButton.setOnClickListener {
             if (isFormComplete()) {
                 cuisines.add(cuisine)
-                currentCuisines.text = cuisines.joinToString(";")
-                cuisineInput.text.clear()
+                binding.currentCuisines.text = cuisines.joinToString(";")
+                binding.cuisineInput.text.clear()
             }
         }
     }

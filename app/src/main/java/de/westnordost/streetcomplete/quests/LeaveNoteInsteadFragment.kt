@@ -30,6 +30,7 @@ class LeaveNoteInsteadFragment : AbstractCreateNoteFragment(), IsShowingQuestDet
     override val floatingBottomView get() = binding.okButton
     override val backButton get() = binding.closeButton
     override val okButton get() = binding.okButton
+//    override val gpxButton get() = bottomSheetBinding.gpxButton
 
     private val contentBinding by viewBinding(FormLeaveNoteBinding::bind, R.id.content)
 

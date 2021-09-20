@@ -1,6 +1,5 @@
 package de.westnordost.streetcomplete.quests
 
-class NoAnswerFragment : NoAAnswerFragment<Boolean>() {
-
-    override fun onClick(answer: Boolean) { applyAnswer(answer) }
+class NoAnswerFragment : AbstractQuestAnswerFragment<Boolean>() {
+    override val buttonPanelAnswers = listOf<AnswerItem>()
 }

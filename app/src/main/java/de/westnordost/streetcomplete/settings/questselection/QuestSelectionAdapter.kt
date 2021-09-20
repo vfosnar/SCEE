@@ -268,12 +268,12 @@ class QuestSelectionAdapter @Inject constructor(
             binding.visibilityCheckBox.isChecked = item.visible
             binding.visibilityCheckBox.isEnabled = item.isInteractionEnabled
             binding.visibilityCheckBox.setOnCheckedChangeListener(this)
-            binding.questSettingsButton.visibility = if (item.questType.hasQuestSettings) View.VISIBLE else View.GONE
-            binding.questSettingsButton.setOnClickListener {
+            binding.questSettings.visibility = if (item.questType.hasQuestSettings) View.VISIBLE else View.GONE
+            binding.questSettings.setOnClickListener {
                 val settings = item.questType.getQuestSettingsDialog(it.context)
                 settings?.show()
             }
-            binding.questSettingsButton.setImageResource(R.drawable.ic_settings_48dp) // for some reason it's not displayed when it's just in the xml
+            binding.questSettings.setImageResource(R.drawable.ic_settings_48dp) // for some reason it's not displayed when it's just in the xml
 
             binding.dragHandle.isInvisible = !item.isInteractionEnabled
             binding.dragHandle.setOnTouchListener { v, event ->

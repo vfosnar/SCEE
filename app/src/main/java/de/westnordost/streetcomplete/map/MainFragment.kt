@@ -507,7 +507,6 @@ class MainFragment : Fragment(R.layout.fragment_main),
     }
 
     override fun onCreatedNote(note: String, screenPosition: Point) {
-        closeBottomSheet()
 
         val mapFragment = mapFragment ?: return
         val mapView = mapFragment.view ?: return
@@ -517,6 +516,8 @@ class MainFragment : Fragment(R.layout.fragment_main),
         notePosition.offset(-mapPosition.x, -mapPosition.y)
         val position = mapFragment.getPositionAt(notePosition) ?: throw NullPointerException()
 
+        closeBottomSheet()
+
         onCreatedGpxNote(note, position)
 
         listener?.onCreatedNote(screenPosition)
@@ -524,7 +525,6 @@ class MainFragment : Fragment(R.layout.fragment_main),
     }
 
     private fun onCreatedGpxNote(note: String, position: LatLon) {
-        closeBottomSheet()
         val path = context?.getExternalFilesDir(null) ?: return
         path.mkdirs()
         val fileName = "notes.gpx"

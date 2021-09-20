@@ -183,8 +183,8 @@ abstract class AbstractQuestAnswerFragment<T> :
             binding.content.visibility = View.GONE
         }
 
-        hideButton.popIn()
-        hideButton.setOnClickListener { skipQuest() }
+        binding.hideButton.popIn()
+        binding.hideButton.setOnClickListener { skipQuest() }
     }
 
     override fun onDestroyView() {
