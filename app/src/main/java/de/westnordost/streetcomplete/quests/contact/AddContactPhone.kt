@@ -16,7 +16,7 @@ class AddContactPhone : OsmFilterQuestType<String>() {
 
     override val commitMessage = "Add phone number"
     override val wikiLink = "Key:phone"
-    override val icon = R.drawable.ic_quest_blind_traffic_lights_sound
+    override val icon = R.drawable.ic_quest_phone
 
     override fun getTitle(tags: Map<String, String>) = R.string.quest_contact_phone
 

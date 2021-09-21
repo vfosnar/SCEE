@@ -29,7 +29,6 @@ New quests may require knowledge about the changed/added OSM tags.
   * building type quest is split into two quests
     * one for buildings that definitely have an address
     * one for buildings that probably have no address (not using the entire address quest logic, so some buildings may actually have an address)
-    * for some reason the added quest icon for buildings with address is not displayed on the map, so the quest shows as large light blue dots (like the dots for POIs)
   * reduced auto-completion threshold (suggestions will appear after the first letter)
 * allow creating text notes in a gpx file
   * notes.gpx file must be copied manually from Android/data/de.westnordost.streetcomplete.h3/files

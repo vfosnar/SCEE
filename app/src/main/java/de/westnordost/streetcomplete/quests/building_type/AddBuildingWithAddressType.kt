@@ -21,9 +21,8 @@ class AddBuildingWithAddressType : OsmElementQuestType<BuildingType> {
     override val commitMessage = "Add building types"
     override val wikiLink = "Key:building"
     override val icon = R.drawable.ic_quest_building_address
-    override val dotColor = "powderblue"
 
-    override fun getTitle(tags: Map<String, String>) = R.string.quest_buildingType_title
+    override fun getTitle(tags: Map<String, String>) = R.string.quest_buildingType_address_title
 
     override fun createForm() = AddBuildingTypeForm()
 
