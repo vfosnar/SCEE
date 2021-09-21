@@ -47,5 +47,7 @@ class AddCrossingType : OsmFilterQuestType<CrossingType>() {
                 changes.updateWithCheckDate("crossing", answer.osmValue)
             }
         }
+        if (answer.raised)
+            changes.add("traffic_calming", "table")
     }
 }
