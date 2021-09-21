@@ -15,7 +15,7 @@ class AddServiceBuildingOperatorForm : ANameWithSuggestionsForm<String>() {
 // separate power and others for the current implementation of service building type quest
 // actually public transport could also have power, but this would probably not be a minor distribution substation
 val POWER = listOf(
-    "Wiener Netze", "EVN", "Netz OÖ", "Salzburg AG", "KNG-Kärnten Netz GmbH", "Energie Steiermark", // austria
+    "Wiener Netze", "Wien Energie", "Wienstrom", "EVN", "Netz Niederösterreich GmbH", "Netz OÖ", "Salzburg AG", "KNG-Kärnten Netz GmbH", "Energie Steiermark" // austria
     "e.on", // cz
 )
 
