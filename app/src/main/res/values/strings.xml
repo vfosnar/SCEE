@@ -893,7 +893,9 @@ Otherwise, you can download another keyboard in the app store. Popular keyboards
     <string name="quest_charging_station_capacity_title">"How many cars can be charged at this charging station at the same time?"</string>
     <string name="quest_charging_station_name_capacity_title">"How many cars can be charged at this charging station (%s) at the same time?"</string>
     <string name="quest_service_building_operator_title">"What's the name of the operator for this service building?"</string>
-    <string name="quest_service_building_type_title">"Is this %s service building a substation? (no just hides)"</string>
+    <string name="quest_service_building_type_title">"What kind of service building is this %s building?"</string>
+    <string name="quest_service_building_type_substation">"Substation"</string>
+    <string name="quest_service_building_type_pressure">"Gas pressure regulation"</string>
 
     <string name="team_mode">Team Mode</string>
     <string name="team_mode_exit">Exit Team Mode</string>
