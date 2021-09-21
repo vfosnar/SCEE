@@ -577,6 +577,7 @@ Otherwise, you can download another keyboard in the app store. Popular keyboards
     <string name="quest_thisIsOther_title">Show POI: %s</string>
     <string name="quest_fixme_title">Show FixMe: %1$s (%2$s)</string>
     <string name="quest_fixme_remove">remove this fixme</string>
+    <string name="quest_trafficstuff_raised">raised crossing</string>
 
     <string name="quest_surface_value_unhewn_cobblestone">Unhewn cobblestone</string>
     <string name="quest_parking_access_title">Is it restricted who may park here?</string>

@@ -3,7 +3,6 @@ package de.westnordost.streetcomplete.quests.show_poi
 import de.westnordost.streetcomplete.R
 import de.westnordost.streetcomplete.data.osm.edits.update_tags.StringMapChangesBuilder
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmFilterQuestType
-import de.westnordost.streetcomplete.quests.NoAnswerFragment
 
 class ShowFixme : OsmFilterQuestType<Boolean>() {
     override val elementFilter = """

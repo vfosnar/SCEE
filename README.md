@@ -24,7 +24,7 @@ New quests may require knowledge about the changed/added OSM tags.
   * add "private" other answer to track type, way surface and way lit quests
   * add "demolished" other answer to building type quest
   * some additional building types
-  * crossing type quest: keep order of answers constant, add "zebra" answer
+  * crossing type quest: keep order of answers constant, add "zebra" and "raised" answers
   * ask for step count only for steps shorter than 15 m
   * building type quest is split into two quests
     * one for buildings that definitely have an address
@@ -32,7 +32,8 @@ New quests may require knowledge about the changed/added OSM tags.
     * for some reason the added quest icon for buildings with address is not displayed on the map, so the quest shows as large light blue dots (like the dots for POIs)
   * reduced auto-completion threshold (suggestions will appear after the first letter)
 * allow creating text notes in a gpx file
-  * notes file must be copied manually from Android/data/de.westnordost.streetcomplete.h3/files
+  * notes.gpx file must be copied manually from Android/data/de.westnordost.streetcomplete.h3/files
+  * button for normal OSM notes is hidden if keyboard is shown. sorry.
 * option to show quest geometries even without selecting a quest pin (ways are shown at intermediate zoom, areas at high zoom)
 * optional zoom using volume buttons
 * auto-download happens only if auto-upload is allowed
@@ -44,7 +45,7 @@ New quests may require knowledge about the changed/added OSM tags.
 * don't update statistics on upload: they are not counted anyway when uploading with this version (due to different name)
 * allow choosing satellite/aerial images as background (will be enabled in StreetComplete once proper implementation is finished)
 * adjust dark theme
-  * more contrast for better visiblity during the day
+  * more contrast for better visibility during the day
   * more natural colors for water, grass and forest areas
   * transparent buildings: to display indoor paths
 * switch off 3D buildings: allows to better determine position of quests inside or close to buildings
