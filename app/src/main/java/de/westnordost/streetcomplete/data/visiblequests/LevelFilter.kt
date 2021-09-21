@@ -46,7 +46,9 @@ class LevelFilter @Inject internal constructor(
         val tags = mapDataController.get(this.elementType, this.elementId)?.tags ?: return true
         val levelTags = tags.filterKeys { allowedLevelTags.contains(it) }
         if (levelTags.isEmpty()) return allowedLevel == null
-        return levelTags.containsValue(allowedLevel)
+        levelTags.values.forEach { if (it.split(";").contains(allowedLevel)) return true }
+        return false
+//        return levelTags.containsValue(allowedLevel)
     }
 
     fun showLevelFilterDialog(context: Context) {
