@@ -29,8 +29,8 @@ class LeaveNoteInsteadFragment : AbstractCreateNoteFragment(), IsShowingQuestDet
     override val bottomSheetContent get() = binding.speechbubbleContentContainer
     override val floatingBottomView get() = binding.okButton
     override val backButton get() = binding.closeButton
-    override val okButton get() = binding.okButton
-//    override val gpxButton get() = bottomSheetBinding.gpxButton
+    override val gpxButton get() = binding.okButton
+    override val okButton get() = binding.hideButton
 
     private val contentBinding by viewBinding(FormLeaveNoteBinding::bind, R.id.content)
 
@@ -63,6 +63,8 @@ class LeaveNoteInsteadFragment : AbstractCreateNoteFragment(), IsShowingQuestDet
         binding.buttonPanel.isGone = true
         contentBinding.descriptionLabel.isGone = true
         binding.titleLabel.text = getString(R.string.map_btn_create_note)
+        binding.hideButton.text = "OSM"
+        binding.okButton.text = "GPX"
     }
 
     override fun onDestroyView() {

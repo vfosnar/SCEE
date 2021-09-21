@@ -36,8 +36,8 @@ class CreateNoteFragment : AbstractCreateNoteFragment() {
     override val bottomSheetContent get() = bottomSheetBinding.speechbubbleContentContainer
     override val floatingBottomView get() = bottomSheetBinding.okButton
     override val backButton get() = bottomSheetBinding.closeButton
-    override val okButton get() = bottomSheetBinding.okButton
-//    override val gpxButton get() = bottomSheetBinding.gpxButton
+    override val gpxButton get() = bottomSheetBinding.okButton
+    override val okButton get() = bottomSheetBinding.hideButton
 
     private val contentBinding by viewBinding(FormLeaveNoteBinding::bind, R.id.content)
 
@@ -67,6 +67,8 @@ class CreateNoteFragment : AbstractCreateNoteFragment() {
 
         bottomSheetBinding.titleLabel.text = getString(R.string.map_btn_create_note)
         contentBinding.descriptionLabel.text = getString(R.string.create_new_note_description)
+        bottomSheetBinding.hideButton.text = "OSM"
+        bottomSheetBinding.okButton.text = "GPX"
     }
 
     override fun onDestroyView() {
