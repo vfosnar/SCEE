@@ -15,6 +15,7 @@ import javax.inject.Singleton
     }
 
     private val multiplier: Float get() = when(intervalsPreference) {
+        EVEN_LESS_OFTEN -> 4.0f
         LESS_OFTEN -> 2.0f
         DEFAULT -> 1.0f
         MORE_OFTEN -> 0.5f

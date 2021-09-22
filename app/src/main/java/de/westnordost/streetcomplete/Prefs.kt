@@ -59,6 +59,6 @@ object Prefs {
     }
 
     enum class ResurveyIntervals {
-        LESS_OFTEN, DEFAULT, MORE_OFTEN
+        EVEN_LESS_OFTEN, LESS_OFTEN, DEFAULT, MORE_OFTEN
     }
 }
