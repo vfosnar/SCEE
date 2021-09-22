@@ -18,6 +18,7 @@ object Prefs {
     const val RESURVEY_INTERVALS = "quests.resurveyIntervals"
     const val DAY_NIGHT_FILTER = "quests.dayNightFilter"
     const val SHOW_QUEST_GEOMETRIES = "display.questGeometries"
+    const val SHOW_3D_BUILDINGS = "display.3dBuildings"
 
     const val OSM_USER_ID = "osm.userid"
     const val OSM_USER_NAME = "osm.username"

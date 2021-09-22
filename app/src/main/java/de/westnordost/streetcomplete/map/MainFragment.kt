@@ -954,7 +954,7 @@ class MainFragment : Fragment(R.layout.fragment_main),
         val mapFragment = mapFragment ?: return
 
         mapFragment.clearFocusQuest()
-        mapFragment.show3DBuildings = true
+        mapFragment.show3DBuildings = prefs.getBoolean(Prefs.SHOW_3D_BUILDINGS, true)
         mapFragment.pinMode = QuestsMapFragment.PinMode.QUESTS
     }
 
@@ -964,7 +964,7 @@ class MainFragment : Fragment(R.layout.fragment_main),
         mapFragment.isFollowingPosition = wasFollowingPosition
         mapFragment.isCompassMode = wasCompassMode
         mapFragment.endFocusQuest()
-        mapFragment.show3DBuildings = true
+        mapFragment.show3DBuildings = prefs.getBoolean(Prefs.SHOW_3D_BUILDINGS, true)
         mapFragment.pinMode = QuestsMapFragment.PinMode.QUESTS
     }
 
