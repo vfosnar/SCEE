@@ -479,8 +479,10 @@ class MainFragment : Fragment(R.layout.fragment_main),
     override fun onCreatedNoteInstead(questKey: QuestKey, questTitle: String, note: String) {
         lifecycleScope.launch {
             val quest = questController.get(questKey)
-            if (quest != null)
+            if (quest != null) {
+                closeBottomSheet()
                 onCreatedGpxNote("$questTitle: $note", quest.position)
+            }
         }
     }
     /* ------------------------------- CreateNoteFragment.Listener ------------------------------ */
