@@ -34,7 +34,8 @@ New quests may require knowledge about the changed/added OSM tags.
   * notes.gpx file must be copied manually from Android/data/de.westnordost.streetcomplete.h3/files
   * button for normal OSM notes is hidden if keyboard is shown. sorry.
 * option to show quest geometries even without selecting a quest pin (ways are shown at intermediate zoom, areas at high zoom)
-* optional zoom using volume buttons
+* option to zoom in/out using volume buttons
+* option to switch off 3D buildings
 * auto-download happens only if auto-upload is allowed
 * quick settings button (+)
   * level filter: only show quests on the chosen level (this may take a few seconds to initialize)
@@ -47,10 +48,7 @@ New quests may require knowledge about the changed/added OSM tags.
   * more contrast for better visibility during the day
   * more natural colors for water, grass and forest areas
   * transparent buildings: to display indoor paths
-* switch off 3D buildings: allows to better determine position of quests inside or close to buildings
-  * currently no option to re-enable, I don't know how to do this
-  * works only on map tiles downloaded after this modification
-  * and even for these it doesn't work for all tiles... this is a weird problem / bug
 * don't let manual download override cache: OSM data will only be re-downloaded if older than 12 hours
 * increase map tile cache time from 12 hours to 8 days: map tiles will now not be re-downloaded for 8 days, even if manual download was initiated
+* pause upload when manually scanning for quests
 * improve location services: higher GPS frequency, use last known location as initial location
