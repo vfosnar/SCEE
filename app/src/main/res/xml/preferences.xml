@@ -55,6 +55,7 @@
         <SwitchPreference
             android:key="display.3dBuildings"
             android:title="Show 3D buildings"
+            android:summary="Need to restart or try open note to apply setting"
             android:defaultValue="true"
             android:persistent="true"
             />

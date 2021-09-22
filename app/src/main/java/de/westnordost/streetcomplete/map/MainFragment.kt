@@ -257,6 +257,7 @@ class MainFragment : Fragment(R.layout.fragment_main),
         binding.gpsTrackingButton.isActivated = isFollowingPosition
         binding.gpsTrackingButton.visibility = if (isFollowingPosition && isPositionKnown) View.INVISIBLE else View.VISIBLE
         updateLocationPointerPin()
+        mapFragment?.show3DBuildings = prefs.getBoolean(Prefs.SHOW_3D_BUILDINGS, true) // not working here
     }
 
     override fun onMapIsChanging(position: LatLon, rotation: Float, tilt: Float, zoom: Float) {
