@@ -47,7 +47,7 @@ New quests may require knowledge about the changed/added OSM tags.
 * adjust dark theme
   * more contrast for better visibility during the day
   * more natural colors for water, grass and forest areas
-  * transparent buildings: to display indoor paths
+* (more) transparent buildings: to display indoor paths
 * don't let manual download override cache: OSM data will only be re-downloaded if older than 12 hours
 * increase map tile cache time from 12 hours to 8 days: map tiles will now not be re-downloaded for 8 days, even if manual download was initiated
 * pause upload when manually scanning for quests
