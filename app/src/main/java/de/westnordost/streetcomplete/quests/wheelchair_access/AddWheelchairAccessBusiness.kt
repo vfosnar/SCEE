@@ -5,12 +5,12 @@ import de.westnordost.streetcomplete.R
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmFilterQuestType
 import de.westnordost.streetcomplete.data.osm.edits.update_tags.StringMapChangesBuilder
 import de.westnordost.streetcomplete.ktx.arrayOfNotNull
+import de.westnordost.streetcomplete.ktx.containsAny
 import java.util.concurrent.FutureTask
 
 class AddWheelchairAccessBusiness(
     private val featureDictionaryFuture: FutureTask<FeatureDictionary>
-) : OsmFilterQuestType<WheelchairAccess>()
-{
+) : OsmFilterQuestType<WheelchairAccess>() {
     override val elementFilter = """
         nodes, ways, relations with
         (
@@ -81,7 +81,7 @@ class AddWheelchairAccessBusiness(
                 "winery"
             )
         ).map { it.key + " ~ " + it.value.joinToString("|") }.joinToString("\n or ") +
-        "\n) and !wheelchair and (name or brand)"
+        "\n) and !wheelchair"
 
     override val commitMessage = "Add wheelchair access"
     override val wikiLink = "Key:wheelchair"
@@ -89,14 +89,15 @@ class AddWheelchairAccessBusiness(
     override val isReplaceShopEnabled = true
     override val defaultDisabledMessage = R.string.default_disabled_msg_go_inside
 
-    override fun getTitle(tags: Map<String, String>) =
-        if (hasFeatureName(tags))
-            R.string.quest_wheelchairAccess_name_type_title
-        else
-            R.string.quest_wheelchairAccess_name_title
+    override fun getTitle(tags: Map<String, String>) = when {
+        tags.keys.containsAny(listOf("name", "brand")) && hasFeatureName(tags) -> R.string.quest_wheelchairAccess_name_type_title
+        hasFeatureName(tags) -> R.string.quest_wheelchairAccess_type_title
+        tags.keys.containsAny(listOf("name", "brand")) -> R.string.quest_wheelchairAccess_name_title
+        else -> R.string.quest_wheelchairAccess_outside_title
+    }
 
     override fun getTitleArgs(tags: Map<String, String>, featureName: Lazy<String?>): Array<String> {
-        val name = tags["name"] ?: tags["brand"]
+        val name = tags["name"] ?: tags["brand"] ?: featureName.value
         return arrayOfNotNull(name, featureName.value)
     }
 

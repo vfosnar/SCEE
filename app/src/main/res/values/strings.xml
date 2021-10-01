@@ -319,6 +319,7 @@ The info you enter is then directly added to the OpenStreetMap in your name, wit
     <string name="quest_sport_roller_skating">Roller skating</string>
     <string name="quest_wheelchairAccess_name_title">Is %s wheelchair accessible?</string>
     <string name="quest_wheelchairAccess_name_type_title">Is %1$s (%2$s) wheelchair accessible?</string>
+    <string name="quest_wheelchairAccess_type_title">Is this %s wheelchair accessible?</string>
     <string name="quest_wheelchairAccess_bus_station_title">Is this bus station wheelchair accessible?</string>
     <string name="quest_wheelchairAccess_toilets_title">Is this restroom wheelchair accessible?</string>
     <string name="quest_wheelchairAccess_subway_entrance_title">Is this subway entrance wheelchair accessible?</string>
