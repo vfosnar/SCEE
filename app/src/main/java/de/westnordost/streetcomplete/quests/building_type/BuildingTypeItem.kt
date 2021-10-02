@@ -66,6 +66,7 @@ fun BuildingType.asItem(): Item<BuildingType?> = when(this) {
     BOATHOUSE -> Item(this, R.drawable.ic_building_boathouse, R.string.quest_buildingType_boathouse)
     ALLOTMENT_HOUSE -> Item(this, R.drawable.ic_building_allotment_house, R.string.quest_buildingType_allotment_house)
     ROOF -> Item(this, R.drawable.ic_building_roof, R.string.quest_buildingType_roof)
+    BRIDGE -> Item(this, R.drawable.ic_building_bridge, R.string.quest_buildingType_bridge)
     TOILETS -> Item(this, R.drawable.ic_building_toilets, R.string.quest_buildingType_toilets)
     SERVICE -> Item(this, R.drawable.ic_building_service, R.string.quest_buildingType_service, R.string.quest_buildingType_service_description)
     TRANSFORMER_TOWER -> Item(this, R.drawable.ic_building_service, R.string.quest_buildingType_transformer_tower)
@@ -74,7 +75,6 @@ fun BuildingType.asItem(): Item<BuildingType?> = when(this) {
     HISTORIC -> Item(this, R.drawable.ic_building_historic, R.string.quest_buildingType_historic, R.string.quest_buildingType_historic_description)
     ABANDONED -> Item(this, R.drawable.ic_building_abandoned, R.string.quest_buildingType_abandoned, R.string.quest_buildingType_abandoned_description)
     RUINS -> Item(this, R.drawable.ic_building_ruins, R.string.quest_buildingType_ruins, R.string.quest_buildingType_ruins_description)
-    BRIDGE -> Item(this, R.drawable.ic_building_roof, R.string.quest_buildingType_bridge)
 
     RESIDENTIAL -> BuildingTypeCategory.RESIDENTIAL.asItem()
     COMMERCIAL -> BuildingTypeCategory.COMMERCIAL.asItem()

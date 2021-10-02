@@ -1,17 +1,13 @@
 package de.westnordost.streetcomplete.quests.show_poi
 
 import de.westnordost.streetcomplete.R
-import de.westnordost.streetcomplete.data.meta.KEYS_THAT_SHOULD_NOT_BE_REMOVED_WHEN_SHOP_IS_REPLACED
-import de.westnordost.streetcomplete.data.meta.LAST_CHECK_DATE_KEYS
-import de.westnordost.streetcomplete.data.meta.SURVEY_MARK_KEY
-import de.westnordost.streetcomplete.data.meta.toCheckDateString
+import de.westnordost.streetcomplete.data.meta.*
 import de.westnordost.streetcomplete.data.osm.edits.update_tags.StringMapChangesBuilder
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmFilterQuestType
 import de.westnordost.streetcomplete.quests.shop_type.IsShopVacant
 import de.westnordost.streetcomplete.quests.shop_type.ShopType
 import de.westnordost.streetcomplete.quests.shop_type.ShopTypeAnswer
 import de.westnordost.streetcomplete.quests.shop_type.ShopTypeForm
-import java.time.LocalDate
 
 class ShowVacant : OsmFilterQuestType<ShopTypeAnswer>() {
     override val elementFilter = """
@@ -37,25 +33,22 @@ class ShowVacant : OsmFilterQuestType<ShopTypeAnswer>() {
     }
 
     override fun applyAnswerTo(answer: ShopTypeAnswer, changes: StringMapChangesBuilder) {
-        val otherCheckDateKeys = LAST_CHECK_DATE_KEYS.filterNot { it == SURVEY_MARK_KEY }
-        for (otherCheckDateKey in otherCheckDateKeys) {
-            changes.deleteIfExists(otherCheckDateKey)
-        }
+
         when (answer) {
             is IsShopVacant -> {
-                changes.addOrModify(SURVEY_MARK_KEY, LocalDate.now().toCheckDateString())
+                changes.updateCheckDate()
             }
             is ShopType -> {
+                changes.deleteCheckDates()
+
                 if (!answer.tags.containsKey("shop")) {
                     changes.deleteIfExists("shop")
                 }
 
-                changes.deleteIfExists(SURVEY_MARK_KEY)
-
                 for ((key, _) in changes.getPreviousEntries()) {
                     // also deletes all "disused:" keys
                     val isOkToRemove =
-                        KEYS_THAT_SHOULD_NOT_BE_REMOVED_WHEN_SHOP_IS_REPLACED.none { it.matches(key) }
+                        KEYS_THAT_SHOULD_BE_REMOVED_WHEN_SHOP_IS_REPLACED.any { it.matches(key) }
                     if (isOkToRemove && !answer.tags.containsKey(key)) {
                         changes.delete(key)
                     }

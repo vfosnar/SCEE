@@ -141,9 +141,6 @@
     <string name="confirmation_cancel_prev_download_title">"Cancelar a pesquisa atual e escanear aqui em vez disso?"</string>
 
     <!-- Fuzzy -->
-    <string name="notification_downloading">"Procurando por missões…"</string>
-
-    <!-- Fuzzy -->
     <string name="turn_on_location_request">"A localização está desativada. Ir para as configurações e ligar agora?"</string>
 
     <!-- Fuzzy -->
@@ -647,9 +644,6 @@ Caso contrário, pode baixar outro teclado na loja de aplicativos. Alguns dos te
 
     <!-- Fuzzy -->
     <string name="credits_contributors">"Veja a lista completa &lt;a href=\"https://github.com/streetcomplete/StreetComplete/graphs/contributors\"&gt;no GitHub&lt;/a&gt;."</string>
-
-    <!-- Fuzzy -->
-    <string name="credits_translations">"Veja a lista completa no &lt;a href=\"https://poeditor.com/join/project/IE4GC127Ki\"&gt;projeto no POEditor&lt;/a&gt;."</string>
 
     <!-- Fuzzy -->
     <string name="credits_translations_title">"Traduções"</string>
@@ -1482,7 +1476,6 @@ Is "Altar" really fitting here? It is about a building type after all. -->
 
     <!-- Fuzzy -->
     <string name="quest_maxspeed_sign_question">"O que define o limite de velocidade?"</string>
-    <string name="notification_channel_download">"Baixar"</string>
 
     <!-- Fuzzy -->
     <string name="quest_playground_access_title">"Esse parquinho é acessível publicamente?"</string>
@@ -1987,7 +1980,6 @@ conquista"</string>
     <string name="quest_streetName_menuItem_language_with_script_simple">"%1$s – %2$s, %3$s"</string>
     <string name="quest_streetName_menuItem_language_with_script_native">"%1$s – %2$s (%3$s), %4$s"</string>
     <string name="quest_streetName_menuItem_international">"internacional"</string>
-    <string name="quest_streetName_menuItem_romanized">"em escrita latina"</string>
     <string name="quest_buildingType_terrace2">"Casas geminadas"</string>
     <string name="quest_oneway_tutorial">"A estrada na ilustração é girada da mesma forma que no mapa no local do alfinete. Observe a direção indicada."</string>
     <string name="at_housename">"Nome da casa %s:"</string>
@@ -2267,4 +2259,7 @@ Os dados são atualizados após %1$s dias e os dados não utilizados são exclu�
     <string name="quest_presets_default_name">"Padrão"</string>
     <string name="quest_presets_selected">"Selecionado"</string>
     <string name="quest_presets_delete_message">"Apagar a predefinição \"%s\"? A seleção e ordem da missão será totalmente perdida."</string>
+    <string name="notification_syncing">"Sincronizando dados... "</string>
+    <string name="notification_channel_sync">"Sincronizar dados "</string>
+    <string name="quest_board_type_sport">"Esporte, Exercícios"</string>
 </resources>

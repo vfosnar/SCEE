@@ -61,13 +61,13 @@ enum class BuildingType(val osmKey: String, val osmValue: String) {
     SHED          ("building", "shed"),
     ALLOTMENT_HOUSE("building", "allotment_house"),
     ROOF          ("building", "roof"),
+    BRIDGE        ("building", "bridge"),
     TOILETS       ("building", "toilets"),
     SERVICE       ("building", "service"),
     TRANSFORMER_TOWER ("building", "transformer_tower"),
     HANGAR        ("building", "hangar"),
     BUNKER        ("building", "bunker"),
     BOATHOUSE     ("building", "boathouse"),
-    BRIDGE        ("building", "bridge"),
 
     HISTORIC      ("historic", "yes"),
     ABANDONED     ("abandoned", "yes"),
@@ -96,7 +96,7 @@ enum class BuildingTypeCategory(val type: BuildingType?, val subTypes: List<Buil
         STATIC_CARAVAN, DORMITORY
     )),
     COMMERCIAL(BuildingType.COMMERCIAL, listOf(
-        OFFICE, INDUSTRIAL, RETAIL, WAREHOUSE, KIOSK, HOTEL, STORAGE_TANK
+        OFFICE, INDUSTRIAL, RETAIL, WAREHOUSE, KIOSK, HOTEL, STORAGE_TANK, BRIDGE
     )),
     CIVIC(BuildingType.CIVIC, listOf(
         SCHOOL, UNIVERSITY, HOSPITAL, KINDERGARTEN, SPORTS_CENTRE, TRAIN_STATION, TRANSPORTATION,
@@ -112,7 +112,7 @@ enum class BuildingTypeCategory(val type: BuildingType?, val subTypes: List<Buil
         FARM, FARM_AUXILIARY, SILO, GREENHOUSE, STORAGE_TANK, SHED, ALLOTMENT_HOUSE, BARN, COWSHED, STABLE, STY
     )),
     OTHER(null, listOf(
-        SHED, ROOF, ALLOTMENT_HOUSE, SERVICE, TRANSFORMER_TOWER, HUT, BRIDGE, TOILETS, HANGAR, BUNKER, HISTORIC, BOATHOUSE,
+        SHED, ROOF, BRIDGE, ALLOTMENT_HOUSE, SERVICE, TRANSFORMER_TOWER, HUT, TOILETS, HANGAR, BUNKER, HISTORIC, BOATHOUSE,
         ABANDONED, RUINS
     )),
 }
