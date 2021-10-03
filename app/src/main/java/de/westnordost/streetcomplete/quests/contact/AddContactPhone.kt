@@ -36,7 +36,7 @@ class AddContactPhone : OsmFilterQuestType<String>() {
 val PLACES_FOR_CONTACT_QUESTS = mapOf(
 "amenity" to arrayOf(
 "restaurant", "cafe", "internet_cafe",
-"cinema", "townhall", "courthouse", "embassy", "community_centre", "youth_centre", "library",
+"cinema", "townhall", "embassy", "community_centre", "youth_centre", "library",
 "dentist", "doctors", "clinic", "veterinary", "animal_shelter",
 "arts_centre", "ferry_terminal"
 ),
@@ -44,8 +44,8 @@ val PLACES_FOR_CONTACT_QUESTS = mapOf(
 "zoo", "aquarium", "gallery", "museum",
 ),
 "shop" to arrayOf(
-"beauty", "massage", "hairdresser","boutique","wool","tattoo","electrical","florist","glaziery",
-"computer","electronics","hifi","mobile_phone","bicycle","outdoor","sports","art","craft","model",
+"beauty", "massage", "hairdresser","wool","tattoo","electrical","florist","glaziery",
+"computer","electronics","hifi","bicycle","outdoor","sports","art","craft","model",
 "musical_instrument","camera","books","travel_agency","cheese","chocolate","coffee","health_food"
 ),
 "leisure" to arrayOf(
