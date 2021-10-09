@@ -402,6 +402,13 @@ class MainFragment : Fragment(R.layout.fragment_main),
         }
     }
 
+    override fun onTempSkippedQuest(questKey: QuestKey) {
+        lifecycleScope.launch {
+            closeBottomSheet()
+            questController.tempHide(questKey)
+        }
+    }
+
     override fun onDeletePoiNode(osmQuestKey: OsmQuestKey) {
         lifecycleScope.launch {
             solveQuest(osmQuestKey) { quest ->

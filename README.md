@@ -42,7 +42,9 @@ New quests may require knowledge about the changed/added OSM tags.
   * temporarily reverse quest order: to show different quests without hiding or changing quest visibility/order
   * quest profile/preset switcher
   * switch between aerial and map backgrounds
-* show a hide button when answering a quest (shortcut for can't say -> no, just hide)
+* show a hide button when answering a quest
+  * click temporarily hides quest until app restart (cannot be undone other than restarting)
+  * long click is a shortcut for can't say -> no, just hide
 * don't update statistics on upload: they are not counted anyway when uploading with this version (due to different name)
 * allow choosing satellite/aerial images as background (will be enabled in StreetComplete once proper implementation is finished)
 * adjust dark theme

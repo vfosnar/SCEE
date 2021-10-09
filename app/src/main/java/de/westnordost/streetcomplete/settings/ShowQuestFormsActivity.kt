@@ -156,6 +156,10 @@ class ShowQuestFormsActivity : AppCompatActivity(), AbstractQuestAnswerFragment.
     override fun onSkippedQuest(questKey: QuestKey) {
         popQuestForm("Skipping quest")
     }
+
+    override fun onTempSkippedQuest(questKey: QuestKey) {
+        popQuestForm("Temp skipping quest")
+    }
     override fun onDeletePoiNode(osmQuestKey: OsmQuestKey) {
         popQuestForm("Deleting element")
     }

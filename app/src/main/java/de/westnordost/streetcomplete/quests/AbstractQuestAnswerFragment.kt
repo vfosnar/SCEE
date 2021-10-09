@@ -125,6 +125,8 @@ abstract class AbstractQuestAnswerFragment<T> :
         /** Called when the user chose to skip the quest  */
         fun onSkippedQuest(questKey: QuestKey)
 
+        fun onTempSkippedQuest(questKey: QuestKey)
+
         /** Called when the node shall be deleted */
         fun onDeletePoiNode(osmQuestKey: OsmQuestKey)
 
@@ -184,7 +186,11 @@ abstract class AbstractQuestAnswerFragment<T> :
         }
 
         binding.hideButton.popIn()
-        binding.hideButton.setOnClickListener { skipQuest() }
+        binding.hideButton.setOnClickListener { tempSkipQuest() }
+        binding.hideButton.setOnLongClickListener {
+            skipQuest()
+            true
+        }
     }
 
     override fun onDestroyView() {
@@ -334,6 +340,10 @@ abstract class AbstractQuestAnswerFragment<T> :
 
     protected fun skipQuest() {
         listener?.onSkippedQuest(questKey)
+    }
+
+    private fun tempSkipQuest() {
+        listener?.onTempSkippedQuest(questKey)
     }
 
     protected fun replaceShopElement() {
