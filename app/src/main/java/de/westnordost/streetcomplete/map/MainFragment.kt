@@ -402,7 +402,7 @@ class MainFragment : Fragment(R.layout.fragment_main),
     }
 
     override fun onTempSkippedQuest(questKey: QuestKey) {
-        lifecycleScope.launch {
+        viewLifecycleScope.launch {
             closeBottomSheet()
             questController.tempHide(questKey)
         }
@@ -484,7 +484,7 @@ class MainFragment : Fragment(R.layout.fragment_main),
     }
 
     override fun onCreatedNoteInstead(questKey: QuestKey, questTitle: String, note: String) {
-        lifecycleScope.launch {
+        viewLifecycleScope.launch {
             val quest = questController.get(questKey)
             if (quest != null) {
                 closeBottomSheet()
@@ -670,7 +670,7 @@ class MainFragment : Fragment(R.layout.fragment_main),
                 4 -> prefs.edit { putString(Prefs.THEME_BACKGROUND, if (aerial) "MAP" else "AERIAL") }
                 3 -> {
                     inverted = !inverted
-                    lifecycleScope.launch { mapFragment?.invertQuests() }
+                    viewLifecycleScope.launch { mapFragment?.invertQuests() }
                 }
                 2 -> this.context?.let { levelFilter.showLevelFilterDialog(it) }
                 1 -> showProfileSelector()
@@ -684,10 +684,10 @@ class MainFragment : Fragment(R.layout.fragment_main),
         val c = context ?: return
         val presets = mutableListOf<QuestPreset>()
         presets.add(QuestPreset(0, c.getString(R.string.quest_presets_default_name)))
-        presets.addAll(questPresetsController.getAllQuestPresets())
+        presets.addAll(questPresetsController.getAll())
         var selected = -1
         (presets).forEachIndexed { index, questPreset ->
-            if (questPreset.id == questPresetsController.selectedQuestPresetId)
+            if (questPreset.id == questPresetsController.selectedId)
                 selected = index
         }
         var dialog: AlertDialog? = null
@@ -695,7 +695,7 @@ class MainFragment : Fragment(R.layout.fragment_main),
         val builder = AlertDialog.Builder(c)
             .setTitle("Choose profile")
             .setSingleChoiceItems(array, selected) { _, i ->
-                questPresetsController.selectedQuestPresetId = presets[i].id
+                questPresetsController.selectedId = presets[i].id
                 dialog?.dismiss()
             }
             .setNegativeButton(android.R.string.cancel, null)
