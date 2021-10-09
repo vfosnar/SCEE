@@ -21,6 +21,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.UiThread
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.content.edit
 import androidx.core.content.getSystemService
 import androidx.core.graphics.Insets
 import androidx.core.graphics.minus
@@ -652,11 +653,14 @@ class MainFragment : Fragment(R.layout.fragment_main),
 
     private fun onClickQuickSettings() {
         val popupMenu = PopupMenu(requireContext(), binding.quickSettingsButton)
+        val aerial = prefs.getString(Prefs.THEME_BACKGROUND, "MAP") != "MAP"
         popupMenu.menu.add(Menu.NONE, 1, Menu.NONE, "Switch profile")
         popupMenu.menu.add(Menu.NONE, 2, Menu.NONE, "Level filter")
         popupMenu.menu.add(Menu.NONE, 3, Menu.NONE, (if (inverted) "Back to normal" else "Reverse") + " quest order")
+        popupMenu.menu.add(Menu.NONE, 4, Menu.NONE, "Switch to ${if (aerial) "map" else "aerial"} background")
         popupMenu.setOnMenuItemClickListener { item ->
             when(item.itemId) {
+                4 -> prefs.edit { putString(Prefs.THEME_BACKGROUND, if (aerial) "MAP" else "AERIAL") }
                 3 -> {
                     inverted = !inverted
                     lifecycleScope.launch { mapFragment?.invertQuests() }
