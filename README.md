@@ -47,6 +47,7 @@ New quests may require knowledge about the changed/added OSM tags.
   * long click is a shortcut for can't say -> no, just hide
 * don't update statistics on upload: they are not counted anyway when uploading with this version (due to different name)
 * allow choosing satellite/aerial images as background (will be enabled in StreetComplete once proper implementation is finished)
+  * curretly disabled as it keeps crashing
 * adjust dark theme
   * more contrast for better visibility during the day
   * more natural colors for water, grass and forest areas

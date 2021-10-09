@@ -84,7 +84,7 @@
             android:persistent="true"
             />
 
-
+<!--
         <ListPreference
             android:key="theme.background_type"
             android:title="@string/pref_background_type_select"
@@ -94,7 +94,7 @@
             android:entryValues="@array/pref_entryvalues_background_type_select"
             android:persistent="true"
             />
-
+-->
     </PreferenceCategory>
 
     <PreferenceCategory
