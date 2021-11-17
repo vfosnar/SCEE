@@ -7,7 +7,6 @@ import de.westnordost.countryboundaries.isInAny
 import de.westnordost.streetcomplete.ApplicationConstants
 import de.westnordost.streetcomplete.data.osm.edits.MapDataWithEditsSource
 import de.westnordost.streetcomplete.data.osm.geometry.ElementGeometry
-import de.westnordost.streetcomplete.data.osm.geometry.ElementPolylinesGeometry
 import de.westnordost.streetcomplete.data.osm.mapdata.*
 import de.westnordost.streetcomplete.data.osmnotes.Note
 import de.westnordost.streetcomplete.data.osmnotes.edits.NotesWithEditsSource
@@ -17,7 +16,6 @@ import de.westnordost.streetcomplete.ktx.format
 import de.westnordost.streetcomplete.util.contains
 import de.westnordost.streetcomplete.util.enclosingBoundingBox
 import de.westnordost.streetcomplete.util.enlargedBy
-import de.westnordost.streetcomplete.util.measuredLength
 import kotlinx.coroutines.*
 import java.lang.System.currentTimeMillis
 import java.util.concurrent.CopyOnWriteArrayList
@@ -102,10 +100,19 @@ import javax.inject.Singleton
 
             onUpdated(added = quests, deletedKeys = obsoleteQuestKeys)
         }
+
+        override fun onCleared() {
+            db.clear()
+            listeners.forEach { it.onInvalidated() }
+        }
     }
 
     private val notesSourceListener = object : NotesWithEditsSource.Listener {
         override fun onUpdated(added: Collection<Note>, updated: Collection<Note>, deleted: Collection<Long>) {
+            onInvalidated()
+        }
+
+        override fun onCleared() {
             onInvalidated()
         }
     }

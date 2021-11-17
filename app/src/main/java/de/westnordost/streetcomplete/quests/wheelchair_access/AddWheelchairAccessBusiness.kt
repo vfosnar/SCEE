@@ -13,7 +13,7 @@ class AddWheelchairAccessBusiness(
     private val featureDictionaryFuture: FutureTask<FeatureDictionary>
 ) : OsmFilterQuestType<WheelchairAccess>() {
     override val elementFilter = """
-        nodes, ways, relations with
+        nodes, ways, relations with access !~ no|private and
         (
          shop and shop !~ no|vacant
          or amenity = parking and parking = multi-storey

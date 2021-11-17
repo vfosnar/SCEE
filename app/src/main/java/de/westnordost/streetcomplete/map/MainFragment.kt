@@ -8,7 +8,6 @@ import android.graphics.PointF
 import android.graphics.Rect
 import android.graphics.RectF
 import android.location.Location
-import android.location.LocationManager
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
@@ -22,7 +21,6 @@ import androidx.annotation.UiThread
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.edit
-import androidx.core.content.getSystemService
 import androidx.core.graphics.Insets
 import androidx.core.graphics.minus
 import androidx.core.graphics.toPointF
@@ -38,11 +36,11 @@ import de.westnordost.streetcomplete.controls.MainMenuButtonFragment
 import de.westnordost.streetcomplete.controls.UndoButtonFragment
 import de.westnordost.streetcomplete.data.edithistory.Edit
 import de.westnordost.streetcomplete.data.edithistory.EditKey
+import de.westnordost.streetcomplete.data.osm.edits.MapDataWithEditsSource
 import de.westnordost.streetcomplete.data.osm.edits.split_way.SplitPolylineAtPosition
+import de.westnordost.streetcomplete.data.osm.geometry.ElementGeometry
 import de.westnordost.streetcomplete.data.osm.geometry.ElementPolylinesGeometry
-import de.westnordost.streetcomplete.data.osm.mapdata.BoundingBox
-import de.westnordost.streetcomplete.data.osm.mapdata.LatLon
-import de.westnordost.streetcomplete.data.osm.mapdata.Way
+import de.westnordost.streetcomplete.data.osm.mapdata.*
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmQuest
 import de.westnordost.streetcomplete.data.quest.*
 import de.westnordost.streetcomplete.data.visiblequests.LevelFilter
@@ -59,6 +57,7 @@ import de.westnordost.streetcomplete.location.isLocationEnabled
 import de.westnordost.streetcomplete.location.LocationRequestFragment
 import de.westnordost.streetcomplete.location.LocationState
 import de.westnordost.streetcomplete.map.tangram.CameraPosition
+import de.westnordost.streetcomplete.osm.levelsIntersect
 import de.westnordost.streetcomplete.quests.*
 import de.westnordost.streetcomplete.util.*
 import de.westnordost.streetcomplete.view.insets_animation.respectSystemInsets
@@ -88,11 +87,13 @@ class MainFragment : Fragment(R.layout.fragment_main),
     MainMenuButtonFragment.Listener,
     UndoButtonFragment.Listener,
     EditHistoryFragment.Listener,
-    HandlesOnBackPressed {
+    HandlesOnBackPressed,
+    ShowsGeometryMarkers {
 
     @Inject internal lateinit var questController: QuestController
     @Inject internal lateinit var isSurveyChecker: QuestSourceIsSurveyChecker
     @Inject internal lateinit var visibleQuestsSource: VisibleQuestsSource
+    @Inject internal lateinit var mapDataWithEditsSource: MapDataWithEditsSource
     @Inject internal lateinit var soundFx: SoundFx
     @Inject internal lateinit var prefs: SharedPreferences
     @Inject internal lateinit var levelFilter: LevelFilter
@@ -152,7 +153,7 @@ class MainFragment : Fragment(R.layout.fragment_main),
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        locationManager = FineLocationManager(context.getSystemService<LocationManager>()!!, this::onLocationChanged)
+        locationManager = FineLocationManager(context, this::onLocationChanged)
 
         childFragmentManager.addFragmentOnAttachListener { _, fragment ->
             when (fragment) {
@@ -250,8 +251,8 @@ class MainFragment : Fragment(R.layout.fragment_main),
     /* ---------------------------------- MapFragment.Listener ---------------------------------- */
 
     override fun onMapInitialized() {
-        val isFollowingPosition = mapFragment?.isFollowingPosition ?: false
-        binding.gpsTrackingButton.isActivated = isFollowingPosition
+        binding.gpsTrackingButton.isActivated =  mapFragment?.isFollowingPosition ?: false
+        binding.gpsTrackingButton.isNavigation = mapFragment?.isNavigationMode ?: false
         updateLocationPointerPin()
         mapFragment?.show3DBuildings = prefs.getBoolean(Prefs.SHOW_3D_BUILDINGS, true) // not working here
     }
@@ -460,12 +461,22 @@ class MainFragment : Fragment(R.layout.fragment_main),
         }
     }
 
-    override fun onAddSplit(point: LatLon) {
-        mapFragment?.putMarkerForCurrentQuest(point, R.drawable.crosshair_marker)
+    /* ------------------------------- ShowsPointMarkers -------------------------------- */
+
+    override fun putMarkerForCurrentQuest(
+        geometry: ElementGeometry,
+        @DrawableRes drawableResId: Int?,
+        title: String?
+    ) {
+        mapFragment?.putMarkerForCurrentQuest(geometry, drawableResId, title)
     }
 
-    override fun onRemoveSplit(point: LatLon) {
-        mapFragment?.deleteMarkerForCurrentQuest(point)
+    override fun deleteMarkerForCurrentQuest(geometry: ElementGeometry) {
+        mapFragment?.deleteMarkerForCurrentQuest(geometry)
+    }
+
+    override fun clearMarkersForCurrentQuest() {
+        mapFragment?.clearMarkersForCurrentQuest()
     }
 
     /* --------------------------- LeaveNoteInsteadFragment.Listener ---------------------------- */
@@ -626,12 +637,13 @@ class MainFragment : Fragment(R.layout.fragment_main),
         mapFragment!!.startPositionTracking()
 
         setIsFollowingPosition(wasFollowingPosition)
-        locationManager.requestSingleUpdate()
+        locationManager.getCurrentLocation()
     }
 
     private fun onLocationIsDisabled() {
         binding.gpsTrackingButton.state = if (requireContext().hasLocationPermission)
             LocationState.ALLOWED else LocationState.DENIED
+        binding.gpsTrackingButton.isNavigation = false
         binding.locationPointerPin.visibility = View.GONE
         mapFragment!!.clearPositionTracking()
         locationManager.removeUpdates()
@@ -646,8 +658,10 @@ class MainFragment : Fragment(R.layout.fragment_main),
     }
 
     private fun onLocationChanged(location: Location) {
-        binding.gpsTrackingButton.state = LocationState.UPDATING
-        updateLocationPointerPin()
+        viewLifecycleScope.launch {
+            binding.gpsTrackingButton.state = LocationState.UPDATING
+            updateLocationPointerPin()
+        }
     }
 
     //endregion
@@ -926,6 +940,10 @@ class MainFragment : Fragment(R.layout.fragment_main),
             f.arguments = args
         }
         showInBottomSheet(f)
+
+        if (quest is OsmQuest) {
+            showHighlightedElements(quest, element!!)
+        }
     }
 
     private fun showInBottomSheet(f: Fragment) {
@@ -935,6 +953,38 @@ class MainFragment : Fragment(R.layout.fragment_main),
             setCustomAnimations(appearAnim, disappearAnim, appearAnim, disappearAnim)
             replace(R.id.map_bottom_sheet_container, f, BOTTOM_SHEET)
             addToBackStack(BOTTOM_SHEET)
+        }
+    }
+
+    private fun showHighlightedElements(quest: OsmQuest, element: Element) {
+        val questType = quest.osmElementQuestType
+        val bbox = quest.geometry.center.enclosingBoundingBox(questType.highlightedElementsRadius)
+        var mapData: MapDataWithGeometry? = null
+
+        fun getMapData(): MapDataWithGeometry {
+            val data = mapDataWithEditsSource.getMapDataWithGeometry(bbox)
+            mapData = data
+            return data
+        }
+
+        val levels = element.getLevelsOrNull()
+
+        viewLifecycleScope.launch {
+            val elements = withContext(Dispatchers.IO) { questType.getHighlightedElements(element, ::getMapData) }
+            for (e in elements) {
+                // don't highlight "this" element
+                if (element == e) continue
+                // include only elements with the same (=intersecting) level, if any
+                val eLevels = e.getLevelsOrNull()
+                if (!levels.levelsIntersect(eLevels)) continue
+                // include only elements with the same layer, if any
+                if (element.tags["layer"] != e.tags["layer"]) continue
+
+                val geometry = mapData?.getGeometry(e.type, e.id) ?: continue
+                val icon = getPinIcon(e.tags)
+                val title = e.tags["name"] ?: e.tags["brand"]
+                putMarkerForCurrentQuest(geometry, icon, title)
+            }
         }
     }
 

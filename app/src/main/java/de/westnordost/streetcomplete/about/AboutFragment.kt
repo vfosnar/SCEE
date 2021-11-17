@@ -14,7 +14,6 @@ import de.westnordost.streetcomplete.R
 import de.westnordost.streetcomplete.databinding.CellLabeledIconSelectRightBinding
 import de.westnordost.streetcomplete.databinding.DialogDonateBinding
 import de.westnordost.streetcomplete.ktx.tryStartActivity
-import de.westnordost.streetcomplete.util.sendEmail
 import de.westnordost.streetcomplete.view.ListAdapter
 import java.util.*
 
@@ -74,7 +73,7 @@ class AboutFragment : PreferenceFragmentCompat() {
             openUrl("https://github.com/streetcomplete/StreetComplete/issues/")
         }
 
-        findPreference<Preference>("email")?.setOnPreferenceClickListener {
+        findPreference<Preference>("give_feedback")?.setOnPreferenceClickListener {
             openUrl("https://github.com/streetcomplete/StreetComplete/discussions/")
         }
 

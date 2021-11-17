@@ -114,6 +114,15 @@ fun applyBuildingAnswer(answer: BuildingType, changes: StringMapChangesBuilder) 
         changes.addOrModify("substation", "minor_distribution")
     } else if (answer.osmKey != "building") {
         changes.addOrModify(answer.osmKey, answer.osmValue)
+            if(answer == BuildingType.ABANDONED) {
+                changes.deleteIfExists("disused")
+            }
+            if(answer == BuildingType.RUINS && changes.getPreviousValue("disused") == "no") {
+                changes.deleteIfExists("disused")
+            }
+            if(answer == BuildingType.RUINS && changes.getPreviousValue("abandoned") == "no") {
+                changes.deleteIfExists("abandoned")
+            }
     } else {
         changes.modify("building", answer.osmValue)
     }

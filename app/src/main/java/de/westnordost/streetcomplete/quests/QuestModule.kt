@@ -37,6 +37,7 @@ import de.westnordost.streetcomplete.quests.diet_type.AddVegetarian
 import de.westnordost.streetcomplete.quests.ferry.AddFerryAccessMotorVehicle
 import de.westnordost.streetcomplete.quests.ferry.AddFerryAccessPedestrian
 import de.westnordost.streetcomplete.quests.fire_hydrant.AddFireHydrantType
+import de.westnordost.streetcomplete.quests.fire_hydrant.AddFireHydrantDiameter
 import de.westnordost.streetcomplete.quests.foot.AddProhibitedForPedestrians
 import de.westnordost.streetcomplete.quests.general_fee.AddGeneralFee
 import de.westnordost.streetcomplete.quests.handrail.AddHandrail
@@ -57,8 +58,10 @@ import de.westnordost.streetcomplete.quests.oneway_suspects.data.TrafficFlowSegm
 import de.westnordost.streetcomplete.quests.oneway_suspects.data.WayTrafficFlowDao
 import de.westnordost.streetcomplete.quests.opening_hours.AddOpeningHours
 import de.westnordost.streetcomplete.quests.atm_operator.AddAtmOperator
+import de.westnordost.streetcomplete.quests.barrier_bicycle_barrier_type.AddBicycleBarrierType
 import de.westnordost.streetcomplete.quests.barrier_type.AddBarrierType
 import de.westnordost.streetcomplete.quests.barrier_type.AddStileType
+import de.westnordost.streetcomplete.quests.barrier_type.AddTrafficCalmingType
 import de.westnordost.streetcomplete.quests.bollard_type.AddBollardType
 import de.westnordost.streetcomplete.quests.building_type.AddBuildingWithAddressType
 import de.westnordost.streetcomplete.quests.bus_stop_bin.AddBinStatusOnBusStop
@@ -75,6 +78,7 @@ import de.westnordost.streetcomplete.quests.existence.CheckExistence
 import de.westnordost.streetcomplete.quests.lanes.AddLanes
 import de.westnordost.streetcomplete.quests.kerb_height.AddKerbHeight
 import de.westnordost.streetcomplete.quests.level.AddPlaceLevel
+import de.westnordost.streetcomplete.quests.level.AddLevel
 import de.westnordost.streetcomplete.quests.orchard_produce.AddOrchardProduce
 import de.westnordost.streetcomplete.quests.parking_access.AddBikeParkingAccess
 import de.westnordost.streetcomplete.quests.parking_access.AddParkingAccess
@@ -198,6 +202,8 @@ import javax.inject.Singleton
         AddParkingAccess(), // used by OSM Carto, mapy.cz, OSMand, Sputnik etc
         AddParkingFee(), // used by OsmAnd
 
+        AddTrafficCalmingType(),
+
         // steps
         AddHandrail(), // for accessibility of pedestrian routing, can be gathered when walking past
         AddStepsRamp(),
@@ -238,7 +244,6 @@ import javax.inject.Singleton
         AddTrafficSignalsButton(),
 
         /* ↓ 2.solvable when right in front of it ----------------------------------------------- */
-
         AddInformationToTourism(), // OSM Carto
 
         AddPoliceType(),
@@ -253,8 +258,8 @@ import javax.inject.Singleton
         AddBoardType(),
 
         AddBarrierType(), // basically any more detailed rendering and routing: OSM Carto, mapy.cz, OSMand for start
-
         AddStileType(),
+        AddBicycleBarrierType(),
 
         AddBollardType(), // useful for first responders
 
@@ -267,6 +272,7 @@ import javax.inject.Singleton
         AddCameraType(),
 
         AddFireHydrantType(),
+        AddFireHydrantDiameter(),
 
         /* ↓ 2.solvable when right in front of it but takes longer to input --------------------- */
 
@@ -323,6 +329,8 @@ import javax.inject.Singleton
 
         AddOrchardProduce(), // difficult to find out if the orchard does not carry fruits right now
 
+        AddLevel(), // requires to search for the place on several levels (or at least find a mall map)
+
         /* ↓ 4.quests that may need to go inside ------------------------------------------------ */
 
         AddWheelchairAccessPublicTransport(), // need to look out for lifts etc, maybe even enter the station
@@ -340,8 +348,8 @@ import javax.inject.Singleton
         AddAcceptsCash(featureDictionaryFuture),
         AddVegetarian(),
         AddVegan(),
+        AddHalal(), // there are ~ 100 times more Muslims than Jews
         AddKosher(),
-        AddHalal(),
         AddWheelchairAccessBusiness(featureDictionaryFuture), // used by wheelmap, OsmAnd, Organic Maps
         AddInternetAccess(), // used by OsmAnd
 
