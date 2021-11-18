@@ -38,14 +38,6 @@
             />
 
         <SwitchPreference
-            android:key="quests.dayNightFilter"
-            android:title="Enable daytime quest filter"
-            android:summaryOn="Show certain quest only at night or day"
-            android:summaryOff="Always show quests independent of time"
-            android:persistent="true"
-            />
-
-        <SwitchPreference
             android:key="display.questGeometries"
             android:title="Show quest geometries"
             android:summary="Highlight ways and areas with quests"

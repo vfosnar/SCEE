@@ -377,10 +377,10 @@ import javax.inject.Singleton
         AddRoofShape(countryInfos, prefs),
 
         AddStepCount(), // can only be gathered when walking along this way, also needs the most effort and least useful
- 
+
         /* at the very last because it can be difficult to ascertain during day. used by OsmAnd if "Street lighting" is enabled. (Configure map, Map rendering, Details) */
         AddWayLit(),
-        
+
         // my added quests
         AddBuildingWithAddressType(),
         AddCuisine(),

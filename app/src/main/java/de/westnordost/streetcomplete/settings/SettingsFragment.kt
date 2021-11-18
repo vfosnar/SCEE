@@ -50,7 +50,6 @@ class SettingsFragment : PreferenceFragmentCompat(), HasTitle,
     @Inject internal lateinit var visibleQuestTypeSource: VisibleQuestTypeSource
     @Inject internal lateinit var questPresetsSource: QuestPresetsSource
     @Inject internal lateinit var visibleQuestTypeController: VisibleQuestTypeController
-    @Inject internal lateinit var dayNightQuestFilter: DayNightQuestFilter
 
     interface Listener {
         fun onClickedQuestSelection()
@@ -168,10 +167,6 @@ class SettingsFragment : PreferenceFragmentCompat(), HasTitle,
             }
             Prefs.RESURVEY_INTERVALS -> {
                 resurveyIntervalsUpdater.update()
-            }
-            Prefs.DAY_NIGHT_FILTER -> {
-                dayNightQuestFilter.enabled = prefs.getBoolean(Prefs.DAY_NIGHT_FILTER, true)
-                visibleQuestTypeController.clear()
             }
             Prefs.SHOW_QUEST_GEOMETRIES -> {
                 visibleQuestTypeController.clear()

@@ -17,7 +17,6 @@ object Prefs {
     const val THEME_BACKGROUND = "theme.background_type"
 
     const val RESURVEY_INTERVALS = "quests.resurveyIntervals"
-    const val DAY_NIGHT_FILTER = "quests.dayNightFilter"
     const val SHOW_QUEST_GEOMETRIES = "display.questGeometries"
     const val SHOW_3D_BUILDINGS = "display.3dBuildings"
 
