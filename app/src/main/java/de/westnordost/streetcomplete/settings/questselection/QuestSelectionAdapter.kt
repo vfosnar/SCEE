@@ -242,11 +242,6 @@ class QuestSelectionAdapter @Inject constructor(
 
         lateinit var item: QuestVisibility
 
-        private val isEnabledOnlyAtNight: Boolean
-            get() {
-                return item.questType.dayNightVisibility == DayNightCycle.ONLY_NIGHT
-            }
-
         private val isEnabledInCurrentCountry: Boolean
             get() {
                 (item.questType as? OsmElementQuestType<*>)?.let { questType ->
@@ -285,14 +280,12 @@ class QuestSelectionAdapter @Inject constructor(
                 true
             }
 
-            binding.disabledText.isGone = isEnabledInCurrentCountry && !isEnabledOnlyAtNight
+            binding.disabledText.isGone = isEnabledInCurrentCountry
             if (!isEnabledInCurrentCountry) {
                 val cc = if (currentCountryCodes.isEmpty()) "Atlantis" else currentCountryCodes[0]
                 binding.disabledText.text =  binding.disabledText.resources.getString(
                     R.string.questList_disabled_in_country, Locale("", cc).displayCountry
                 )
-            } else if (isEnabledOnlyAtNight) {
-                binding.disabledText.text = binding.disabledText.resources.getString(R.string.questList_disabled_at_day)
             }
 
             updateSelectionStatus()
