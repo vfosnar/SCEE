@@ -12,8 +12,7 @@ import de.westnordost.streetcomplete.map.tangram.toTangramGeometry
 class PinsMapComponent(ctrl: KtMapController) {
 
     private val pinsLayer: MapData = ctrl.addDataLayer(PINS_LAYER)
-    private val questsGeometryLayer: MapData
-        questsGeometryLayer = ctrl.addDataLayer(QUESTS_GEOMETRY_LAYER)
+    private val questsGeometryLayer: MapData = ctrl.addDataLayer(QUESTS_GEOMETRY_LAYER)
 
     /** Shows/hids the pins */
     var isVisible: Boolean

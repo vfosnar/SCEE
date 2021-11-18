@@ -41,7 +41,6 @@ class FineLocationManager(context: Context, locationUpdateCallback: (Location) -
     }
 
     @RequiresPermission(ACCESS_FINE_LOCATION)
-    @RequiresPermission(ACCESS_FINE_LOCATION)
     fun requestUpdates(minTime: Long, minDistance: Float) {
         getLastLocation()?.let { locationListener.onLocationChanged(it) }
         if (deviceHasGPS)
@@ -74,7 +73,7 @@ class FineLocationManager(context: Context, locationUpdateCallback: (Location) -
         }
         val lastLoc = getLastLocation()
         if (lastLoc != null) {
-            locationUpdateCallback(lastLoc)
+            locationListener.onLocationChanged(lastLoc)
             return
         }
         if (deviceHasGPS) {

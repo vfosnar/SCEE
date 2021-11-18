@@ -176,9 +176,7 @@ class QuestPinsManager(
 
     fun invertQuestOrder() {
         invertedOrder = !invertedOrder
-        //reinitializeQuestTypeOrders()
-        hide()
-        show()
+        reinitializeQuestTypeOrders()
     }
 
     private fun initializeQuestTypeOrders() {
