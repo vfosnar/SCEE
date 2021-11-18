@@ -32,7 +32,7 @@ class AddLevel(
          or railway = station
          or amenity = bus_station
          or public_transport = station
-         or (building and building:levels != 1)
+         ${if (prefs.getBoolean(PREF_LEVELS_FOR_EVERYTHING, false)) "or (building and building:levels != 1)" else ""}
     """.toElementFilterExpression() }
 
     private val thingsWithLevelFilter by lazy { """
