@@ -100,7 +100,7 @@ class AddLevelForm : AbstractQuestFormAnswerFragment<String>() {
         for ((element, geometry) in shopElementsAndGeometry) {
             if (!element.getLevelsOrNull().levelsIntersect(levels)) continue
             val icon = getPinIcon(element.tags)
-            val title = element.tags["name"] ?: element.tags["brand"]
+            val title = element.tags["name"] ?: element.tags["brand"] ?: ""
             showsGeometryMarkersListener?.putMarkerForCurrentQuest(geometry, icon, title)
         }
     }

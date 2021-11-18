@@ -1,5 +1,9 @@
 package de.westnordost.streetcomplete.quests.level
 
+import android.app.AlertDialog
+import android.content.Context
+import android.content.SharedPreferences
+import de.westnordost.osmfeatures.FeatureDictionary
 import de.westnordost.streetcomplete.data.osm.mapdata.MapDataWithGeometry
 import de.westnordost.streetcomplete.R
 import de.westnordost.streetcomplete.data.elementfilter.toElementFilterExpression
@@ -9,10 +13,15 @@ import de.westnordost.streetcomplete.data.osm.geometry.ElementPolygonsGeometry
 import de.westnordost.streetcomplete.data.osm.mapdata.Element
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmElementQuestType
 import de.westnordost.streetcomplete.data.user.achievements.QuestTypeAchievement.CITIZEN
+import de.westnordost.streetcomplete.ktx.containsAny
 import de.westnordost.streetcomplete.util.contains
 import de.westnordost.streetcomplete.util.isInMultipolygon
+import java.util.concurrent.FutureTask
 
-class AddLevel : OsmElementQuestType<String> {
+class AddLevel(
+    private val featureDictionaryFuture: FutureTask<FeatureDictionary>,
+    private val prefs: SharedPreferences
+    ) : OsmElementQuestType<String> {
 
     /* including any kind of public transport station because even really large bus stations feel
      * like small airport terminals, like Mo Chit 2 in Bangkok*/
@@ -23,6 +32,7 @@ class AddLevel : OsmElementQuestType<String> {
          or railway = station
          or amenity = bus_station
          or public_transport = station
+         or (building and building:levels != 1)
     """.toElementFilterExpression() }
 
     private val thingsWithLevelFilter by lazy { """
@@ -31,13 +41,31 @@ class AddLevel : OsmElementQuestType<String> {
 
     /* only nodes because ways/relations are not likely to be floating around freely in a mall
     *  outline */
-    private val filter by lazy { """
+    private val filter get() = if (prefs.getBoolean(PREF_LEVELS_FOR_EVERYTHING, false))
+        everythingFilter
+    else
+        shopFilter
+
+    private val everythingFilter by lazy { """
+        nodes with
+         (
+           (shop and shop !~ no|vacant|mall)
+           or craft
+           or amenity
+           or leisure
+           or office
+           or tourism
+         )
+         and !level
+    """.toElementFilterExpression()}
+
+    private val shopFilter by lazy { """
         nodes with
          (${isKindOfShopExpression()})
          and !level and (name or brand)
     """.toElementFilterExpression()}
 
-    override val commitMessage = "Add level to shops"
+    override val commitMessage = "Add level to places"
     override val wikiLink = "Key:level"
     override val icon = R.drawable.ic_quest_level
     /* disabled because in a mall with multiple levels, if there are nodes with no level defined,
@@ -48,7 +76,30 @@ class AddLevel : OsmElementQuestType<String> {
 
     override val questTypeAchievements = listOf(CITIZEN)
 
-    override fun getTitle(tags: Map<String, String>) = R.string.quest_level_title
+    override fun getTitle(tags: Map<String, String>) = when {
+        !hasProperName(tags)  -> R.string.quest_place_level_no_name_title
+        !hasFeatureName(tags) -> R.string.quest_level_title
+        else                  -> R.string.quest_place_level_name_type_title
+    }
+
+    override fun getTitleArgs(tags: Map<String, String>, featureName: Lazy<String?>): Array<String> {
+        val name = tags["name"] ?: tags["brand"]
+        val hasProperName = name != null
+        val hasFeatureName = hasFeatureName(tags)
+        return when {
+            !hasProperName  -> arrayOf(featureName.value.toString())
+            !hasFeatureName -> arrayOf(name!!)
+            else            -> arrayOf(name!!, featureName.value.toString())
+        }
+    }
+
+    private fun hasName(tags: Map<String, String>) = hasProperName(tags) || hasFeatureName(tags)
+
+    private fun hasProperName(tags: Map<String, String>): Boolean =
+        tags.keys.containsAny(listOf("name", "brand"))
+
+    private fun hasFeatureName(tags: Map<String, String>): Boolean =
+        featureDictionaryFuture.get().byTags(tags).isSuggestion(false).find().isNotEmpty()
 
     override fun getApplicableElements(mapData: MapDataWithGeometry): Iterable<Element> {
         // get geometry of all malls in the area
@@ -83,7 +134,7 @@ class AddLevel : OsmElementQuestType<String> {
 
         // now, return all shops that have no level tagged and are inside those multi-level malls
         val shopsWithoutLevel = mapData
-            .filter { filter.matches(it) }
+            .filter { filter.matches(it) && hasName(it.tags) }
             .toMutableList()
         if (shopsWithoutLevel.isEmpty()) return emptyList()
 
@@ -116,4 +167,20 @@ class AddLevel : OsmElementQuestType<String> {
     override fun applyAnswerTo(answer: String, changes: StringMapChangesBuilder) {
         changes.add("level", answer)
     }
+
+    override val hasQuestSettings = true
+
+    override fun getQuestSettingsDialog(context: Context): AlertDialog? {
+        return AlertDialog.Builder(context)
+            .setTitle("show quest for")
+            .setNegativeButton(android.R.string.cancel, null)
+            .setItems(arrayOf("a lot of nodes", "shops & similar (default)")) { _, i ->
+                prefs.edit()
+                    .putBoolean(PREF_LEVELS_FOR_EVERYTHING, i == 0)
+                    .apply()
+            }
+            .create()
+    }
 }
+
+private const val PREF_LEVELS_FOR_EVERYTHING = "levelsForEverything"

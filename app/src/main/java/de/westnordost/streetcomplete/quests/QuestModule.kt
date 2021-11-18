@@ -77,7 +77,6 @@ import de.westnordost.streetcomplete.quests.drinking_water.AddDrinkingWater
 import de.westnordost.streetcomplete.quests.existence.CheckExistence
 import de.westnordost.streetcomplete.quests.lanes.AddLanes
 import de.westnordost.streetcomplete.quests.kerb_height.AddKerbHeight
-import de.westnordost.streetcomplete.quests.level.AddPlaceLevel
 import de.westnordost.streetcomplete.quests.level.AddLevel
 import de.westnordost.streetcomplete.quests.orchard_produce.AddOrchardProduce
 import de.westnordost.streetcomplete.quests.parking_access.AddBikeParkingAccess
@@ -329,7 +328,7 @@ import javax.inject.Singleton
 
         AddOrchardProduce(), // difficult to find out if the orchard does not carry fruits right now
 
-        AddLevel(), // requires to search for the place on several levels (or at least find a mall map)
+        AddLevel(featureDictionaryFuture, prefs), // requires to search for the place on several levels (or at least find a mall map)
 
         /* ↓ 4.quests that may need to go inside ------------------------------------------------ */
 
@@ -384,7 +383,6 @@ import javax.inject.Singleton
         AddBuildingWithAddressType(),
         AddCuisine(),
         RemoveWrongSurface(), // by matkoniecz
-        AddPlaceLevel(featureDictionaryFuture),
         AddContactPhone(),
         AddContactWebsite(),
         AddServiceBuildingOperator(),

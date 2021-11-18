@@ -1091,9 +1091,8 @@ Otherwise, you can download another keyboard in the app store. Popular keyboards
     <string name="quest_barrier_type_stepover_wooden">Wooden step-over stile</string>
     <string name="quest_barrier_type_stepover_stone">Stone step-over stile</string>
     <string name="quest_barrier_type_swing_gate">Horizontal bar</string>
-    <string name="quest_place_level_name_title">On which level is %s</string>
-    <string name="quest_place_level_no_name_title">On which level is this (%s)</string>
-    <string name="quest_place_level_name_type_title">On which level is %1$s (%2$s)</string>
+    <string name="quest_place_level_no_name_title">On which level is this %s located</string>
+    <string name="quest_place_level_name_type_title">On which level is %1$s (%2$s) located</string>
     <string name="quest_barrier_type_kissing_gate_conversion">Converted into a kissing gate</string>
     <string name="quest_barrier_type_passage_conversion">Converted into a passage in a wall/fence/etc.</string>
     <string name="quest_barrier_type_gate_conversion">Converted into a gate</string>
