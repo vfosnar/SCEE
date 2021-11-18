@@ -68,6 +68,9 @@ enum class BuildingType(val osmKey: String, val osmValue: String) {
     HANGAR        ("building", "hangar"),
     BUNKER        ("building", "bunker"),
     BOATHOUSE     ("building", "boathouse"),
+    RIDING_HALL   ("building", "riding_hall"),
+    SPORTS_HALL   ("building", "sports_hall"),
+    DIGESTER      ("building", "digester"),
 
     HISTORIC      ("historic", "yes"),
     ABANDONED     ("abandoned", "yes"),
@@ -96,11 +99,11 @@ enum class BuildingTypeCategory(val type: BuildingType?, val subTypes: List<Buil
         STATIC_CARAVAN, DORMITORY
     )),
     COMMERCIAL(BuildingType.COMMERCIAL, listOf(
-        OFFICE, INDUSTRIAL, RETAIL, WAREHOUSE, KIOSK, HOTEL, STORAGE_TANK, BUNGALOW, BRIDGE
+        OFFICE, INDUSTRIAL, RETAIL, WAREHOUSE, KIOSK, HOTEL, STORAGE_TANK, BUNGALOW, BRIDGE, DIGESTER
     )),
     CIVIC(BuildingType.CIVIC, listOf(
         SCHOOL, UNIVERSITY, HOSPITAL, KINDERGARTEN, SPORTS_CENTRE, TRAIN_STATION, TRANSPORTATION,
-        COLLEGE, GOVERNMENT, STADIUM, FIRE_STATION, OFFICE, GRANDSTAND
+        COLLEGE, GOVERNMENT, STADIUM, FIRE_STATION, OFFICE, GRANDSTAND, SPORTS_HALL,
     )),
     RELIGIOUS(BuildingType.RELIGIOUS, listOf(
         CHURCH, CATHEDRAL, CHAPEL, MOSQUE, TEMPLE, PAGODA, SYNAGOGUE, SHRINE
@@ -113,7 +116,7 @@ enum class BuildingTypeCategory(val type: BuildingType?, val subTypes: List<Buil
     )),
     OTHER(null, listOf(
         SHED, ROOF, BRIDGE, ALLOTMENT_HOUSE, SERVICE, TRANSFORMER_TOWER, HUT, TOILETS, HANGAR, BUNKER, HISTORIC, BOATHOUSE,
-        ABANDONED, RUINS
+        ABANDONED, RUINS, RIDING_HALL,
     )),
 }
 
