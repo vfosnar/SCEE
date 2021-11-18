@@ -18,7 +18,7 @@ import javax.inject.Singleton
     private val osmQuestSource: OsmQuestSource,
     private val osmNoteQuestSource: OsmNoteQuestSource,
     private val visibleQuestTypeSource: VisibleQuestTypeSource,
-    private val teamModeQuestFilter: TeamModeQuestFilter
+    private val teamModeQuestFilter: TeamModeQuestFilter,
     private val levelFilter: LevelFilter,
 ) {
     interface Listener {
