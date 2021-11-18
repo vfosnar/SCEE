@@ -194,7 +194,7 @@ layers:
             draw:
                 geometry-lines:
                     color: global.quest_geometry_color
-                    width: 16px
+                    width: 9px
                     collide: false
                     order: 1000
                     cap: round
@@ -206,7 +206,7 @@ layers:
             draw:
                 geometry-polygons:
                     color: global.quest_geometry_color
-                    width: 16px
+                    width: 9px
                     collide: false
                     order: 1000
                     cap: round
