@@ -80,8 +80,12 @@ class SettingsFragment : PreferenceFragmentCompat(), HasTitle,
             )
             AlertDialog.Builder(requireContext())
                 .setView(dialogBinding.root)
-                .setPositiveButton(R.string.delete_confirmation) { _, _ -> lifecycleScope.launch { deleteCache() }}
-                .setNegativeButton(android.R.string.cancel, null)
+                .setNeutralButton(R.string.delete_confirmation) { _, _ -> lifecycleScope.launch {
+                    deleteTiles()
+                    deleteCache()}
+                }
+                .setPositiveButton(R.string.delete_tiles_confirmation) { _, _ -> lifecycleScope.launch { deleteTiles() }}
+                .setNegativeButton(R.string.delete_data_confirmation) { _, _ -> lifecycleScope.launch { deleteCache() }}
                 .show()
             true
         }
@@ -187,10 +191,13 @@ class SettingsFragment : PreferenceFragmentCompat(), HasTitle,
     }
 
     private suspend fun deleteCache() = withContext(Dispatchers.IO) {
-        context?.externalCacheDir?.purge()
         downloadedTilesDao.removeAll()
         mapDataController.clear()
         noteController.clear()
+    }
+
+    private suspend fun deleteTiles() = withContext(Dispatchers.IO) {
+        context?.externalCacheDir?.purge()
     }
 
     private fun getQuestPreferenceSummary(): String {
