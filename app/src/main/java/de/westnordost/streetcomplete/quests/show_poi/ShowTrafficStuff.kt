@@ -12,13 +12,12 @@ class ShowTrafficStuff : OsmFilterQuestType<Boolean>() {
          or crossing
          or entrance
          or highway = crossing
-         or railway = crossing
-         or footway = crossing
-         or cycleway = crossing
          or amenity = taxi
          or amenity = parking
          or public_transport
          or amenity = motorcycle_parking
+         or highway = stop
+         or highway = give_way
          """
 
     override val commitMessage = "Add raised crossing"
