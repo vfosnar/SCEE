@@ -17,7 +17,10 @@ class PinsMapComponent(ctrl: KtMapController) {
     /** Shows/hids the pins */
     var isVisible: Boolean
         get() = pinsLayer.visible
-        set(value) { pinsLayer.visible = value }
+        set(value) {
+            pinsLayer.visible = value
+            questsGeometryLayer.visible = value
+        }
 
     /** Show given pins. Previously shown pins are replaced with these.  */
     fun set(pins: Collection<Pin>) {
