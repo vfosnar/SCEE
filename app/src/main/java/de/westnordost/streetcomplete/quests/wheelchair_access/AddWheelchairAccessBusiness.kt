@@ -15,7 +15,7 @@ class AddWheelchairAccessBusiness(
 {
     override val elementFilter = """
         nodes, ways, relations with
-          and access !~ no|private
+          access !~ no|private
           and !wheelchair
           and (
             shop and shop !~ no|vacant
