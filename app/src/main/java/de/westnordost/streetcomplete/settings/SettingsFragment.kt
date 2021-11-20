@@ -76,7 +76,7 @@ class SettingsFragment : PreferenceFragmentCompat(), HasTitle,
             )
             AlertDialog.Builder(requireContext())
                 .setView(dialogBinding.root)
-                .setNeutralButton(R.string.delete_confirmation) { _, _ -> lifecycleScope.launch {
+                .setNeutralButton(R.string.delete_confirmation_both) { _, _ -> lifecycleScope.launch {
                     deleteTiles()
                     deleteCache()}
                 }
