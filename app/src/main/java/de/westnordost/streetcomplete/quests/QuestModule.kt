@@ -61,7 +61,7 @@ import de.westnordost.streetcomplete.quests.atm_operator.AddAtmOperator
 import de.westnordost.streetcomplete.quests.barrier_bicycle_barrier_type.AddBicycleBarrierType
 import de.westnordost.streetcomplete.quests.barrier_type.AddBarrierType
 import de.westnordost.streetcomplete.quests.barrier_type.AddStileType
-import de.westnordost.streetcomplete.quests.barrier_type.AddTrafficCalmingType
+import de.westnordost.streetcomplete.quests.traffic_calming_type.AddTrafficCalmingType
 import de.westnordost.streetcomplete.quests.bollard_type.AddBollardType
 import de.westnordost.streetcomplete.quests.building_type.AddBuildingWithAddressType
 import de.westnordost.streetcomplete.quests.bus_stop_bin.AddBinStatusOnBusStop

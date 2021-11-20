@@ -12,8 +12,12 @@ import de.westnordost.streetcomplete.data.user.achievements.QuestTypeAchievement
 class AddBuildingLevels(private val prefs: SharedPreferences) : OsmFilterQuestType<BuildingLevelsAnswer>() {
 
     override val elementFilter = """
-        ways, relations with building ~ ${prefs.getString(PREF_BUILDING_LEVELS_SELECTION, BUILDINGS_WITH_LEVELS.joinToString("|"))}
-         and !building:levels and !man_made and location != underground and ruins != yes
+        ways, relations with
+         building ~ ${prefs.getString(PREF_BUILDING_LEVELS_SELECTION, BUILDINGS_WITH_LEVELS.joinToString("|"))}
+         and !building:levels
+         and !man_made
+         and location != underground
+         and ruins != yes
     """
     override val commitMessage = "Add building and roof levels"
     override val wikiLink = "Key:building:levels"
@@ -45,6 +49,7 @@ private val BUILDINGS_WITH_LEVELS = arrayOf(
     "semidetached_house","bungalow","school","civic","college","university","public",
     "hospital","kindergarten","transportation","train_station", "hotel","retail",
     "commercial","office","manufacture","parking","farm","farm_auxiliary",
-    "cabin")
+    "cabin"
+)
 
 private const val PREF_BUILDING_LEVELS_SELECTION = "quest_building_levels_selection"

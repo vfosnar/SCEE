@@ -21,7 +21,8 @@ class AddRoofShape(private val countryInfos: CountryInfos, private val prefs: Sh
     private val filter by lazy { """
         ways, relations with (building:levels or roof:levels)
           and !roof:shape and !3dr:type and !3dr:roof
-          and building and building!=no and building!=construction
+          and building
+          and building !~ no|construction
     """.toElementFilterExpression() }
 
     override val commitMessage = "Add roof shapes"

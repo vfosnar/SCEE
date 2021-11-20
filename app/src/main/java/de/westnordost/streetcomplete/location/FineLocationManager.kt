@@ -25,7 +25,8 @@ class FineLocationManager(context: Context, locationUpdateCallback: (Location) -
             locationUpdateCallback(it)
         }
     }
-    private var cancellationSignal = CancellationSignal()
+    private var gpsCancellationSignal = CancellationSignal()
+    private var networkCancellationSignal = CancellationSignal()
     private var lastLocation: Location? = null
 
     private val deviceHasGPS: Boolean get() = locationManager.allProviders.contains(GPS_PROVIDER)
@@ -67,28 +68,34 @@ class FineLocationManager(context: Context, locationUpdateCallback: (Location) -
     }
 
     @RequiresPermission(ACCESS_FINE_LOCATION)
-    fun getCurrentLocation() {
-        if (cancellationSignal.isCanceled) {
-            cancellationSignal = CancellationSignal()
-        }
+    @Synchronized fun getCurrentLocation() {
         val lastLoc = getLastLocation()
         if (lastLoc != null) {
             locationListener.onLocationChanged(lastLoc)
             return
         }
         if (deviceHasGPS) {
-            LocationManagerCompat.getCurrentLocation(locationManager, GPS_PROVIDER, cancellationSignal,
-                mainExecutor, currentLocationConsumer)
+            if (gpsCancellationSignal.isCanceled) {
+                gpsCancellationSignal = CancellationSignal()
+            }
+            LocationManagerCompat.getCurrentLocation(
+                locationManager, GPS_PROVIDER, gpsCancellationSignal, mainExecutor, currentLocationConsumer
+            )
         }
         if (deviceHasNetworkLocationProvider) {
-            LocationManagerCompat.getCurrentLocation(locationManager, NETWORK_PROVIDER, cancellationSignal,
-                mainExecutor, currentLocationConsumer)
+            if (networkCancellationSignal.isCanceled) {
+                networkCancellationSignal = CancellationSignal()
+            }
+            LocationManagerCompat.getCurrentLocation(
+                locationManager, NETWORK_PROVIDER, networkCancellationSignal, mainExecutor, currentLocationConsumer
+            )
         }
     }
 
-    fun removeUpdates() {
+    @Synchronized fun removeUpdates() {
         locationManager.removeUpdates(locationListener)
-        cancellationSignal.cancel()
+        gpsCancellationSignal.cancel()
+        networkCancellationSignal.cancel()
     }
 }
 
