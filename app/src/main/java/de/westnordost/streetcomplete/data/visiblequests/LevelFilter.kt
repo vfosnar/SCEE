@@ -9,7 +9,6 @@ import android.widget.LinearLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.edit
-import androidx.preference.Preference
 import de.westnordost.streetcomplete.Prefs
 import de.westnordost.streetcomplete.data.osm.mapdata.MapDataController
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmQuest
@@ -35,7 +34,7 @@ class LevelFilter @Inject internal constructor(
 
     private fun reload() {
         allowedLevel = prefs.getString(Prefs.ALLOWED_LEVEL, "").let { if (it.isNullOrBlank()) null else it }
-        allowedLevelTags = prefs.getString(Prefs.ALLOWED_LEVEL_TAGS, "level,level:ref")!!.split(",")
+        allowedLevelTags = prefs.getString(Prefs.ALLOWED_LEVEL_TAGS, "level,repeat_on,level:ref")!!.split(",")
     }
 
     fun isVisible(quest: Quest): Boolean =
@@ -48,7 +47,6 @@ class LevelFilter @Inject internal constructor(
         if (levelTags.isEmpty()) return allowedLevel == null
         levelTags.values.forEach { if (it.split(";").contains(allowedLevel)) return true }
         return false
-//        return levelTags.containsValue(allowedLevel)
     }
 
     fun showLevelFilterDialog(context: Context) {
@@ -56,7 +54,7 @@ class LevelFilter @Inject internal constructor(
         builder.setTitle("Choose tags to check")
         val linearLayout = LinearLayout(context)
         linearLayout.orientation = LinearLayout.VERTICAL
-        val levelTags = prefs.getString(Prefs.ALLOWED_LEVEL_TAGS, "level,level:ref")!!.split(",")
+        val levelTags = prefs.getString(Prefs.ALLOWED_LEVEL_TAGS, "level,repeat_on,level:ref")!!.split(",")
 
         val level = EditText(context)
         level.inputType = InputType.TYPE_CLASS_TEXT
@@ -71,6 +69,10 @@ class LevelFilter @Inject internal constructor(
         tagLevel.text = "level"
         tagLevel.isChecked = levelTags.contains("level")
 
+        val tagRepeatOn = CheckBox(context)
+        tagRepeatOn.text = "repeat_on"
+        tagRepeatOn.isChecked = levelTags.contains("repeat_on")
+
         val tagLevelRef = CheckBox(context)
         tagLevelRef.text = "level:ref"
         tagLevelRef.isChecked = levelTags.contains("level:ref")
@@ -80,6 +82,7 @@ class LevelFilter @Inject internal constructor(
         tagAddrFloor.isChecked = levelTags.contains("addr:floor")
 
         linearLayout.addView(tagLevel)
+        linearLayout.addView(tagRepeatOn)
         linearLayout.addView(tagLevelRef)
         linearLayout.addView(tagAddrFloor)
         linearLayout.addView(level)
@@ -90,6 +93,7 @@ class LevelFilter @Inject internal constructor(
         builder.setPositiveButton(android.R.string.ok) { _, _ ->
             val levelTagList = mutableListOf<String>()
             if (tagLevel.isChecked) levelTagList.add("level")
+            if (tagRepeatOn.isChecked) levelTagList.add("repeat_on")
             if (tagLevelRef.isChecked) levelTagList.add("level:ref")
             if (tagAddrFloor.isChecked) levelTagList.add("addr:floor")
             prefs.edit {
