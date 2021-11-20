@@ -102,7 +102,8 @@ class LevelFilter @Inject internal constructor(
             }
             isEnabled = enable.isChecked
             reload()
-            visibleQuestTypeController.clear()
+
+            visibleQuestTypeController.setAllVisible(listOf(), true) // trigger reload
         }
         builder.show()
     }

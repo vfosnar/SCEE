@@ -4,13 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.text.InputType
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.widget.SwitchCompat
 import androidx.core.app.ActivityCompat
-import androidx.core.content.edit
 import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.ListPreference
@@ -169,7 +166,7 @@ class SettingsFragment : PreferenceFragmentCompat(), HasTitle,
                 resurveyIntervalsUpdater.update()
             }
             Prefs.SHOW_QUEST_GEOMETRIES -> {
-                visibleQuestTypeController.clear()
+                visibleQuestTypeController.setAllVisible(listOf(), true) // trigger reload
             }
         }
     }
