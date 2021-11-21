@@ -13,6 +13,7 @@ New quests may require knowledge about the changed/added OSM tags.
   * service building operator (no proper auto-complete list like ATM operator)
   * service building type: currently can only answer substation, gas pressure regulation, or hide. Depends on tagged operator, but is only asked for a short list of them.
   * ask for cuisine of restaurants and fast food, including some auto-complete function for very common values
+  * ask for healthcare specialty of amenity = doctors
 * quest changes
   * allow "paved" surface without note (because one lane concrete, one lane asphalt is too common)
   * ask type for more surveillance cameras
