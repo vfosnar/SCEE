@@ -37,6 +37,7 @@ class AddLevel(
 
     private val thingsWithLevelFilter by lazy { """
         nodes, ways, relations with level
+        and amenity != doctors
     """.toElementFilterExpression()}
 
     /* only nodes because ways/relations are not likely to be floating around freely in a mall
@@ -102,15 +103,29 @@ class AddLevel(
         featureDictionaryFuture.get().byTags(tags).isSuggestion(false).find().isNotEmpty()
 
     override fun getApplicableElements(mapData: MapDataWithGeometry): Iterable<Element> {
+        // now, return all shops that have no level tagged and are inside those multi-level malls
+        val shopsWithoutLevel = mapData
+            .filter { filter.matches(it) && hasName(it.tags) }
+            .toMutableList()
+        if (shopsWithoutLevel.isEmpty()) return emptyList()
+
+        val result = mutableListOf<Element>()
+        if (prefs.getBoolean(PREF_LEVELS_FOR_EVERYTHING, false)) {
+            // add doctors, no matter what
+            val doctorsWithoutLevel = shopsWithoutLevel.filter {it.tags["amenity"] == "doctors"}
+            result.addAll(doctorsWithoutLevel)
+            shopsWithoutLevel.removeIf { it.tags["amenity"] == "doctors" } // used -> remove
+        }
+
         // get geometry of all malls in the area
         val mallGeometries = mapData
             .filter { mallFilter.matches(it) }
             .mapNotNull { mapData.getGeometry(it.type, it.id) as? ElementPolygonsGeometry }
-        if (mallGeometries.isEmpty()) return emptyList()
+        if (mallGeometries.isEmpty()) return result
 
         // get all shops that have level tagged
         val thingsWithLevel = mapData.filter { thingsWithLevelFilter.matches(it) }
-        if (thingsWithLevel.isEmpty()) return emptyList()
+        if (thingsWithLevel.isEmpty()) return result
 
         // with this, find malls that contain shops that have different levels tagged
         val multiLevelMallGeometries = mallGeometries.filter { mallGeometry ->
@@ -130,15 +145,7 @@ class AddLevel(
             }
             return@filter false
         }
-        if (multiLevelMallGeometries.isEmpty()) return emptyList()
-
-        // now, return all shops that have no level tagged and are inside those multi-level malls
-        val shopsWithoutLevel = mapData
-            .filter { filter.matches(it) && hasName(it.tags) }
-            .toMutableList()
-        if (shopsWithoutLevel.isEmpty()) return emptyList()
-
-        val result = mutableListOf<Element>()
+        if (multiLevelMallGeometries.isEmpty()) return result
 
         for (mallGeometry in multiLevelMallGeometries) {
             val it = shopsWithoutLevel.iterator()
@@ -157,6 +164,8 @@ class AddLevel(
 
     override fun isApplicableTo(element: Element): Boolean? {
         if (!filter.matches(element)) return false
+        // doctors are frequently at non-ground level
+        if (element.tags["amenity"] == "doctors" && !element.tags.containsKey("level")) return true
         // for shops with no level, we actually need to look at geometry in order to find if it is
         // contained within any multi-level mall
         return null
