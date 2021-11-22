@@ -35,6 +35,7 @@ New quests may require knowledge about the changed/added OSM tags.
 * allow creating text notes in a gpx file
   * notes.gpx file must be copied manually from Android/data/de.westnordost.streetcomplete.h3/files
   * button for normal OSM notes is hidden if keyboard is shown. sorry.
+* allow pre-filling new profile from existing profile
 * delete cache: choose between deleting tile cache (background) or OSM data (quests)
 * option to show quest geometries even without selecting a quest pin (ways are shown at intermediate zoom, areas at high zoom)
 * option to zoom in/out using volume buttons
