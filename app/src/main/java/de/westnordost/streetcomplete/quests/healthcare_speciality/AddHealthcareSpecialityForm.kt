@@ -1,4 +1,4 @@
-package de.westnordost.streetcomplete.quests.healthcare_specialty
+package de.westnordost.streetcomplete.quests.healthcare_speciality
 
 import android.os.Bundle
 import android.view.View
@@ -8,14 +8,14 @@ import de.westnordost.streetcomplete.quests.AbstractQuestFormAnswerFragment
 import de.westnordost.streetcomplete.util.TextChangedWatcher
 import de.westnordost.streetcomplete.databinding.QuestCuisineSuggestionBinding
 
-class AddHealthcareSpecialtyForm : AbstractQuestFormAnswerFragment<String>() {
+class AddHealthcareSpecialityForm : AbstractQuestFormAnswerFragment<String>() {
 
     override val contentLayoutResId = R.layout.quest_cuisine_suggestion
     private val binding by contentViewBinding(QuestCuisineSuggestionBinding::bind)
 
-    val specialties = mutableListOf<String>()
+    val specialities = mutableListOf<String>()
 
-    val specialty get() = binding.cuisineInput?.text?.toString().orEmpty().trim()
+    val speciality get() = binding.cuisineInput?.text?.toString().orEmpty().trim()
 
     val suggestions = listOf(
         "allergology",
@@ -88,20 +88,20 @@ class AddHealthcareSpecialtyForm : AbstractQuestFormAnswerFragment<String>() {
 
         binding.addCuisineButton.setOnClickListener {
             if (isFormComplete()) {
-                specialties.add(specialty)
-                binding.currentCuisines.text = specialties.joinToString(";")
+                specialities.add(speciality)
+                binding.currentCuisines.text = specialities.joinToString(";")
                 binding.cuisineInput.text.clear()
             }
         }
-        binding.addCuisineButton.text = "add another specialty"
+        binding.addCuisineButton.text = "add another speciality"
     }
 
     override fun onClickOk() {
-        if (specialty.isBlank())
-            applyAnswer(specialties.joinToString(";"))
+        if (speciality.isBlank())
+            applyAnswer(specialities.joinToString(";"))
         else
-            applyAnswer((specialties + listOf(specialty)).joinToString(";"))
+            applyAnswer((specialities + listOf(speciality)).joinToString(";"))
     }
 
-    override fun isFormComplete() = (specialty.isNotEmpty() || specialties.isNotEmpty()) && !specialty.contains(";")
+    override fun isFormComplete() = (speciality.isNotEmpty() || specialities.isNotEmpty()) && !speciality.contains(";")
 }

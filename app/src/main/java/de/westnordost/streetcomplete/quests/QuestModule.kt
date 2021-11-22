@@ -73,7 +73,7 @@ import de.westnordost.streetcomplete.quests.crossing.AddCrossing
 import de.westnordost.streetcomplete.quests.cuisine.AddCuisine
 import de.westnordost.streetcomplete.quests.diet_type.AddKosher
 import de.westnordost.streetcomplete.quests.diet_type.AddHalal
-import de.westnordost.streetcomplete.quests.healthcare_specialty.AddHealthcareSpecialty
+import de.westnordost.streetcomplete.quests.healthcare_speciality.AddHealthcareSpeciality
 import de.westnordost.streetcomplete.quests.drinking_water.AddDrinkingWater
 import de.westnordost.streetcomplete.quests.existence.CheckExistence
 import de.westnordost.streetcomplete.quests.lanes.AddLanes
@@ -384,7 +384,7 @@ import javax.inject.Singleton
 
         // my added quests
         AddBuildingWithAddressType(),
-        AddHealthcareSpecialty(),
+        AddHealthcareSpeciality(),
         AddCuisine(),
         RemoveWrongSurface(), // by matkoniecz
         AddContactPhone(),
