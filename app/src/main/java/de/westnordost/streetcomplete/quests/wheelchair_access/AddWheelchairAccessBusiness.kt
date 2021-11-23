@@ -35,7 +35,6 @@ class AddWheelchairAccessBusiness(
                 "cinema", "planetarium", "casino",                                                                     // amenities
                 "townhall", "courthouse", "embassy", "community_centre", "youth_centre", "library",                    // civic
                 "bank", "bureau_de_change", "money_transfer", "post_office", "marketplace", "internet_cafe",           // commercial
-                "car_wash", "car_rental", "fuel",                                                                      // car stuff
                 "dentist", "doctors", "clinic", "pharmacy", "veterinary",                                              // health
                 "animal_boarding", "animal_shelter", "animal_breeding",                                                // animals
 
