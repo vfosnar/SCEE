@@ -33,7 +33,7 @@
 
     <color name="disabled_text">#6666</color>
 
-    <color name="button_white">#fff</color>
+    <color name="button_white">#bbb</color>
 
     <color name="greyed_out">#66999999</color>
     <color name="slightly_greyed_out">#33999999</color>
