@@ -898,10 +898,13 @@ Otherwise, you can download another keyboard in the app store. Popular keyboards
     <string name="quest_charging_station_operator_title">"Who is the operator of this charging station?"</string>
     <string name="quest_charging_station_capacity_title">"How many cars can be charged at this charging station at the same time?"</string>
     <string name="quest_charging_station_name_capacity_title">"How many cars can be charged at this charging station (%s) at the same time?"</string>
-    <string name="quest_service_building_operator_title">"What's the name of the operator for this service building?"</string>
-    <string name="quest_service_building_type_title">"What kind of service building is this %s building?"</string>
+    <string name="quest_service_building_operator_title">"Who is the operator for this service building?"</string>
+    <string name="quest_service_building_type_title">"What kind of service building is this%s?"</string>
     <string name="quest_service_building_type_substation">"Substation"</string>
     <string name="quest_service_building_type_pressure">"Gas pressure regulation"</string>
+    <string name="quest_service_building_type_well">"Water well"</string>
+    <string name="quest_service_building_type_reservoir">"Reservoir"</string>
+    <string name="quest_service_building_type_pump">"Pumping station"</string>
 
     <string name="team_mode">Team Mode</string>
     <string name="team_mode_exit">Exit Team Mode</string>

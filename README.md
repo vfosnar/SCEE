@@ -11,7 +11,7 @@ New quests may require knowledge about the changed/added OSM tags.
   * contact quests for phone and website
   * re-ask/remove surface for badly tagged tracks (by matkoniecz, https://github.com/matkoniecz/Zazolc)
   * service building operator (no proper auto-complete list like ATM operator)
-  * service building type: currently can only answer substation, gas pressure regulation, or hide. Depends on tagged operator, but is only asked for a short list of them.
+  * service building type: substation, well, pumping station, ...
   * ask for cuisine of restaurants and fast food, including some auto-complete function for very common values
   * ask for healthcare specialty of amenity = doctors
 * quest changes

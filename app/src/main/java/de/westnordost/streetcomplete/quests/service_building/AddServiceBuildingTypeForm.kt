@@ -1,13 +1,16 @@
 package de.westnordost.streetcomplete.quests.service_building
 
 import de.westnordost.streetcomplete.R
-import de.westnordost.streetcomplete.quests.AbstractQuestAnswerFragment
-import de.westnordost.streetcomplete.quests.AnswerItem
+import de.westnordost.streetcomplete.quests.AListQuestAnswerFragment
+import de.westnordost.streetcomplete.quests.TextItem
 
-class AddServiceBuildingTypeForm : AbstractQuestAnswerFragment<String>() {
+class AddServiceBuildingTypeForm : AListQuestAnswerFragment<String>() {
 
-    override val buttonPanelAnswers = listOf(
-        AnswerItem(R.string.quest_service_building_type_pressure) { applyAnswer("gas") },
-        AnswerItem(R.string.quest_service_building_type_substation) { applyAnswer("substation") }
+    override val items = listOf(
+        TextItem("gas", R.string.quest_service_building_type_pressure),
+        TextItem("substation", R.string.quest_service_building_type_substation),
+        TextItem("well", R.string.quest_service_building_type_well),
+        TextItem("reservoir_covered", R.string.quest_service_building_type_reservoir),
+        TextItem("pumping_station", R.string.quest_service_building_type_pump),
     )
 }
