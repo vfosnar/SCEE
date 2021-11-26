@@ -41,7 +41,7 @@
         android:layout_centerVertical="true"
         android:textAppearance="@style/TextAppearance.BigBody"
         android:textStyle="bold"
-        android:textColor="#bbb"
+        android:textColor="#ccc"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:layout_marginLeft="-8dp"
