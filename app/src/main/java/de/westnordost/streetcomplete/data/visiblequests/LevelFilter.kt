@@ -6,6 +6,7 @@ import android.text.InputType
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.edit
@@ -33,7 +34,7 @@ class LevelFilter @Inject internal constructor(
     }
 
     private fun reload() {
-        allowedLevel = prefs.getString(Prefs.ALLOWED_LEVEL, "").let { if (it.isNullOrBlank()) null else it }
+        allowedLevel = prefs.getString(Prefs.ALLOWED_LEVEL, "").let { if (it.isNullOrBlank()) null else it.trim() }
         allowedLevelTags = prefs.getString(Prefs.ALLOWED_LEVEL_TAGS, "level,repeat_on,level:ref")!!.split(",")
     }
 
@@ -45,7 +46,26 @@ class LevelFilter @Inject internal constructor(
         val tags = mapDataController.get(this.elementType, this.elementId)?.tags ?: return true
         val levelTags = tags.filterKeys { allowedLevelTags.contains(it) }
         if (levelTags.isEmpty()) return allowedLevel == null
-        levelTags.values.forEach { if (it.split(";").contains(allowedLevel)) return true }
+        if (allowedLevel == null) return false // level tags not empty
+        levelTags.values.forEach { value ->
+            val levels = value.split(";")
+            if (allowedLevel!!.startsWith('<')) {
+                val maxLevel = allowedLevel!!.substring(1).trim().toFloatOrNull()
+                if (maxLevel != null)
+                    levels.forEach { level ->
+                        level.toFloatOrNull()?.let { if (it < maxLevel) return true }
+                    }
+            }
+            if (allowedLevel!!.startsWith('>')) {
+                val minLevel = allowedLevel!!.substring(1).trim().toFloatOrNull()
+                if (minLevel != null)
+                    levels.forEach { level ->
+                        level.toFloatOrNull()?.let { if (it > minLevel) return true }
+                    }
+            }
+            if (levels.contains(allowedLevel)) return true
+            if (value == allowedLevel) return true // maybe user entered 0;1
+        }
         return false
     }
 
@@ -55,6 +75,9 @@ class LevelFilter @Inject internal constructor(
         val linearLayout = LinearLayout(context)
         linearLayout.orientation = LinearLayout.VERTICAL
         val levelTags = prefs.getString(Prefs.ALLOWED_LEVEL_TAGS, "level,repeat_on,level:ref")!!.split(",")
+
+        val levelText = TextView(context)
+        levelText.text = "enter level value, or filter using > and <"
 
         val level = EditText(context)
         level.inputType = InputType.TYPE_CLASS_TEXT
@@ -85,6 +108,7 @@ class LevelFilter @Inject internal constructor(
         linearLayout.addView(tagRepeatOn)
         linearLayout.addView(tagLevelRef)
         linearLayout.addView(tagAddrFloor)
+        linearLayout.addView(levelText)
         linearLayout.addView(level)
         linearLayout.addView(enable)
         linearLayout.setPadding(30,10,30,10)
