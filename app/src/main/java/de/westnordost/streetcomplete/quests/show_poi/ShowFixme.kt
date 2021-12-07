@@ -8,7 +8,7 @@ class ShowFixme : OsmFilterQuestType<Boolean>() {
     override val elementFilter = """
         nodes, ways, relations with
         (fixme or FIXME)
-        and fixme !~ "continue|continue?|yes|Baum oder Strauch"
+        and fixme !~ "continue|continue?|yes|Baum oder Strauch|Use for reference, adjust surroundings using the description, but please do NOT move."
         and FIXME !~ continue|continue?|yes
     """
     override val commitMessage = "Remove fixme"
