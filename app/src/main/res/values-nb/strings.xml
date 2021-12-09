@@ -1966,9 +1966,6 @@ Data blir oppdatert etter %1$s dager og ubrukte data blir automatisk slettet ett
     <string name="quest_construction_steps_title">"Er trappene ferdigbygget?"</string>
 
     <!-- Fuzzy -->
-    <string name="questList_disabled_at_day">"Kun vist om natten"</string>
-
-    <!-- Fuzzy -->
     <string name="pref_quests_deselect_all">"Opphev alle oppdrag?"</string>
 
     <!-- Fuzzy -->
@@ -2021,4 +2018,5 @@ Data blir oppdatert etter %1$s dager og ubrukte data blir automatisk slettet ett
     <string name="quest_picnicTableCover_title">"Er piknikbordet tildekket (beskyttet mot regn)?"</string>
     <string name="quest_generic_answer_is_actually_steps">"Denne delen er trapper"</string>
     <string name="quest_barrier_type_gate_conversion">"Omgjort til en port"</string>
+    <string name="language_default">"Systemvalgt"</string>
 </resources>

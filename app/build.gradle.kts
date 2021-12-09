@@ -36,8 +36,8 @@ android {
         applicationId = "de.westnordost.streetcomplete.h3"
         minSdk = 21
         targetSdk = 30
-        versionCode = 3800
-        versionName = "38.0-beta1"
+        versionCode = 3802
+        versionName = "38.1"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -61,6 +61,11 @@ android {
         viewBinding = true
     }
 
+    bundle {
+        language {
+            enableSplit = false
+        }
+    }
 
     lintOptions {
         disable("MissingTranslation")
