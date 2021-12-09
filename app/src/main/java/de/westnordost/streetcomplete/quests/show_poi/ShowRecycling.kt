@@ -30,8 +30,13 @@ class ShowRecycling : OsmFilterQuestType<Boolean>() {
         return arrayOf(name.toString())
     }
 
-    override fun createForm() = NoAnswerFragment()
+    override fun createForm() = ShowRecyclingAnswerForm()
 
     override fun applyAnswerTo(answer: Boolean, changes: StringMapChangesBuilder) {
+        if (answer) {
+            changes.modify("amenity", "vending_machine")
+            changes.add("vending", "excrement_bags")
+            changes.add("bin", "yes")
+        }
     }
 }
