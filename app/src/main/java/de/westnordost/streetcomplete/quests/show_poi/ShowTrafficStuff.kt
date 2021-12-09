@@ -11,13 +11,10 @@ class ShowTrafficStuff : OsmFilterQuestType<Boolean>() {
          or traffic_calming
          or crossing
          or entrance
-         or highway = crossing
-         or amenity = taxi
-         or amenity = parking
          or public_transport
-         or amenity = motorcycle_parking
-         or highway = stop
-         or highway = give_way
+         or highway ~ crossing|stop|give_way|elevator
+         or amenity ~ taxi|parking|motorcycle_parking
+         or type = restriction
          """
 
     override val commitMessage = "Add raised crossing"
@@ -29,7 +26,8 @@ class ShowTrafficStuff : OsmFilterQuestType<Boolean>() {
         R.string.quest_thisIsOther_title
 
     override fun getTitleArgs(tags: Map<String, String>, featureName: Lazy<String?>): Array<String> {
-        val name = if (!tags["crossing"].isNullOrBlank() && !tags["traffic_calming"].isNullOrBlank())
+        val name = if ((!tags["crossing"].isNullOrBlank() && !tags["traffic_calming"].isNullOrBlank())
+                        || tags["type"] == "restriction")
             tags.entries
         else
             featureName.value ?: tags.entries
