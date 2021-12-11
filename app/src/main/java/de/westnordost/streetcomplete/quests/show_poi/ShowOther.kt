@@ -13,10 +13,7 @@ class ShowOther : OsmFilterQuestType<Boolean>() {
          or historic
          or club
          or information and information !~ office
-         or tourism = viewpoint
-         or tourism = artwork
-         or tourism = wilderness_hut
-         or pipeline = marker
+         or tourism ~ viewpoint|artworks|wilderness_hut
          or """.trimIndent() +
 
         mapOf(
@@ -51,6 +48,7 @@ class ShowOther : OsmFilterQuestType<Boolean>() {
     override val wikiLink = "nope"
     override val icon = R.drawable.ic_quest_fire_hydrant
     override val dotColor = "gold"
+    override val defaultDisabledMessage = R.string.default_disabled_msg_poi_other
 
     override fun getTitle(tags: Map<String, String>) =
         R.string.quest_thisIsOther_title

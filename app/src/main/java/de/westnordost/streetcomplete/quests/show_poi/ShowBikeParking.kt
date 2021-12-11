@@ -7,15 +7,14 @@ import de.westnordost.streetcomplete.quests.NoAnswerFragment
 
 class ShowBikeParking : OsmFilterQuestType<Boolean>() {
     override val elementFilter = """
-        nodes, ways, relations with amenity = bicycle_parking
-        or amenity = bicycle_rental
-        or amenity = bicycle_repair_station
-        or amenity = compressed_air
+        nodes, ways, relations with
+          amenity ~ bicycle_parking|bicycle_rental|bicycle_repair_station|compressed_air
     """
     override val commitMessage = "I hope this does not get committed"
     override val wikiLink = "nope"
     override val icon = R.drawable.ic_quest_bicycle_parking_cover // replace later, but need own icon...
     override val dotColor = "violet"
+    override val defaultDisabledMessage = R.string.default_disabled_msg_poi_bike
 
     override fun getTitle(tags: Map<String, String>) =
         R.string.quest_thisIsOther_title

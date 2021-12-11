@@ -7,14 +7,15 @@ import de.westnordost.streetcomplete.data.osm.osmquests.OsmFilterQuestType
 class ShowFixme : OsmFilterQuestType<Boolean>() {
     override val elementFilter = """
         nodes, ways, relations with
-        (fixme or FIXME)
-        and fixme !~ "continue|continue?|yes|Baum oder Strauch|Use for reference, adjust surroundings using the description, but please do NOT move."
-        and FIXME !~ continue|continue?|yes
+          (fixme or FIXME)
+          and fixme !~ "continue|continue?|yes|Baum oder Strauch|Use for reference, adjust surroundings using the description, but please do NOT move."
+          and FIXME !~ continue|continue?|yes
     """
     override val commitMessage = "Remove fixme"
     override val wikiLink = "key:fixme"
     override val icon = R.drawable.ic_quest_create_note
     override val dotColor = "red"
+    override val defaultDisabledMessage = R.string.default_disabled_msg_poi_fixme
 
     override fun getTitle(tags: Map<String, String>) = R.string.quest_fixme_title
 

@@ -22,6 +22,7 @@ class ShowVacant : OsmFilterQuestType<ShopTypeAnswer>() {
     override val wikiLink = "Key:disused:"
     override val icon = R.drawable.ic_quest_wheelchair_shop
     override val dotColor = "grey"
+    override val defaultDisabledMessage = R.string.default_disabled_msg_poi_vacant
 
     override fun getTitle(tags: Map<String, String>) =
         R.string.quest_thisIsVacant_title

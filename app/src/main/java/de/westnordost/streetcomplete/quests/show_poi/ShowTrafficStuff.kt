@@ -21,13 +21,15 @@ class ShowTrafficStuff : OsmFilterQuestType<Boolean>() {
     override val wikiLink = "key:traffic_calming"
     override val icon = R.drawable.ic_quest_railway // replace later, but need own icon...
     override val dotColor = "deepskyblue"
+    override val defaultDisabledMessage = R.string.default_disabled_msg_poi_traffic
 
     override fun getTitle(tags: Map<String, String>) =
         R.string.quest_thisIsOther_title
 
     override fun getTitleArgs(tags: Map<String, String>, featureName: Lazy<String?>): Array<String> {
         val name = if ((!tags["crossing"].isNullOrBlank() && !tags["traffic_calming"].isNullOrBlank())
-                        || tags["type"] == "restriction")
+                        || tags["type"] == "restriction"
+                        || tags["highway"] == "elevator")
             tags.entries
         else
             featureName.value ?: tags.entries

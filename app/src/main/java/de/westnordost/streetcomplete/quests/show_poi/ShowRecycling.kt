@@ -8,16 +8,13 @@ import de.westnordost.streetcomplete.quests.NoAnswerFragment
 class ShowRecycling : OsmFilterQuestType<Boolean>() {
     override val elementFilter = """
         nodes, ways, relations with
-        amenity = recycling
-        or amenity = waste_basket
-        or amenity = waste_disposal
-        or amenity = waste_transfer_station
-        or amenity = sanitary_dump_station
+          amenity ~ recycling|waste_basket|waste_disposal|waste_transfer_station|sanitary_dump_station
     """
-    override val commitMessage = "I hope this does not get committed"
+    override val commitMessage = "Add excrement bag dispenser"
     override val wikiLink = "nope"
     override val icon = R.drawable.ic_quest_recycling
     override val dotColor = "green"
+    override val defaultDisabledMessage = R.string.default_disabled_msg_poi_recycling
 
     override fun getTitle(tags: Map<String, String>) =
         R.string.quest_thisIsOther_title

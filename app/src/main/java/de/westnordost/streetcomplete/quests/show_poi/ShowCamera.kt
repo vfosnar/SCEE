@@ -7,20 +7,20 @@ import de.westnordost.streetcomplete.quests.NoAnswerFragment
 
 class ShowCamera : OsmFilterQuestType<Boolean>() {
     override val elementFilter = """
-        nodes, ways, relations with man_made = surveillance
+        nodes, ways, relations with
+          man_made = surveillance
     """
     override val commitMessage = "I hope this does not get committed"
     override val wikiLink = "nope"
     override val icon = R.drawable.ic_quest_blind_traffic_lights
     override val dotColor = "mediumvioletred"
+    override val defaultDisabledMessage = R.string.default_disabled_msg_poi_camera
 
     override fun getTitle(tags: Map<String, String>) =
         R.string.quest_thisIsOther_title
 
-    override fun getTitleArgs(tags: Map<String, String>, featureName: Lazy<String?>): Array<String> {
-        val name = tags.entries
-        return arrayOf(name.toString())
-    }
+    override fun getTitleArgs(tags: Map<String, String>, featureName: Lazy<String?>) =
+        arrayOf(tags.entries.toString())
 
     override fun createForm() = NoAnswerFragment()
 

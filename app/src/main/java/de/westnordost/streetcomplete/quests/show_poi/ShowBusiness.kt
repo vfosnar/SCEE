@@ -61,6 +61,7 @@ class ShowBusiness : OsmFilterQuestType<Boolean>() {
     override val icon = R.drawable.ic_quest_opening_hours
     override val dotColor = "orange"
     override val isReplaceShopEnabled = true
+    override val defaultDisabledMessage = R.string.default_disabled_msg_poi_business
 
     override fun getTitle(tags: Map<String, String>) =
         if (hasProperName(tags))
