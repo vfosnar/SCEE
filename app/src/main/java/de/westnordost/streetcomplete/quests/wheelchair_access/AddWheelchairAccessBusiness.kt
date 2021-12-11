@@ -19,7 +19,6 @@ class AddWheelchairAccessBusiness(
           and !wheelchair
           and (
             shop and shop !~ no|vacant
-            or amenity = parking and parking = multi-storey
             or amenity = recycling and recycling_type = centre
             or tourism = information and information = office
             or """.trimIndent() +
