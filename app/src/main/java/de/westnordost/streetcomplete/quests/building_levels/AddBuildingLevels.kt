@@ -18,6 +18,9 @@ class AddBuildingLevels(private val prefs: SharedPreferences) : OsmFilterQuestTy
          and !man_made
          and location != underground
          and ruins != yes
+         and (building != yes
+          or (!man_made and !historic and !military and !power and !attraction and !amenity and !leisure and !aeroway)
+         )
     """
     override val commitMessage = "Add building and roof levels"
     override val wikiLink = "Key:building:levels"
