@@ -8,7 +8,7 @@ import de.westnordost.streetcomplete.quests.NoAnswerFragment
 class ShowMachine : OsmFilterQuestType<Boolean>() {
     override val elementFilter = """
         nodes, ways with
-          amenity = vending_machine|atm|telephone|charging_station|device_charging_station
+          amenity ~ vending_machine|atm|telephone|charging_station|device_charging_station
           or atm = yes and (amenity or shop)
     """
     override val commitMessage = "I hope this does not get committed"

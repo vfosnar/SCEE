@@ -57,7 +57,7 @@ class ShowBusiness : OsmFilterQuestType<Boolean>() {
         "\n)"
 
     override val commitMessage = "Change shop/business"
-    override val wikiLink = "nope"
+    override val wikiLink = "Key:shop"
     override val icon = R.drawable.ic_quest_opening_hours
     override val dotColor = "orange"
     override val isReplaceShopEnabled = true

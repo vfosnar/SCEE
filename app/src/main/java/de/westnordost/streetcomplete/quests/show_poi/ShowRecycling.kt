@@ -11,7 +11,7 @@ class ShowRecycling : OsmFilterQuestType<Boolean>() {
           amenity ~ recycling|waste_basket|waste_disposal|waste_transfer_station|sanitary_dump_station
     """
     override val commitMessage = "Add excrement bag dispenser"
-    override val wikiLink = "nope"
+    override val wikiLink = "Key:vending_machine"
     override val icon = R.drawable.ic_quest_recycling
     override val dotColor = "green"
     override val defaultDisabledMessage = R.string.default_disabled_msg_poi_recycling

@@ -12,7 +12,7 @@ class ShowFixme : OsmFilterQuestType<Boolean>() {
           and FIXME !~ continue|continue?|yes
     """
     override val commitMessage = "Remove fixme"
-    override val wikiLink = "key:fixme"
+    override val wikiLink = "Key:fixme"
     override val icon = R.drawable.ic_quest_create_note
     override val dotColor = "red"
     override val defaultDisabledMessage = R.string.default_disabled_msg_poi_fixme

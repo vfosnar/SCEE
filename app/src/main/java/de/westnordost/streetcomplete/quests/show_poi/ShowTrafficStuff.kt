@@ -18,7 +18,7 @@ class ShowTrafficStuff : OsmFilterQuestType<Boolean>() {
          """
 
     override val commitMessage = "Add raised crossing"
-    override val wikiLink = "key:traffic_calming"
+    override val wikiLink = "Key:traffic_calming"
     override val icon = R.drawable.ic_quest_railway // replace later, but need own icon...
     override val dotColor = "deepskyblue"
     override val defaultDisabledMessage = R.string.default_disabled_msg_poi_traffic
