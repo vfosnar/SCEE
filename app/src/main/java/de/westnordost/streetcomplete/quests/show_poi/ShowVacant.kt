@@ -13,7 +13,6 @@ class ShowVacant : OsmFilterQuestType<ShopTypeAnswer>() {
     override val elementFilter = """
         nodes, ways, relations with
         shop = vacant
-        or shop = no
         or disused:shop
         or disused:amenity
         or disused:office
