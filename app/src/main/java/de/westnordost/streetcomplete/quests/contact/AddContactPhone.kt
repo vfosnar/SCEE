@@ -44,7 +44,7 @@ val PLACES_FOR_CONTACT_QUESTS = mapOf(
 "zoo", "aquarium", "gallery", "museum",
 ),
 "shop" to arrayOf(
-"beauty", "massage", "hairdresser","wool","tattoo","electrical","florist","glaziery",
+"beauty", "massage", "hairdresser","wool","tattoo","electrical","glaziery",
 "computer","electronics","hifi","bicycle","outdoor","sports","art","craft","model",
 "musical_instrument","camera","books","travel_agency","cheese","chocolate","coffee","health_food"
 ),
