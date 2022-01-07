@@ -6,7 +6,7 @@ import de.westnordost.streetcomplete.data.osm.osmquests.OsmFilterQuestType
 import de.westnordost.streetcomplete.data.osm.edits.update_tags.StringMapChangesBuilder
 import de.westnordost.streetcomplete.data.user.achievements.QuestTypeAchievement.CAR
 
-class AddRoadSurface : OsmFilterQuestType<SurfaceAnswer>() {
+class AddRoadSurface : OsmFilterQuestType<SurfaceOrIsStepsAnswer>() {
 
     override val elementFilter = """
         ways with (
@@ -45,12 +45,11 @@ class AddRoadSurface : OsmFilterQuestType<SurfaceAnswer>() {
 
     override fun createForm() = AddRoadSurfaceForm()
 
-    override fun applyAnswerTo(answer: SurfaceAnswer, changes: StringMapChangesBuilder) {
-        answer.applyTo(changes, "surface")
-            }
-            is PrivateAnswer -> {
-                changes.addOrModify("access", "private")
-                return
+    override fun applyAnswerTo(answer: SurfaceOrIsStepsAnswer, changes: StringMapChangesBuilder) {
+        if (answer is SurfaceAnswer)
+            answer.applyTo(changes, "surface")
+        else if (answer is IsPrivateAnswer)
+            changes.addOrModify("access", "private")
     }
 
     companion object {

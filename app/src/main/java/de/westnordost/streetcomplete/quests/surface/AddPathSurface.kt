@@ -51,9 +51,8 @@ class AddPathSurface : OsmFilterQuestType<SurfaceOrIsStepsAnswer>() {
             is SurfaceAnswer -> {
                 answer.applyTo(changes, "surface")
             }
-            is PrivateAnswer -> {
+            is IsPrivateAnswer -> {
                 changes.addOrModify("access", "private")
-                return
             }
             is IsActuallyStepsAnswer -> {
                 changes.modify("highway", "steps")

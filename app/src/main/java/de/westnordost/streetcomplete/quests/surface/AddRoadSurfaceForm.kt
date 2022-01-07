@@ -6,9 +6,9 @@ import de.westnordost.streetcomplete.quests.AImageListQuestAnswerFragment
 import de.westnordost.streetcomplete.quests.AnswerItem
 import de.westnordost.streetcomplete.view.image_select.Item
 
-class AddRoadSurfaceForm : AImageListQuestAnswerFragment<Surface, SurfaceAnswer>() {
+class AddRoadSurfaceForm : AImageListQuestAnswerFragment<Surface, SurfaceOrIsStepsAnswer>() {
     override val otherAnswers = listOf(
-        AnswerItem(R.string.quest_way_private) { applyAnswer(PrivateAnswer()) }
+        AnswerItem(R.string.quest_way_private) { applyAnswer(IsPrivateAnswer) }
     )
 
     override val items: List<Item<Surface>>

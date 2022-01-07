@@ -10,7 +10,7 @@ import de.westnordost.streetcomplete.view.image_select.Item
 
 class AddPathSurfaceForm : AImageListQuestAnswerFragment<Surface, SurfaceOrIsStepsAnswer>() {
     override val otherAnswers get() = listOfNotNull(
-        AnswerItem(R.string.quest_way_private) { applyAnswer(PrivateAnswer()) },
+        AnswerItem(R.string.quest_way_private) { applyAnswer(IsPrivateAnswer) },
         createConvertToStepsAnswer()
     )
 
