@@ -124,6 +124,7 @@ class MainFragment : Fragment(R.layout.fragment_main),
     private var inverted = false
 
     interface Listener {
+        fun onMapInitialized()
         fun onQuestSolved(quest: Quest, source: String?)
         fun onCreatedNote(screenPosition: Point)
     }
@@ -254,7 +255,8 @@ class MainFragment : Fragment(R.layout.fragment_main),
         binding.gpsTrackingButton.isActivated =  mapFragment?.isFollowingPosition ?: false
         binding.gpsTrackingButton.isNavigation = mapFragment?.isNavigationMode ?: false
         updateLocationPointerPin()
-        mapFragment?.show3DBuildings = prefs.getBoolean(Prefs.SHOW_3D_BUILDINGS, true) // not working here
+        mapFragment?.show3DBuildings = prefs.getBoolean(Prefs.SHOW_3D_BUILDINGS, true)
+        listener?.onMapInitialized()
     }
 
     override fun onMapIsChanging(position: LatLon, rotation: Float, tilt: Float, zoom: Float) {

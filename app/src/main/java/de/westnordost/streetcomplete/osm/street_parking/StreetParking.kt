@@ -32,24 +32,41 @@ enum class ParkingPosition {
     HALF_ON_KERB,
     ON_KERB,
     STREET_SIDE,
-    PAINTED_AREA_ONLY,
-    SHOULDER
+    PAINTED_AREA_ONLY
 }
 
 val StreetParking.estimatedWidthOnRoad: Float get() = when(this) {
-    is StreetParkingPositionAndOrientation -> when(orientation) {
-        PARALLEL -> 2f * position.estimatedWidthFactor
-        DIAGONAL -> 3f * position.estimatedWidthFactor
-        PERPENDICULAR -> 4f * position.estimatedWidthFactor
-    }
+    is StreetParkingPositionAndOrientation -> orientation.estimatedWidth * position.estimatedWidthOnRoadFactor
     else -> 0f // otherwise let's assume it's not on the street itself
 }
 
-val ParkingPosition.estimatedWidthFactor: Float get() = when(this) {
+val StreetParking.estimatedWidthOffRoad: Float get() = when(this) {
+    is StreetParkingPositionAndOrientation -> orientation.estimatedWidth * (1 - position.estimatedWidthOnRoadFactor)
+    else -> 0f // otherwise let's assume it's not on the street itself
+}
+
+private val ParkingOrientation.estimatedWidth: Float get() = when(this) {
+    PARALLEL -> 2f
+    DIAGONAL -> 3f
+    PERPENDICULAR -> 4f
+}
+
+private val ParkingPosition.estimatedWidthOnRoadFactor: Float get() = when(this) {
     ON_STREET -> 1f
     HALF_ON_KERB -> 0.5f
     ON_KERB -> 0f
     else -> 0.5f // otherwise let's assume it is somehow on the street
+}
+
+/** get the OSM value for the parking:lane key */
+fun StreetParking.toOsmLaneValue(): String? = when(this) {
+    is StreetParkingPositionAndOrientation -> orientation.toOsmValue()
+    NoStreetParking -> "no"
+    StreetParkingSeparate -> "separate"
+    StreetParkingProhibited -> "no_parking"
+    StreetStandingProhibited -> "no_standing"
+    StreetStoppingProhibited -> "no_stopping"
+    UnknownStreetParking, IncompleteStreetParking -> null
 }
 
 fun ParkingPosition.toOsmValue() = when(this) {
@@ -58,7 +75,6 @@ fun ParkingPosition.toOsmValue() = when(this) {
     ON_KERB -> "on_kerb"
     STREET_SIDE -> "street_side"
     PAINTED_AREA_ONLY -> "painted_area_only"
-    SHOULDER -> "shoulder"
 }
 
 fun ParkingOrientation.toOsmValue() = when(this) {

@@ -1,7 +1,9 @@
-package de.westnordost.streetcomplete.quests.cycleway
+package de.westnordost.streetcomplete.osm.cycleway
 
 import de.westnordost.streetcomplete.ktx.containsAny
-import de.westnordost.streetcomplete.quests.cycleway.Cycleway.*
+import de.westnordost.streetcomplete.osm.cycleway.Cycleway.*
+import de.westnordost.streetcomplete.osm.isForwardOneway
+import de.westnordost.streetcomplete.osm.isReversedOneway
 
 data class LeftAndRightCycleway(val left: Cycleway?, val right: Cycleway?)
 
@@ -9,8 +11,8 @@ data class LeftAndRightCycleway(val left: Cycleway?, val right: Cycleway?)
 fun createCyclewaySides(tags: Map<String, String>, isLeftHandTraffic: Boolean): LeftAndRightCycleway? {
     if (!tags.keys.containsAny(KNOWN_CYCLEWAY_KEYS)) return null
 
-    val isForwardOneway = tags["oneway"] == "yes" || (tags["junction"] == "roundabout" && tags["oneway"] != "-1")
-    val isReversedOneway = tags["oneway"] == "-1"
+    val isForwardOneway = isForwardOneway(tags)
+    val isReversedOneway = isReversedOneway(tags)
     val isOneway = isReversedOneway || isForwardOneway
     val isReverseSideRight = isReversedOneway xor isLeftHandTraffic
 

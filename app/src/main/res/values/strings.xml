@@ -77,7 +77,7 @@
     <string name="quest_noteDiscussion_anonymous">"Anonymous"</string>
     <string name="confirmation_discard_title">"Discard input?"</string>
     <string name="confirmation_discard_positive">"Discard"</string>
-    <string name="confirmation_discard_negative">"Cancel"</string>
+    <string name="confirmation_discard_negative2">"No"</string>
     <string name="action_download">"Scan for quests here"</string>
     <string name="action_upload">"Upload answers"</string>
     <string name="no_changes">"You did not give any answer"</string>
@@ -96,7 +96,7 @@
     <string name="action_about2">"About"</string>
     <string name="about_summary_current_version">"Current version: %s"</string>
     <string name="about_title_authors">"Credits"</string>
-    <string name="about_summary_authors">"© 2016–2021 Tobias Zwick and contributors"</string>
+    <string name="about_summary_authors">"© %s Tobias Zwick and contributors"</string>
     <string name="about_title_repository">"Source Repository"</string>
     <string name="about_summary_repository">"on GitHub"</string>
     <string name="about_title_faq">"FAQ"</string>
@@ -436,7 +436,7 @@ Otherwise, you can download another keyboard in the app store. Popular keyboards
     <string name="produce_tung_nuts">Tung nuts</string>
     <string name="quest_parkingType_title">What kind of parking is this?</string>
     <string name="quest_parkingType_surface">Parking lot</string>
-    <string name="quest_parkingType_street_side">Parking just off the roadway</string>
+    <string name="quest_parkingType_street_side">Parking adjacent to the roadway</string>
     <string name="quest_parkingType_lane">Parking on roadway</string>
     <string name="quest_parkingType_underground">Underground garage</string>
     <string name="quest_parkingType_multiStorage">Parking garage</string>
@@ -456,7 +456,9 @@ Otherwise, you can download another keyboard in the app store. Popular keyboards
     <string name="quest_powerPolesMaterial_concrete">Concrete</string>
     <string name="quest_maxspeed_answer_advisory_speed_limit">Just an advisory speed limit…</string>
     <string name="quest_address_answer_house_name">No house number but a name…</string>
+    <string name="quest_address_answer_house_name_and_housenumber">Both a house number and a name…</string>
     <string name="quest_address_house_name_label">House name:</string>
+    <string name="quest_address_house_number_label">House number:</string>
     <string name="quest_buildingLevels_roofLevelsLabel2">levels in the roof</string>
     <string name="quest_buildingLevels_levelsLabel2">regular levels (not counting the roof)</string>
     <string name="quest_cycleway_value_track">cycle track</string>
@@ -1140,6 +1142,11 @@ If you are overwhelmed by the number of quests, you can always fine-tune which q
     <string name="quest_cuisine_title">What cuisine does %s have?</string>
     <string name="quest_healthcare_speciality_title">What healthcare speciailties does %s have? Use suggested OSM tags!</string>
     <string name="quest_picnicTableCover_title">Is this picnic table covered (protected from rain)?</string>
+    <string name="quest_fireHydrant_position_title">Where is this fire hydrant located?</string>
+    <string name="quest_fireHydrant_position_green">In grass or dirt</string>
+    <string name="quest_fireHydrant_position_lane">On the roadway</string>
+    <string name="quest_fireHydrant_position_sidewalk">On the sidewalk</string>
+    <string name="quest_fireHydrant_position_parking_lot">In a parking spot</string>
     <string name="quest_bicycle_barrier_type_title">What type of bicycle barrier is this?</string>
     <string name="quest_barrier_bicycle_type_diagonal">Diagonal to the path</string>
     <string name="quest_barrier_bicycle_type_tilted">Narrow passage, smaller toward top</string>
@@ -1164,7 +1171,7 @@ If you are overwhelmed by the number of quests, you can always fine-tune which q
     <string name="quest_level_title">On which level number is %s located?</string>
     <string name="pref_title_language_select">Select language</string>
     <string name="language_default">System default</string>
-    <string name="quest_street_parking_title">"How do cars park here, if at all?"</string>
+    <string name="quest_street_parking_title">"How can cars park here, if at all?"</string>
     <string name="select_street_parking_orientation">"Select orientation toward roadway:"</string>
     <string name="select_street_parking_position">"Select position:"</string>
     <string name="select_street_parking_no">"Any sign or road marking here?"</string>
@@ -1173,10 +1180,9 @@ If you are overwhelmed by the number of quests, you can always fine-tune which q
     <string name="street_parking_perpendicular">"Perpendicular"</string>
     <string name="street_parking_on_street">"On roadway"</string>
     <string name="street_parking_half_on_kerb">"Partially on roadway"</string>
-    <string name="street_parking_on_kerb">"Beside roadway"</string>
-    <string name="street_parking_street_side">"Beside roadway only in dedicated spaces"</string>
+    <string name="street_parking_on_kerb">"Adjacent to roadway"</string>
+    <string name="street_parking_street_side">"Adjacent to roadway only in dedicated spaces"</string>
     <string name="street_parking_painted_area_only">"On roadway only in dedicated spaces"</string>
-    <string name="street_parking_shoulder">"On shoulder"</string>
     <string name="street_parking_separate">Parking displayed separately on map</string>
     <string name="street_parking_no">No parking here / Not allowed</string>
     <string name="street_parking_prohibited">No parking</string>
@@ -1186,5 +1192,10 @@ If you are overwhelmed by the number of quests, you can always fine-tune which q
     <string name="street_parking_no_other_reasons">No explicit sign / parking not possible</string>
     <string name="street_parking_conditional_restrictions_hint">"If it is possible to park or stop at all here, first answer how those that are allowed to, do park here. What restrictions apply exactly can be specified later.
 
-Alternatively, you can leave a note (with a photo)"</string>
+Alternatively, you can leave a note (with a photo)."</string>
+    <string name="quest_shoulder_title">"Does this road have a shoulder?"</string>
+    <string name="quest_fireHydrant_diameter_ref_title">What diameter is specified on the sign for this fire hydrant? (reference number: %s)</string>
+    <string name="link_osmhydrant_description">"Lookup, add and edit fire stations and fire hydrants"</string>
+    <string name="achievement_lifesaver_title">Lifesaver</string>
+    <string name="achievement_lifesaver_solved_X">You solved %d quests that help emergency services and first responders!</string>
 </resources>

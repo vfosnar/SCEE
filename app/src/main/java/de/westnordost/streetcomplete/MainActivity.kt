@@ -112,7 +112,6 @@ class MainActivity : BaseActivity(),
                 userUpdater.update()
             }
         }
-        handleGeoUri()
     }
 
     private fun handleGeoUri() {
@@ -294,6 +293,10 @@ class MainActivity : BaseActivity(),
 
     override fun onCreatedNote(screenPosition: Point) {
         lifecycleScope.launch { ensureLoggedIn() }
+    }
+
+    override fun onMapInitialized() {
+        handleGeoUri()
     }
 
     /* ------------------------------- TutorialFragment.Listener -------------------------------- */

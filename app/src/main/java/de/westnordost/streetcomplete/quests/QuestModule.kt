@@ -37,7 +37,8 @@ import de.westnordost.streetcomplete.quests.diet_type.AddVegetarian
 import de.westnordost.streetcomplete.quests.ferry.AddFerryAccessMotorVehicle
 import de.westnordost.streetcomplete.quests.ferry.AddFerryAccessPedestrian
 import de.westnordost.streetcomplete.quests.fire_hydrant.AddFireHydrantType
-import de.westnordost.streetcomplete.quests.fire_hydrant.AddFireHydrantDiameter
+import de.westnordost.streetcomplete.quests.fire_hydrant.AddFireHydrantPosition
+import de.westnordost.streetcomplete.quests.fire_hydrant_diameter.AddFireHydrantDiameter
 import de.westnordost.streetcomplete.quests.foot.AddProhibitedForPedestrians
 import de.westnordost.streetcomplete.quests.general_fee.AddGeneralFee
 import de.westnordost.streetcomplete.quests.handrail.AddHandrail
@@ -109,6 +110,7 @@ import de.westnordost.streetcomplete.quests.service_building.AddServiceBuildingO
 import de.westnordost.streetcomplete.quests.service_building.AddServiceBuildingType
 import de.westnordost.streetcomplete.quests.shop_type.CheckShopType
 import de.westnordost.streetcomplete.quests.shop_type.SpecifyShopType
+import de.westnordost.streetcomplete.quests.shoulder.AddShoulder
 import de.westnordost.streetcomplete.quests.sidewalk.AddSidewalk
 import de.westnordost.streetcomplete.quests.sport.AddSport
 import de.westnordost.streetcomplete.quests.steps_incline.AddStepsIncline
@@ -273,6 +275,7 @@ import javax.inject.Singleton
         AddCameraType(),
 
         AddFireHydrantType(),
+        AddFireHydrantPosition(),
         AddFireHydrantDiameter(),
 
         /* ↓ 2.solvable when right in front of it but takes longer to input --------------------- */
@@ -363,6 +366,7 @@ import javax.inject.Singleton
         AddCycleway(countryInfos), // for any cyclist routers (and cyclist maps)
         AddLanes(), // abstreet, certainly most routing engines - often requires way to be split
         AddStreetParking(),
+        AddShoulder(),
 
         // footways
         AddPathSurface(), // used by OSM Carto, BRouter, OsmAnd, OSRM, graphhopper...
