@@ -37,7 +37,7 @@ import de.westnordost.streetcomplete.quests.diet_type.AddVegetarian
 import de.westnordost.streetcomplete.quests.ferry.AddFerryAccessMotorVehicle
 import de.westnordost.streetcomplete.quests.ferry.AddFerryAccessPedestrian
 import de.westnordost.streetcomplete.quests.fire_hydrant.AddFireHydrantType
-import de.westnordost.streetcomplete.quests.fire_hydrant.AddFireHydrantPosition
+import de.westnordost.streetcomplete.quests.fire_hydrant_position.AddFireHydrantPosition
 import de.westnordost.streetcomplete.quests.fire_hydrant_diameter.AddFireHydrantDiameter
 import de.westnordost.streetcomplete.quests.foot.AddProhibitedForPedestrians
 import de.westnordost.streetcomplete.quests.general_fee.AddGeneralFee
@@ -112,6 +112,7 @@ import de.westnordost.streetcomplete.quests.shop_type.CheckShopType
 import de.westnordost.streetcomplete.quests.shop_type.SpecifyShopType
 import de.westnordost.streetcomplete.quests.shoulder.AddShoulder
 import de.westnordost.streetcomplete.quests.sidewalk.AddSidewalk
+import de.westnordost.streetcomplete.quests.smoothness.*
 import de.westnordost.streetcomplete.quests.sport.AddSport
 import de.westnordost.streetcomplete.quests.steps_incline.AddStepsIncline
 import de.westnordost.streetcomplete.quests.steps_ramp.AddStepsRamp
@@ -365,8 +366,10 @@ import javax.inject.Singleton
         AddTracktype(), // widely used in map rendering - OSM Carto, OsmAnd...
         AddCycleway(countryInfos), // for any cyclist routers (and cyclist maps)
         AddLanes(), // abstreet, certainly most routing engines - often requires way to be split
-        AddStreetParking(),
+        // AddStreetParking(),
         AddShoulder(),
+        AddRoadSmoothness(),
+        AddPathSmoothness(),
 
         // footways
         AddPathSurface(), // used by OSM Carto, BRouter, OsmAnd, OSRM, graphhopper...
