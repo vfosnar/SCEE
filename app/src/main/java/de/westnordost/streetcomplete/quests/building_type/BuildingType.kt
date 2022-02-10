@@ -3,6 +3,7 @@ package de.westnordost.streetcomplete.quests.building_type
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.ABANDONED
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.ALLOTMENT_HOUSE
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.APARTMENTS
+import de.westnordost.streetcomplete.quests.building_type.BuildingType.BARN
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.BOATHOUSE
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.BRIDGE
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.BUNGALOW
@@ -12,7 +13,9 @@ import de.westnordost.streetcomplete.quests.building_type.BuildingType.CATHEDRAL
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.CHAPEL
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.CHURCH
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.COLLEGE
+import de.westnordost.streetcomplete.quests.building_type.BuildingType.COWSHED
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.DETACHED
+import de.westnordost.streetcomplete.quests.building_type.BuildingType.DIGESTER
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.DORMITORY
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.FARM
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.FARM_AUXILIARY
@@ -37,6 +40,7 @@ import de.westnordost.streetcomplete.quests.building_type.BuildingType.OFFICE
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.PAGODA
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.PARKING
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.RETAIL
+import de.westnordost.streetcomplete.quests.building_type.BuildingType.RIDING_HALL
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.ROOF
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.RUINS
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.SCHOOL
@@ -46,14 +50,18 @@ import de.westnordost.streetcomplete.quests.building_type.BuildingType.SHED
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.SHRINE
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.SILO
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.SPORTS_CENTRE
+import de.westnordost.streetcomplete.quests.building_type.BuildingType.SPORTS_HALL
+import de.westnordost.streetcomplete.quests.building_type.BuildingType.STABLE
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.STADIUM
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.STATIC_CARAVAN
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.STORAGE_TANK
+import de.westnordost.streetcomplete.quests.building_type.BuildingType.STY
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.SYNAGOGUE
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.TEMPLE
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.TERRACE
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.TOILETS
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.TRAIN_STATION
+import de.westnordost.streetcomplete.quests.building_type.BuildingType.TRANSFORMER_TOWER
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.TRANSPORTATION
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.UNIVERSITY
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.WAREHOUSE

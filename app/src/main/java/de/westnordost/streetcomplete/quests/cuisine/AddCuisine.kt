@@ -1,8 +1,8 @@
 package de.westnordost.streetcomplete.quests.cuisine
 
 import de.westnordost.streetcomplete.R
-import de.westnordost.streetcomplete.data.osm.edits.update_tags.StringMapChangesBuilder
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmFilterQuestType
+import de.westnordost.streetcomplete.data.osm.osmquests.Tags
 
 class AddCuisine : OsmFilterQuestType<String>() {
 
@@ -14,7 +14,7 @@ class AddCuisine : OsmFilterQuestType<String>() {
         )
         and name and !cuisine
     """
-    override val commitMessage = "Add cuisine"
+    override val changesetComment = "Add cuisine"
     override val wikiLink = "Key:cuisine"
     override val icon = R.drawable.ic_quest_restaurant_vegan
     override val isReplaceShopEnabled = true
@@ -24,7 +24,7 @@ class AddCuisine : OsmFilterQuestType<String>() {
 
     override fun createForm() = AddCuisineForm()
 
-    override fun applyAnswerTo(answer: String, changes: StringMapChangesBuilder) {
-        changes.add("cuisine", answer)
+    override fun applyAnswerTo(answer: String, tags: Tags, timestampEdited: Long) {
+        tags["cuisine"] = answer
     }
 }

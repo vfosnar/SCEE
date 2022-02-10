@@ -1,16 +1,15 @@
 package de.westnordost.streetcomplete.quests.show_poi
 
 import de.westnordost.streetcomplete.R
-import de.westnordost.streetcomplete.data.osm.edits.update_tags.StringMapChangesBuilder
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmFilterQuestType
-import de.westnordost.streetcomplete.quests.NoAnswerFragment
+import de.westnordost.streetcomplete.data.osm.osmquests.Tags
 
 class ShowRecycling : OsmFilterQuestType<Boolean>() {
     override val elementFilter = """
         nodes, ways, relations with
           amenity ~ recycling|waste_basket|waste_disposal|waste_transfer_station|sanitary_dump_station
     """
-    override val commitMessage = "Add excrement bag dispenser"
+    override val changesetComment = "Add excrement bag dispenser"
     override val wikiLink = "Key:vending_machine"
     override val icon = R.drawable.ic_quest_recycling
     override val dotColor = "green"
@@ -29,11 +28,11 @@ class ShowRecycling : OsmFilterQuestType<Boolean>() {
 
     override fun createForm() = ShowRecyclingAnswerForm()
 
-    override fun applyAnswerTo(answer: Boolean, changes: StringMapChangesBuilder) {
+    override fun applyAnswerTo(answer: Boolean, tags: Tags, timestampEdited: Long) {
         if (answer) {
-            changes.modify("amenity", "vending_machine")
-            changes.add("vending", "excrement_bags")
-            changes.add("bin", "yes")
+            tags["amenity"] = "vending_machine"
+            tags["vending"] = "excrement_bags"
+            tags["bin"] = "yes"
         }
     }
 }

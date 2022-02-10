@@ -79,6 +79,6 @@ class AddCrossingType : OsmElementQuestType<CrossingType> {
             }
         }
         if (answer.raised)
-            changes.add("traffic_calming", "table")
+            tags["traffic_calming"] = "table"
     }
 }

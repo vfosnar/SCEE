@@ -2,7 +2,7 @@ package de.westnordost.streetcomplete.quests.surface
 import de.westnordost.streetcomplete.R
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmFilterQuestType
 import de.westnordost.streetcomplete.data.osm.edits.update_tags.StringMapChangesBuilder
-
+import de.westnordost.streetcomplete.data.osm.osmquests.Tags
 
 class RemoveWrongSurface : OsmFilterQuestType<WrongSurfaceAnswer>() {
     override val elementFilter = """
@@ -13,7 +13,7 @@ class RemoveWrongSurface : OsmFilterQuestType<WrongSurfaceAnswer>() {
           and !note:surface
     """
 
-    override val commitMessage = "Remove wrong surface info"
+    override val changesetComment = "Remove wrong surface info"
     override val wikiLink = "Key:surface"
     override val icon = R.drawable.ic_quest_tractor
     override val isSplitWayEnabled = true
@@ -22,13 +22,13 @@ class RemoveWrongSurface : OsmFilterQuestType<WrongSurfaceAnswer>() {
 
     override fun createForm() = RemoveWrongSurfaceForm()
 
-    override fun applyAnswerTo(answer: WrongSurfaceAnswer, changes: StringMapChangesBuilder) {
+    override fun applyAnswerTo(answer: WrongSurfaceAnswer, tags: Tags, timestampEdited: Long) {
         when (answer) {
             is TracktypeIsWrong -> {
-                changes.delete("tracktype")
+                tags.remove("tracktype")
             }
             is SpecificSurfaceIsWrong -> {
-                changes.delete("surface")
+                tags.remove("surface")
             }
         }
     }

@@ -3,6 +3,7 @@ package de.westnordost.streetcomplete.quests.show_poi
 import de.westnordost.streetcomplete.R
 import de.westnordost.streetcomplete.data.osm.edits.update_tags.StringMapChangesBuilder
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmFilterQuestType
+import de.westnordost.streetcomplete.data.osm.osmquests.Tags
 import de.westnordost.streetcomplete.ktx.containsAny
 import de.westnordost.streetcomplete.quests.NoAnswerFragment
 
@@ -56,7 +57,7 @@ class ShowBusiness : OsmFilterQuestType<Boolean>() {
         ).map { it.key + " ~ " + it.value.joinToString("|") }.joinToString("\n or ") +
         "\n)"
 
-    override val commitMessage = "Change shop/business"
+    override val changesetComment = "Change shop/business"
     override val wikiLink = "Key:shop"
     override val icon = R.drawable.ic_quest_opening_hours
     override val dotColor = "orange"
@@ -80,6 +81,6 @@ class ShowBusiness : OsmFilterQuestType<Boolean>() {
 
     override fun createForm() = NoAnswerFragment()
 
-    override fun applyAnswerTo(answer: Boolean, changes: StringMapChangesBuilder) {
+    override fun applyAnswerTo(answer: Boolean, tags: Tags, timestampEdited: Long) {
     }
 }

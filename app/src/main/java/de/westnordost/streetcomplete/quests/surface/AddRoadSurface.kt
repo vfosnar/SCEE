@@ -45,7 +45,7 @@ class AddRoadSurface : OsmFilterQuestType<SurfaceOrIsStepsAnswer>() {
 
     override fun createForm() = AddRoadSurfaceForm()
 
-    override fun applyAnswerTo(answer: SurfaceAnswer, tags: Tags, timestampEdited: Long) {
+    override fun applyAnswerTo(answer: SurfaceOrIsStepsAnswer, tags: Tags, timestampEdited: Long) {
         if (answer is SurfaceAnswer)
             answer.applyTo(tags, "surface")
         else if (answer is IsPrivateAnswer)

@@ -23,7 +23,7 @@ class AddBuildingType : OsmElementQuestType<BuildingType> {
         return getBuildingsWithoutAddress(buildings, mapData)
     }
 
-    override val commitMessage = "Add building types"
+    override val changesetComment = "Add building types"
     override val wikiLink = "Key:building"
     override val icon = R.drawable.ic_quest_building
 
@@ -33,8 +33,8 @@ class AddBuildingType : OsmElementQuestType<BuildingType> {
 
     override fun createForm() = AddBuildingTypeForm()
 
-    override fun applyAnswerTo(answer: BuildingType, changes: StringMapChangesBuilder) {
-        applyBuildingAnswer(answer, changes)
+    override fun applyAnswerTo(answer: BuildingType, tags: Tags, timestampEdited: Long) {
+        applyBuildingAnswer(answer, tags, timestampEdited)
     }
 }
 
@@ -60,7 +60,6 @@ val buildingFilter = """
          and abandoned:building != yes
          and ruins != yes and ruined != yes
     """.toElementFilterExpression()
-    override val changesetComment = "Add building types"
 
 private val nodesWithAddressFilter by lazy { """
    nodes with ~"addr:(housenumber|housename|conscriptionnumber|streetnumber|street)"

@@ -1,5 +1,6 @@
 package de.westnordost.streetcomplete.quests
 
+import android.content.SharedPreferences
 import de.westnordost.osmfeatures.FeatureDictionary
 import de.westnordost.streetcomplete.data.meta.CountryInfos
 import de.westnordost.streetcomplete.data.osmnotes.notequests.OsmNoteQuestType
@@ -25,6 +26,7 @@ import de.westnordost.streetcomplete.quests.bollard_type.AddBollardType
 import de.westnordost.streetcomplete.quests.bridge_structure.AddBridgeStructure
 import de.westnordost.streetcomplete.quests.building_levels.AddBuildingLevels
 import de.westnordost.streetcomplete.quests.building_type.AddBuildingType
+import de.westnordost.streetcomplete.quests.building_type.AddBuildingWithAddressType
 import de.westnordost.streetcomplete.quests.building_underground.AddIsBuildingUnderground
 import de.westnordost.streetcomplete.quests.bus_stop_bench.AddBenchStatusOnBusStop
 import de.westnordost.streetcomplete.quests.bus_stop_bin.AddBinStatusOnBusStop
@@ -39,9 +41,12 @@ import de.westnordost.streetcomplete.quests.charging_station_operator.AddChargin
 import de.westnordost.streetcomplete.quests.clothing_bin_operator.AddClothingBinOperator
 import de.westnordost.streetcomplete.quests.construction.MarkCompletedBuildingConstruction
 import de.westnordost.streetcomplete.quests.construction.MarkCompletedHighwayConstruction
+import de.westnordost.streetcomplete.quests.contact.AddContactPhone
+import de.westnordost.streetcomplete.quests.contact.AddContactWebsite
 import de.westnordost.streetcomplete.quests.crossing.AddCrossing
 import de.westnordost.streetcomplete.quests.crossing_island.AddCrossingIsland
 import de.westnordost.streetcomplete.quests.crossing_type.AddCrossingType
+import de.westnordost.streetcomplete.quests.cuisine.AddCuisine
 import de.westnordost.streetcomplete.quests.cycleway.AddCycleway
 import de.westnordost.streetcomplete.quests.defibrillator.AddIsDefibrillatorIndoor
 import de.westnordost.streetcomplete.quests.diet_type.AddHalal
@@ -59,6 +64,7 @@ import de.westnordost.streetcomplete.quests.foot.AddProhibitedForPedestrians
 import de.westnordost.streetcomplete.quests.fuel_service.AddFuelSelfService
 import de.westnordost.streetcomplete.quests.general_fee.AddGeneralFee
 import de.westnordost.streetcomplete.quests.handrail.AddHandrail
+import de.westnordost.streetcomplete.quests.healthcare_speciality.AddHealthcareSpeciality
 import de.westnordost.streetcomplete.quests.internet_access.AddInternetAccess
 import de.westnordost.streetcomplete.quests.kerb_height.AddKerbHeight
 import de.westnordost.streetcomplete.quests.lanes.AddLanes
@@ -101,9 +107,21 @@ import de.westnordost.streetcomplete.quests.road_name.RoadNameSuggestionsSource
 import de.westnordost.streetcomplete.quests.roof_shape.AddRoofShape
 import de.westnordost.streetcomplete.quests.segregated.AddCyclewaySegregation
 import de.westnordost.streetcomplete.quests.self_service.AddSelfServiceLaundry
+import de.westnordost.streetcomplete.quests.service_building.AddServiceBuildingOperator
+import de.westnordost.streetcomplete.quests.service_building.AddServiceBuildingType
 import de.westnordost.streetcomplete.quests.shop_type.CheckShopType
 import de.westnordost.streetcomplete.quests.shop_type.SpecifyShopType
 import de.westnordost.streetcomplete.quests.shoulder.AddShoulder
+import de.westnordost.streetcomplete.quests.show_poi.ShowBench
+import de.westnordost.streetcomplete.quests.show_poi.ShowBikeParking
+import de.westnordost.streetcomplete.quests.show_poi.ShowBusiness
+import de.westnordost.streetcomplete.quests.show_poi.ShowCamera
+import de.westnordost.streetcomplete.quests.show_poi.ShowFixme
+import de.westnordost.streetcomplete.quests.show_poi.ShowMachine
+import de.westnordost.streetcomplete.quests.show_poi.ShowOther
+import de.westnordost.streetcomplete.quests.show_poi.ShowRecycling
+import de.westnordost.streetcomplete.quests.show_poi.ShowTrafficStuff
+import de.westnordost.streetcomplete.quests.show_poi.ShowVacant
 import de.westnordost.streetcomplete.quests.sidewalk.AddSidewalk
 import de.westnordost.streetcomplete.quests.smoothness.AddPathSmoothness
 import de.westnordost.streetcomplete.quests.smoothness.AddRoadSmoothness
@@ -117,6 +135,7 @@ import de.westnordost.streetcomplete.quests.surface.AddFootwayPartSurface
 import de.westnordost.streetcomplete.quests.surface.AddPathSurface
 import de.westnordost.streetcomplete.quests.surface.AddPitchSurface
 import de.westnordost.streetcomplete.quests.surface.AddRoadSurface
+import de.westnordost.streetcomplete.quests.surface.RemoveWrongSurface
 import de.westnordost.streetcomplete.quests.tactile_paving.AddTactilePavingBusStop
 import de.westnordost.streetcomplete.quests.tactile_paving.AddTactilePavingCrosswalk
 import de.westnordost.streetcomplete.quests.tactile_paving.AddTactilePavingKerb
@@ -143,7 +162,7 @@ val questsModule = module {
     factory { WayTrafficFlowDao(get()) }
 
     single {
-        questTypeRegistry(get(), get(), get(named("FeatureDictionaryFuture")), get())
+        questTypeRegistry(get(), get(), get(named("FeatureDictionaryFuture")), get(), get())
     }
 }
 
@@ -152,6 +171,7 @@ fun questTypeRegistry(
     trafficFlowDao: WayTrafficFlowDao,
     featureDictionaryFuture: FutureTask<FeatureDictionary>,
     countryInfos: CountryInfos,
+    sharedPrefs: SharedPreferences,
 ) = QuestTypeRegistry(listOf<QuestType<*>>(
 
     /* The quest types are primarily sorted by how easy they can be solved:
@@ -305,7 +325,7 @@ whether the postbox is still there in countries in which it is enabled */
 
     // shops: text input / opening hours input take longer than other quests
     CheckOpeningHoursSigned(featureDictionaryFuture),
-    AddPlaceName(featureDictionaryFuture),
+    AddPlaceName(featureDictionaryFuture, sharedPrefs),
     SpecifyShopType(),
     CheckShopType(),
     AddOpeningHours(featureDictionaryFuture),
@@ -346,7 +366,7 @@ whether the postbox is still there in countries in which it is enabled */
 
     AddOrchardProduce(), // difficult to find out if the orchard does not carry fruits right now
 
-    AddLevel(), // requires to search for the place on several levels (or at least find a mall map)
+    AddLevel(featureDictionaryFuture, sharedPrefs), // requires to search for the place on several levels (or at least find a mall map)
 
     AddAirConditioning(), // often visible from the outside, if not, visible/feelable inside
 
@@ -377,7 +397,7 @@ whether the postbox is still there in countries in which it is enabled */
     /* ↓ 5.quests that are very numerous ---------------------------------------------------- */
 
     // roads
-    AddSidewalk(), // for any pedestrian routers, needs minimal thinking
+    AddSidewalk(sharedPrefs), // for any pedestrian routers, needs minimal thinking
     AddRoadSurface(), // used by BRouter, OsmAnd, OSRM, graphhopper, HOT map style... - sometimes requires way to be split
     AddTracktype(), // widely used in map rendering - OSM Carto, OsmAnd...
     AddCycleway(countryInfos), // for any cyclist routers (and cyclist maps)
@@ -395,15 +415,35 @@ whether the postbox is still there in countries in which it is enabled */
 
     /* should best be after road surface because it excludes unpaved roads, also, need to search
     *  for the sign which is one reason why it is disabled by default */
-    AddMaxSpeed(),
+    AddMaxSpeed(sharedPrefs),
 
     // buildings
     AddBuildingType(),
-    AddBuildingLevels(),
-    AddRoofShape(countryInfos),
+    AddBuildingLevels(sharedPrefs),
+    AddRoofShape(countryInfos, sharedPrefs),
 
     AddStepCount(), // can only be gathered when walking along this way, also needs the most effort and least useful
 
     /* at the very last because it can be difficult to ascertain during day. used by OsmAnd if "Street lighting" is enabled. (Configure map, Map rendering, Details) */
     AddWayLit(),
+
+    // my added quests
+    AddBuildingWithAddressType(),
+    AddHealthcareSpeciality(),
+    AddCuisine(),
+    RemoveWrongSurface(), // by matkoniecz
+    AddContactPhone(),
+    AddContactWebsite(),
+    AddServiceBuildingOperator(),
+    AddServiceBuildingType(),
+    ShowBikeParking(),
+    ShowBench(),
+    ShowBusiness(),
+    ShowOther(),
+    ShowTrafficStuff(),
+    ShowRecycling(),
+    ShowMachine(),
+    ShowVacant(),
+    ShowCamera(),
+    ShowFixme(),
 ))

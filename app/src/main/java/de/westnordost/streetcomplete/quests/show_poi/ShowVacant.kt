@@ -4,6 +4,7 @@ import de.westnordost.streetcomplete.R
 import de.westnordost.streetcomplete.data.meta.*
 import de.westnordost.streetcomplete.data.osm.edits.update_tags.StringMapChangesBuilder
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmFilterQuestType
+import de.westnordost.streetcomplete.data.osm.osmquests.Tags
 import de.westnordost.streetcomplete.quests.shop_type.IsShopVacant
 import de.westnordost.streetcomplete.quests.shop_type.ShopType
 import de.westnordost.streetcomplete.quests.shop_type.ShopTypeAnswer
@@ -17,7 +18,7 @@ class ShowVacant : OsmFilterQuestType<ShopTypeAnswer>() {
         or disused:amenity
         or disused:office
     """
-    override val commitMessage = "Check if vacant shop is still vacant"
+    override val changesetComment = "Check if vacant shop is still vacant"
     override val wikiLink = "Key:disused:"
     override val icon = R.drawable.ic_quest_wheelchair_shop
     override val dotColor = "grey"
@@ -32,30 +33,22 @@ class ShowVacant : OsmFilterQuestType<ShopTypeAnswer>() {
         return arrayOf(tags.entries.toString())
     }
 
-    override fun applyAnswerTo(answer: ShopTypeAnswer, changes: StringMapChangesBuilder) {
-
+    override fun applyAnswerTo(answer: ShopTypeAnswer, tags: Tags, timestampEdited: Long) {
         when (answer) {
             is IsShopVacant -> {
-                changes.updateCheckDate()
+                tags.updateCheckDate()
             }
             is ShopType -> {
-                changes.deleteCheckDates()
+                tags.removeCheckDates()
 
-                if (!answer.tags.containsKey("shop")) {
-                    changes.deleteIfExists("shop")
-                }
-
-                for ((key, _) in changes.getPreviousEntries()) {
-                    // also deletes all "disused:" keys
-                    val isOkToRemove =
-                        KEYS_THAT_SHOULD_BE_REMOVED_WHEN_SHOP_IS_REPLACED.any { it.matches(key) }
-                    if (isOkToRemove && !answer.tags.containsKey(key)) {
-                        changes.delete(key)
+                for (key in tags.keys) {
+                    if (KEYS_THAT_SHOULD_BE_REMOVED_WHEN_SHOP_IS_REPLACED.any { it.matches(key) }) {
+                        tags.remove(key)
                     }
                 }
 
                 for ((key, value) in answer.tags) {
-                    changes.addOrModify(key, value)
+                    tags[key] = value
                 }
             }
         }

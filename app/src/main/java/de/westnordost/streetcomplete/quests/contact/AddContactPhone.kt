@@ -1,8 +1,8 @@
 package de.westnordost.streetcomplete.quests.contact
 
 import de.westnordost.streetcomplete.R
-import de.westnordost.streetcomplete.data.osm.edits.update_tags.StringMapChangesBuilder
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmFilterQuestType
+import de.westnordost.streetcomplete.data.osm.osmquests.Tags
 
 class AddContactPhone : OsmFilterQuestType<String>() {
 
@@ -14,7 +14,7 @@ class AddContactPhone : OsmFilterQuestType<String>() {
          PLACES_FOR_CONTACT_QUESTS +
         "\n) and !phone and !contact:phone and !contact:mobile and !brand and name"
 
-    override val commitMessage = "Add phone number"
+    override val changesetComment = "Add phone number"
     override val wikiLink = "Key:phone"
     override val icon = R.drawable.ic_quest_phone
 
@@ -27,8 +27,8 @@ class AddContactPhone : OsmFilterQuestType<String>() {
 
     override fun createForm() = AddContactPhoneForm()
 
-    override fun applyAnswerTo(answer: String, changes: StringMapChangesBuilder) {
-        changes.add("phone", answer)
+    override fun applyAnswerTo(answer: String, tags: Tags, timestampEdited: Long) {
+        tags["phone"] = answer
     }
 
 }

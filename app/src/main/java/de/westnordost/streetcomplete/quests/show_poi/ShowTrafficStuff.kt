@@ -1,8 +1,8 @@
 package de.westnordost.streetcomplete.quests.show_poi
 
 import de.westnordost.streetcomplete.R
-import de.westnordost.streetcomplete.data.osm.edits.update_tags.StringMapChangesBuilder
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmFilterQuestType
+import de.westnordost.streetcomplete.data.osm.osmquests.Tags
 
 class ShowTrafficStuff : OsmFilterQuestType<Boolean>() {
     override val elementFilter = """
@@ -17,7 +17,7 @@ class ShowTrafficStuff : OsmFilterQuestType<Boolean>() {
          or type = restriction
          """
 
-    override val commitMessage = "Add raised crossing"
+    override val changesetComment = "Add raised crossing"
     override val wikiLink = "Key:traffic_calming"
     override val icon = R.drawable.ic_quest_railway // replace later, but need own icon...
     override val dotColor = "deepskyblue"
@@ -38,8 +38,8 @@ class ShowTrafficStuff : OsmFilterQuestType<Boolean>() {
 
     override fun createForm() = ShowTrafficStuffAnswerForm()
 
-    override fun applyAnswerTo(answer: Boolean, changes: StringMapChangesBuilder) {
+    override fun applyAnswerTo(answer: Boolean, tags: Tags, timestampEdited: Long) {
         if (answer)
-            changes.add("traffic_calming", "table")
+            tags["traffic_calming"] = "table"
     }
 }

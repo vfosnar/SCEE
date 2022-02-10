@@ -54,7 +54,7 @@ class SettingsFragment :
     private val questTypeRegistry: QuestTypeRegistry by inject()
     private val visibleQuestTypeSource: VisibleQuestTypeSource by inject()
     private val questPresetsSource: QuestPresetsSource by inject()
-    @Inject internal lateinit var visibleQuestTypeController: VisibleQuestTypeController
+    private val  visibleQuestTypeController: VisibleQuestTypeController by inject()
 
     interface Listener {
         fun onClickedQuestSelection()

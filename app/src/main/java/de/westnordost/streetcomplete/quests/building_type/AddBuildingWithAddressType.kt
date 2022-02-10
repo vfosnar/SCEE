@@ -5,6 +5,7 @@ import de.westnordost.streetcomplete.data.osm.edits.update_tags.StringMapChanges
 import de.westnordost.streetcomplete.data.osm.mapdata.Element
 import de.westnordost.streetcomplete.data.osm.mapdata.MapDataWithGeometry
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmElementQuestType
+import de.westnordost.streetcomplete.data.osm.osmquests.Tags
 
 class AddBuildingWithAddressType : OsmElementQuestType<BuildingType> {
 
@@ -18,7 +19,7 @@ class AddBuildingWithAddressType : OsmElementQuestType<BuildingType> {
         return buildings
     }
 
-    override val commitMessage = "Add building types"
+    override val changesetComment = "Add building types"
     override val wikiLink = "Key:building"
     override val icon = R.drawable.ic_quest_building_address
 
@@ -26,7 +27,7 @@ class AddBuildingWithAddressType : OsmElementQuestType<BuildingType> {
 
     override fun createForm() = AddBuildingTypeForm()
 
-    override fun applyAnswerTo(answer: BuildingType, changes: StringMapChangesBuilder) {
-        applyBuildingAnswer(answer, changes)
+    override fun applyAnswerTo(answer: BuildingType, tags: Tags, timestampEdited: Long) {
+        applyBuildingAnswer(answer, tags, timestampEdited)
     }
 }

@@ -1,8 +1,8 @@
 package de.westnordost.streetcomplete.quests.show_poi
 
 import de.westnordost.streetcomplete.R
-import de.westnordost.streetcomplete.data.osm.edits.update_tags.StringMapChangesBuilder
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmFilterQuestType
+import de.westnordost.streetcomplete.data.osm.osmquests.Tags
 
 class ShowFixme : OsmFilterQuestType<Boolean>() {
     override val elementFilter = """
@@ -11,7 +11,7 @@ class ShowFixme : OsmFilterQuestType<Boolean>() {
           and fixme !~ "continue|continue?|yes|Baum oder Strauch|Use for reference, adjust surroundings using the description, but please do NOT move."
           and FIXME !~ continue|continue?|yes
     """
-    override val commitMessage = "Remove fixme"
+    override val changesetComment = "Remove fixme"
     override val wikiLink = "Key:fixme"
     override val icon = R.drawable.ic_quest_create_note
     override val dotColor = "red"
@@ -32,10 +32,10 @@ class ShowFixme : OsmFilterQuestType<Boolean>() {
         return arrayOf(fixme.toString(),name.toString())
     }
 
-    override fun applyAnswerTo(answer: Boolean, changes: StringMapChangesBuilder) {
+    override fun applyAnswerTo(answer: Boolean, tags: Tags, timestampEdited: Long) {
         if (!answer) {
-            changes.deleteIfExists("fixme")
-            changes.deleteIfExists("FIXME")
+            tags.remove("fixme")
+            tags.remove("FIXME")
         }
     }
 }

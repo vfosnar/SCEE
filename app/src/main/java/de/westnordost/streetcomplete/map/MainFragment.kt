@@ -138,8 +138,8 @@ class MainFragment :
     private val mapDataWithEditsSource: MapDataWithEditsSource by inject()
     private val soundFx: SoundFx by inject()
     private val prefs: SharedPreferences by inject()
-    private val levelFilter: LevelFilter
-    private val questPresetsController: QuestPresetsController
+    private val levelFilter: LevelFilter by inject()
+    private val questPresetsController: QuestPresetsController by inject()
 
     private lateinit var requestLocation: LocationRequester
     private lateinit var locationManager: FineLocationManager

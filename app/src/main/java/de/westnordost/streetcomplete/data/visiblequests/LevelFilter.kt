@@ -14,12 +14,9 @@ import de.westnordost.streetcomplete.Prefs
 import de.westnordost.streetcomplete.data.osm.mapdata.MapDataController
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmQuest
 import de.westnordost.streetcomplete.data.quest.Quest
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /** Controller for filtering all quests that are hidden because they are on the wrong level */
-@Singleton
-class LevelFilter @Inject internal constructor(
+class LevelFilter internal constructor(
     private val prefs: SharedPreferences,
     private val mapDataController: MapDataController,
     private val visibleQuestTypeController: VisibleQuestTypeController

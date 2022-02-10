@@ -8,6 +8,7 @@ import de.westnordost.streetcomplete.quests.AnswerItem
 import de.westnordost.streetcomplete.quests.way_lit.WayLit.AUTOMATIC
 import de.westnordost.streetcomplete.quests.way_lit.WayLit.NIGHT_AND_DAY
 import de.westnordost.streetcomplete.quests.way_lit.WayLit.NO
+import de.westnordost.streetcomplete.quests.way_lit.WayLit.PRIVATE
 import de.westnordost.streetcomplete.quests.way_lit.WayLit.YES
 
 class WayLitForm : AbstractQuestAnswerFragment<WayLitOrIsStepsAnswer>() {

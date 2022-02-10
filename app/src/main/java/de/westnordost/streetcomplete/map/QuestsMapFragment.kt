@@ -1,5 +1,6 @@
 package de.westnordost.streetcomplete.map
 
+import android.content.SharedPreferences
 import android.graphics.PointF
 import android.graphics.RectF
 import androidx.annotation.DrawableRes
@@ -41,6 +42,7 @@ class QuestsMapFragment : LocationAwareMapFragment(), ShowsGeometryMarkers {
     private val visibleQuestsSource: VisibleQuestsSource by inject()
     private val editHistorySource: EditHistorySource by inject()
     private val mapDataSource: MapDataWithEditsSource by inject()
+    private val sharedPrefs: SharedPreferences by inject()
 
     private var geometryMarkersMapComponent: GeometryMarkersMapComponent? = null
     private var pinsMapComponent: PinsMapComponent? = null

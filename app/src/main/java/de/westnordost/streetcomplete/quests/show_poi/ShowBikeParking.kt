@@ -1,8 +1,8 @@
 package de.westnordost.streetcomplete.quests.show_poi
 
 import de.westnordost.streetcomplete.R
-import de.westnordost.streetcomplete.data.osm.edits.update_tags.StringMapChangesBuilder
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmFilterQuestType
+import de.westnordost.streetcomplete.data.osm.osmquests.Tags
 import de.westnordost.streetcomplete.quests.NoAnswerFragment
 
 class ShowBikeParking : OsmFilterQuestType<Boolean>() {
@@ -10,7 +10,7 @@ class ShowBikeParking : OsmFilterQuestType<Boolean>() {
         nodes, ways, relations with
           amenity ~ bicycle_parking|bicycle_rental|bicycle_repair_station|compressed_air
     """
-    override val commitMessage = "I hope this does not get committed"
+    override val changesetComment = "this should never appear in a changeset comment"
     override val wikiLink = "nope"
     override val icon = R.drawable.ic_quest_bicycle_parking_cover // replace later, but need own icon...
     override val dotColor = "violet"
@@ -26,6 +26,6 @@ class ShowBikeParking : OsmFilterQuestType<Boolean>() {
 
     override fun createForm() = NoAnswerFragment()
 
-    override fun applyAnswerTo(answer: Boolean, changes: StringMapChangesBuilder) {
+    override fun applyAnswerTo(answer: Boolean, tags: Tags, timestampEdited: Long) {
     }
 }

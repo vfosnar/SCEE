@@ -1,8 +1,8 @@
 package de.westnordost.streetcomplete.quests.show_poi
 
 import de.westnordost.streetcomplete.R
-import de.westnordost.streetcomplete.data.osm.edits.update_tags.StringMapChangesBuilder
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmFilterQuestType
+import de.westnordost.streetcomplete.data.osm.osmquests.Tags
 import de.westnordost.streetcomplete.quests.NoAnswerFragment
 
 class ShowCamera : OsmFilterQuestType<Boolean>() {
@@ -10,7 +10,7 @@ class ShowCamera : OsmFilterQuestType<Boolean>() {
         nodes, ways, relations with
           man_made = surveillance
     """
-    override val commitMessage = "I hope this does not get committed"
+    override val changesetComment = "this should never appear in a changeset comment"
     override val wikiLink = "nope"
     override val icon = R.drawable.ic_quest_blind_traffic_lights
     override val dotColor = "mediumvioletred"
@@ -24,6 +24,6 @@ class ShowCamera : OsmFilterQuestType<Boolean>() {
 
     override fun createForm() = NoAnswerFragment()
 
-    override fun applyAnswerTo(answer: Boolean, changes: StringMapChangesBuilder) {
+    override fun applyAnswerTo(answer: Boolean, tags: Tags, timestampEdited: Long) {
     }
 }
