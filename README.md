@@ -61,3 +61,4 @@ New quests may require knowledge about the changed/added OSM tags.
 * increase map tile cache time from 12 hours to 8 days: map tiles will now not be re-downloaded for 8 days, even if manual download was initiated
 * pause upload when manually scanning for quests
 * improve location services: higher GPS frequency, use last known location as initial location
+* add [requery sqlite library](https://github.com/requery/sqlite-android), which adds 3 MB, but is ca 20% faster than default SQLite
