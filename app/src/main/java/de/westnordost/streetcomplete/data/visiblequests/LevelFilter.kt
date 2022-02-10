@@ -17,7 +17,7 @@ import de.westnordost.streetcomplete.data.quest.Quest
 
 /** Controller for filtering all quests that are hidden because they are on the wrong level */
 class LevelFilter internal constructor(
-    private val prefs: SharedPreferences,
+    private val sharedPrefs: SharedPreferences,
     private val mapDataController: MapDataController,
     private val visibleQuestTypeController: VisibleQuestTypeController
 ) {
@@ -31,8 +31,8 @@ class LevelFilter internal constructor(
     }
 
     private fun reload() {
-        allowedLevel = prefs.getString(Prefs.ALLOWED_LEVEL, "").let { if (it.isNullOrBlank()) null else it.trim() }
-        allowedLevelTags = prefs.getString(Prefs.ALLOWED_LEVEL_TAGS, "level,repeat_on,level:ref")!!.split(",")
+        allowedLevel = sharedPrefs.getString(Prefs.ALLOWED_LEVEL, "").let { if (it.isNullOrBlank()) null else it.trim() }
+        allowedLevelTags = sharedPrefs.getString(Prefs.ALLOWED_LEVEL_TAGS, "level,repeat_on,level:ref")!!.split(",")
     }
 
     fun isVisible(quest: Quest): Boolean =
@@ -71,7 +71,7 @@ class LevelFilter internal constructor(
         builder.setTitle("Choose tags to check")
         val linearLayout = LinearLayout(context)
         linearLayout.orientation = LinearLayout.VERTICAL
-        val levelTags = prefs.getString(Prefs.ALLOWED_LEVEL_TAGS, "level,repeat_on,level:ref")!!.split(",")
+        val levelTags = sharedPrefs.getString(Prefs.ALLOWED_LEVEL_TAGS, "level,repeat_on,level:ref")!!.split(",")
 
         val levelText = TextView(context)
         levelText.text = "enter level value, or filter using > and <"
@@ -79,7 +79,7 @@ class LevelFilter internal constructor(
         val level = EditText(context)
         level.inputType = InputType.TYPE_CLASS_TEXT
         level.hint = "leave empty to show not tagged"
-        level.setText(prefs.getString(Prefs.ALLOWED_LEVEL, ""))
+        level.setText(sharedPrefs.getString(Prefs.ALLOWED_LEVEL, ""))
 
         val enable = SwitchCompat(context)
         enable.text = "enable level filter"
@@ -117,7 +117,7 @@ class LevelFilter internal constructor(
             if (tagRepeatOn.isChecked) levelTagList.add("repeat_on")
             if (tagLevelRef.isChecked) levelTagList.add("level:ref")
             if (tagAddrFloor.isChecked) levelTagList.add("addr:floor")
-            prefs.edit {
+            sharedPrefs.edit {
                 putString(Prefs.ALLOWED_LEVEL_TAGS, levelTagList.joinToString(","))
                 putString(Prefs.ALLOWED_LEVEL, level.text.toString())
             }
