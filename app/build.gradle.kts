@@ -182,6 +182,10 @@ dependencies {
 
     // opening hours parser
     implementation("ch.poole:OpeningHoursParser:0.26.0")
+
+    // faster sqlite library (additional capapilities like R*-tree or json1 not used)
+    implementation("com.github.requery:sqlite-android:3.36.0")
+    implementation("androidx.sqlite:sqlite:2.1.0")
 }
 
 /** Localizations that should be pulled from POEditor etc. */
