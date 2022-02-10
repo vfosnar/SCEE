@@ -1,8 +1,13 @@
 package de.westnordost.streetcomplete
 
-import android.content.*
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.graphics.Point
+import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
@@ -20,28 +25,27 @@ import androidx.fragment.app.commit
 import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.preference.PreferenceManager
-import de.westnordost.streetcomplete.Injector.applicationComponent
 import de.westnordost.streetcomplete.controls.NotificationButtonFragment
+import de.westnordost.streetcomplete.data.UnsyncedChangesCountSource
+import de.westnordost.streetcomplete.data.download.ConnectionException
 import de.westnordost.streetcomplete.data.download.DownloadController
 import de.westnordost.streetcomplete.data.download.DownloadProgressListener
 import de.westnordost.streetcomplete.data.notifications.Notification
-import de.westnordost.streetcomplete.data.quest.Quest
-import de.westnordost.streetcomplete.data.quest.QuestAutoSyncer
-import de.westnordost.streetcomplete.data.UnsyncedChangesCountSource
-import de.westnordost.streetcomplete.data.download.ConnectionException
 import de.westnordost.streetcomplete.data.osm.mapdata.LatLon
 import de.westnordost.streetcomplete.data.osmnotes.ImageUploadServerException
+import de.westnordost.streetcomplete.data.quest.Quest
+import de.westnordost.streetcomplete.data.quest.QuestAutoSyncer
 import de.westnordost.streetcomplete.data.upload.UploadController
 import de.westnordost.streetcomplete.data.upload.UploadProgressListener
 import de.westnordost.streetcomplete.data.upload.VersionBannedException
 import de.westnordost.streetcomplete.data.user.AuthorizationException
 import de.westnordost.streetcomplete.data.user.UserLoginStatusController
 import de.westnordost.streetcomplete.data.user.UserUpdater
+import de.westnordost.streetcomplete.ktx.hasLocationPermission
+import de.westnordost.streetcomplete.ktx.isLocationEnabled
 import de.westnordost.streetcomplete.ktx.toast
-import de.westnordost.streetcomplete.location.createLocationAvailabilityIntentFilter
-import de.westnordost.streetcomplete.location.isLocationEnabled
-import de.westnordost.streetcomplete.location.LocationRequestFragment
-import de.westnordost.streetcomplete.location.LocationState
+import de.westnordost.streetcomplete.location.LocationRequester
+import de.westnordost.streetcomplete.location.LocationRequester.Companion.REQUEST_LOCATION_PERMISSION_RESULT
 import de.westnordost.streetcomplete.map.MainFragment
 import de.westnordost.streetcomplete.notifications.NotificationsContainerFragment
 import de.westnordost.streetcomplete.tutorial.TutorialFragment
@@ -49,20 +53,24 @@ import de.westnordost.streetcomplete.util.CrashReportExceptionHandler
 import de.westnordost.streetcomplete.util.parseGeoUri
 import de.westnordost.streetcomplete.view.dialogs.RequestLoginDialog
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
 
-class MainActivity : BaseActivity(),
-    MainFragment.Listener, TutorialFragment.Listener, NotificationButtonFragment.Listener {
+class MainActivity :
+    BaseActivity(),
+    MainFragment.Listener,
+    TutorialFragment.Listener,
+    NotificationButtonFragment.Listener {
 
-	@Inject lateinit var crashReportExceptionHandler: CrashReportExceptionHandler
-	@Inject lateinit var locationRequestFragment: LocationRequestFragment
-	@Inject lateinit var questAutoSyncer: QuestAutoSyncer
-	@Inject lateinit var downloadController: DownloadController
-	@Inject lateinit var uploadController: UploadController
-	@Inject lateinit var unsyncedChangesCountSource: UnsyncedChangesCountSource
-	@Inject lateinit var prefs: SharedPreferences
-	@Inject lateinit var userLoginStatusController: UserLoginStatusController
-	@Inject lateinit var userUpdater: UserUpdater
+    private val crashReportExceptionHandler: CrashReportExceptionHandler by inject()
+    private val questAutoSyncer: QuestAutoSyncer by inject()
+    private val downloadController: DownloadController by inject()
+    private val uploadController: UploadController by inject()
+    private val unsyncedChangesCountSource: UnsyncedChangesCountSource by inject()
+    private val prefs: SharedPreferences by inject()
+    private val userLoginStatusController: UserLoginStatusController by inject()
+    private val userUpdater: UserUpdater by inject()
+
+    private val requestLocation = LocationRequester(this, this)
 
     private var mainFragment: MainFragment? = null
 
@@ -71,17 +79,14 @@ class MainActivity : BaseActivity(),
             updateLocationAvailability()
         }
     }
-    private val locationRequestFinishedReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+    private val requestLocationPermissionResultReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            val state = LocationState.valueOf(intent.getStringExtra(LocationRequestFragment.STATE)!!)
-            onLocationRequestFinished(state)
+            updateLocationAvailability()
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        applicationComponent.inject(this)
 
         lifecycle.addObserver(questAutoSyncer)
         crashReportExceptionHandler.askUserToSendCrashReportIfExists(this)
@@ -92,9 +97,6 @@ class MainActivity : BaseActivity(),
 
         if (prefs.getBoolean(Prefs.KEEP_SCREEN_ON, false)) {
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        }
-        supportFragmentManager.commit {
-            add(locationRequestFragment, LocationRequestFragment::class.java.simpleName)
         }
 
         setContentView(R.layout.activity_main)
@@ -119,7 +121,7 @@ class MainActivity : BaseActivity(),
         val data = intent.data ?: return
         if ("geo" != data.scheme) return
         val geo = parseGeoUri(data) ?: return
-        val zoom = if (geo.zoom == null || geo.zoom < 14)  18f else geo.zoom
+        val zoom = if (geo.zoom == null || geo.zoom < 14) 18f else geo.zoom
         val pos = LatLon(geo.latitude, geo.longitude)
         mainFragment?.setCameraPosition(pos, zoom)
     }
@@ -127,9 +129,14 @@ class MainActivity : BaseActivity(),
     public override fun onStart() {
         super.onStart()
 
-        registerReceiver(locationAvailabilityReceiver, createLocationAvailabilityIntentFilter())
+        registerReceiver(
+            locationAvailabilityReceiver,
+            IntentFilter(LocationManager.MODE_CHANGED_ACTION)
+        )
         LocalBroadcastManager.getInstance(this).registerReceiver(
-            locationRequestFinishedReceiver, IntentFilter(LocationRequestFragment.ACTION_FINISHED))
+            requestLocationPermissionResultReceiver,
+            IntentFilter(REQUEST_LOCATION_PERMISSION_RESULT)
+        )
 
         downloadController.showNotification = false
         uploadController.showNotification = false
@@ -188,7 +195,7 @@ class MainActivity : BaseActivity(),
 
     public override fun onStop() {
         super.onStop()
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(locationRequestFinishedReceiver)
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(requestLocationPermissionResultReceiver)
         unregisterReceiver(locationAvailabilityReceiver)
         downloadController.showNotification = true
         uploadController.showNotification = true
@@ -266,7 +273,7 @@ class MainActivity : BaseActivity(),
                 // it, so it does not make sense to send an error report. Just notify the user.
                 if (e is ConnectionException) {
                     toast(R.string.download_server_error, Toast.LENGTH_LONG)
-                }  else if (e is AuthorizationException) {
+                } else if (e is AuthorizationException) {
                     // delete secret in case it failed while already having a token -> token is invalid
                     userLoginStatusController.logOut()
                 } else {
@@ -302,7 +309,15 @@ class MainActivity : BaseActivity(),
     /* ------------------------------- TutorialFragment.Listener -------------------------------- */
 
     override fun onTutorialFinished() {
-        locationRequestFragment.startRequest()
+        lifecycleScope.launch {
+            val hasLocation = requestLocation()
+            // if denied first time after exiting tutorial: ask again once (i.e. show rationale and ask again)
+            if (!hasLocation) {
+                requestLocation()
+            } else {
+                toast(R.string.no_gps_no_quests, Toast.LENGTH_LONG)
+            }
+        }
 
         prefs.edit().putBoolean(Prefs.HAS_SHOWN_TUTORIAL, true).apply()
 
@@ -318,24 +333,11 @@ class MainActivity : BaseActivity(),
     /* ------------------------------------ Location listener ----------------------------------- */
 
     private fun updateLocationAvailability() {
-        if (isLocationEnabled) {
+        if (hasLocationPermission && isLocationEnabled) {
             questAutoSyncer.startPositionTracking()
         } else {
             questAutoSyncer.stopPositionTracking()
         }
-    }
-
-    private fun onLocationRequestFinished(withLocationState: LocationState) {
-        // if denied first time after exiting tutorial: ask again once (i.e. show rationale and ask again)
-        if (!withLocationState.isEnabled) {
-            if (!prefs.getBoolean(Prefs.FINISHED_FIRST_LOCATION_REQUEST, false)) {
-                locationRequestFragment.startRequest()
-            } else {
-                toast(R.string.no_gps_no_quests, Toast.LENGTH_LONG)
-            }
-        }
-        prefs.edit().putBoolean(Prefs.FINISHED_FIRST_LOCATION_REQUEST, true).apply()
-        updateLocationAvailability()
     }
 
     companion object {

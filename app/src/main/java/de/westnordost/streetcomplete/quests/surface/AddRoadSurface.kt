@@ -3,7 +3,7 @@ package de.westnordost.streetcomplete.quests.surface
 import de.westnordost.streetcomplete.R
 import de.westnordost.streetcomplete.data.meta.ANYTHING_UNPAVED
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmFilterQuestType
-import de.westnordost.streetcomplete.data.osm.edits.update_tags.StringMapChangesBuilder
+import de.westnordost.streetcomplete.data.osm.osmquests.Tags
 import de.westnordost.streetcomplete.data.user.achievements.QuestTypeAchievement.CAR
 
 class AddRoadSurface : OsmFilterQuestType<SurfaceOrIsStepsAnswer>() {
@@ -15,7 +15,7 @@ class AddRoadSurface : OsmFilterQuestType<SurfaceOrIsStepsAnswer>() {
         )
         and (
           !surface
-          or surface ~ ${ANYTHING_UNPAVED.joinToString("|")} and surface older today -4 years
+          or surface ~ ${ANYTHING_UNPAVED.joinToString("|")} and surface older today -6 years
           or surface older today -12 years
           or (
             surface ~ unpaved|cobblestone
@@ -25,7 +25,7 @@ class AddRoadSurface : OsmFilterQuestType<SurfaceOrIsStepsAnswer>() {
         )
         and (access !~ private|no or (foot and foot !~ private|no))
     """
-    override val commitMessage = "Add road surface info"
+    override val changesetComment = "Add road surface info"
     override val wikiLink = "Key:surface"
     override val icon = R.drawable.ic_quest_street_surface
     override val isSplitWayEnabled = true
@@ -45,11 +45,11 @@ class AddRoadSurface : OsmFilterQuestType<SurfaceOrIsStepsAnswer>() {
 
     override fun createForm() = AddRoadSurfaceForm()
 
-    override fun applyAnswerTo(answer: SurfaceOrIsStepsAnswer, changes: StringMapChangesBuilder) {
+    override fun applyAnswerTo(answer: SurfaceAnswer, tags: Tags, timestampEdited: Long) {
         if (answer is SurfaceAnswer)
-            answer.applyTo(changes, "surface")
+            answer.applyTo(tags, "surface")
         else if (answer is IsPrivateAnswer)
-            changes.addOrModify("access", "private")
+            tags["access"] = "private"
     }
 }
 

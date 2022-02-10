@@ -3,7 +3,7 @@ package de.westnordost.streetcomplete.quests.surface
 import de.westnordost.streetcomplete.R
 import de.westnordost.streetcomplete.data.meta.ANYTHING_UNPAVED
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmFilterQuestType
-import de.westnordost.streetcomplete.data.osm.edits.update_tags.StringMapChangesBuilder
+import de.westnordost.streetcomplete.data.osm.osmquests.Tags
 import de.westnordost.streetcomplete.data.user.achievements.QuestTypeAchievement.BICYCLIST
 import de.westnordost.streetcomplete.data.user.achievements.QuestTypeAchievement.OUTDOORS
 import de.westnordost.streetcomplete.data.user.achievements.QuestTypeAchievement.PEDESTRIAN
@@ -19,7 +19,7 @@ class AddPathSurface : OsmFilterQuestType<SurfaceOrIsStepsAnswer>() {
         and (!indoor or indoor = no)
         and (
           !surface
-          or surface ~ ${ANYTHING_UNPAVED.joinToString("|")} and surface older today -4 years
+          or surface ~ ${ANYTHING_UNPAVED.joinToString("|")} and surface older today -6 years
           or surface older today -8 years
           or (
             surface ~ unpaved|cobblestone
@@ -30,7 +30,7 @@ class AddPathSurface : OsmFilterQuestType<SurfaceOrIsStepsAnswer>() {
     """
     /* ~paved ways are less likely to change the surface type */
 
-    override val commitMessage = "Add path surfaces"
+    override val changesetComment = "Add path surfaces"
     override val wikiLink = "Key:surface"
     override val icon = R.drawable.ic_quest_way_surface
     override val isSplitWayEnabled = true
@@ -46,16 +46,16 @@ class AddPathSurface : OsmFilterQuestType<SurfaceOrIsStepsAnswer>() {
 
     override fun createForm() = AddPathSurfaceForm()
 
-    override fun applyAnswerTo(answer: SurfaceOrIsStepsAnswer, changes: StringMapChangesBuilder) {
-        when(answer) {
+    override fun applyAnswerTo(answer: SurfaceOrIsStepsAnswer, tags: Tags, timestampEdited: Long) {
+        when (answer) {
             is SurfaceAnswer -> {
-                answer.applyTo(changes, "surface")
+                answer.applyTo(tags, "surface")
             }
             is IsPrivateAnswer -> {
                 changes.addOrModify("access", "private")
             }
             is IsActuallyStepsAnswer -> {
-                changes.modify("highway", "steps")
+                tags["highway"] = "steps"
             }
         }
     }

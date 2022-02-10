@@ -83,6 +83,11 @@
                 "access_simple": {
                     "label": "Allowed Access"
                 },
+                "activity": {
+                    "options": {
+                        "horse": "Horse Riding"
+                    }
+                },
                 "addr/interpolation": {
                     "options": {
                         "all": "All",
@@ -1561,7 +1566,7 @@
                     "name": "Airport Terminal"
                 },
                 "allotments/plot": {
-                    "name": "Allotments Plot"
+                    "name": "Individual Allotment Plot"
                 },
                 "amenity": {
                     "name": "Amenity"
@@ -2417,14 +2422,8 @@
                 "highway/crossing/marked": {
                     "name": "Marked Crossing"
                 },
-                "highway/crossing/marked-raised": {
-                    "name": "Marked Crossing (Raised)"
-                },
                 "highway/crossing/zebra": {
                     "name": "Marked Crossing"
-                },
-                "highway/crossing/zebra-raised": {
-                    "name": "Marked Crossing (Raised)"
                 },
                 "highway/cycleway": {
                     "name": "Cycle Path"
@@ -2438,17 +2437,11 @@
                 "highway/footway/marked": {
                     "name": "Marked Crossing"
                 },
-                "highway/footway/marked-raised": {
-                    "name": "Marked Crossing (Raised)"
-                },
                 "highway/footway/sidewalk": {
                     "name": "Pavement"
                 },
                 "highway/footway/zebra": {
                     "name": "Marked Crossing"
-                },
-                "highway/footway/zebra-raised": {
-                    "name": "Marked Crossing (Raised)"
                 },
                 "highway/give_way": {
                     "name": "Give Way Sign"
@@ -2596,6 +2589,9 @@
                 },
                 "junction": {
                     "name": "Junction"
+                },
+                "landuse/allotments": {
+                    "name": "Allotment Garden"
                 },
                 "landuse/aquaculture": {
                     "name": "Aquaculture"

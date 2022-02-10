@@ -83,6 +83,9 @@
                             "description": "Csak a tulajdonos engedélyével vagy eseti alapon használható",
                             "title": "Magántulajdon"
                         },
+                        "unknown": {
+                            "title": "Ismeretlen"
+                        },
                         "yes": {
                             "description": "Törvény által engedélyezett használat, szolgalmi jog",
                             "title": "Engedélyezett"
@@ -109,9 +112,21 @@
                         "permissive": "Megtűrt",
                         "permit": "Csak engedéllyel",
                         "private": "Magán",
+                        "unknown": "Ismeretlen",
                         "yes": "Nyilvános"
                     },
                     "terms": "szabad hozzáférés,ingyenes használat,szabad bejárás,belépés engedélyezve"
+                },
+                "activity": {
+                    "label": "Tevékenység",
+                    "options": {
+                        "Ski": "Síelés",
+                        "bicycle": "Kerékpározás",
+                        "hiking": "Túrázás",
+                        "horse": "Lovaglás",
+                        "mtb": "Hegyikerékpározás"
+                    },
+                    "terms": "aktivitás,elfoglaltság,sport,kikapcsolódás"
                 },
                 "addr/interpolation": {
                     "label": "Típus",
@@ -401,17 +416,6 @@
                     "label": "Kábelek",
                     "placeholder": "1, 2, 3..."
                 },
-                "cai_scale": {
-                    "label": "Túraútvonal nehézsége (Italian Alpine Club)",
-                    "options": {
-                        "E": "E: túrázóknak",
-                        "EAI": "EAI: Túrázás havas körülmények között",
-                        "EE": "EE: profi túrázóknak",
-                        "EEA": "EEA: profi túrázóknak, felszereléssel",
-                        "T": "T: Turisztikai"
-                    },
-                    "placeholder": "T, E, EE, …"
-                },
                 "camera/direction": {
                     "label": "Irány (fok, az óramutató járása szerint)",
                     "placeholder": "45, 90, 180, 270"
@@ -551,6 +555,15 @@
                 "covered": {
                     "label": "Fedett",
                     "terms": "zárt téri,tető alatti,fedett"
+                },
+                "covered_no": {
+                    "label": "Fedett",
+                    "options": {
+                        "no": "Nem",
+                        "undefined": "Feltehetően nem",
+                        "yes": "Igen"
+                    },
+                    "terms": "fedél,tető"
                 },
                 "craft": {
                     "label": "Típus"
@@ -780,6 +793,15 @@
                     "placeholder": "45, 90, 180, 270",
                     "terms": "irány,tájolás,menetirány"
                 },
+                "direction_cardinal-US-CA-NZ": {
+                    "label": "Irány",
+                    "options": {
+                        "east": "Kelet felé",
+                        "north": "Észak felé",
+                        "south": "Dél felé",
+                        "west": "Nyugat felé"
+                    }
+                },
                 "direction_clock": {
                     "label": "Irány",
                     "options": {
@@ -866,12 +888,10 @@
                     "terms": "időtáv,idő,időtartam"
                 },
                 "ele": {
-                    "label": "Tengerszint feletti magasság",
-                    "terms": "magasság"
+                    "label": "Tengerszint feletti magasság (méter)"
                 },
                 "ele_node": {
-                    "label": "Tengerszint feletti magasság",
-                    "terms": "magasság,szint"
+                    "label": "Tengerszint feletti magasság (méter)"
                 },
                 "electrified": {
                     "label": "Villamosítottság",
@@ -894,7 +914,10 @@
                     "placeholder": "Alapértelmezett"
                 },
                 "embassy": {
-                    "label": "Típus"
+                    "label": "Típus",
+                    "options": {
+                        "yes": "Nagykövetség"
+                    }
                 },
                 "emergency": {
                     "label": "Vészhelyzeti használat"
@@ -919,9 +942,6 @@
                 },
                 "expected_rwn_route_relations": {
                     "label": "Gyalogos útvonalak száma"
-                },
-                "expressway": {
-                    "label": "gyorsforgalmi út"
                 },
                 "faces": {
                     "label": "Oldalak száma"
@@ -1043,9 +1063,6 @@
                 },
                 "geyser/height": {
                     "label": "Kitörési magasság"
-                },
-                "gnis/feature_id": {
-                    "label": "USA földrajzinév-információs rendszer azonosítója"
                 },
                 "government": {
                     "label": "Típus"
@@ -1210,7 +1227,7 @@
                 },
                 "intermittent": {
                     "label": "Időszakos",
-                    "terms": "időszakos"
+                    "terms": "időszaki"
                 },
                 "intermittent_yes": {
                     "label": "Időszakos"
@@ -1224,16 +1241,16 @@
                         "wlan": "Wifi",
                         "yes": "Van"
                     },
-                    "terms": "internetcsatlakozás,wifi,wlan,web"
+                    "terms": "internet,wifi,wlan,web,net,hálózat"
                 },
                 "internet_access/fee": {
-                    "label": "Internetcsatlakozás",
+                    "label": "Internethozzáférés",
                     "options": {
                         "customers": "Csak ügyfeleknek",
                         "no": "Ingyenes",
                         "yes": "Fizetős"
                     },
-                    "terms": "internet hozzáférés,hálózati hozzáférés"
+                    "terms": "internet,hálózat,net,wifi"
                 },
                 "internet_access/ssid": {
                     "label": "Wifi-hálózat neve",
@@ -1241,7 +1258,7 @@
                 },
                 "interval": {
                     "label": "Intervallum",
-                    "terms": "időköz"
+                    "terms": "időköz,időszak"
                 },
                 "junction/ref_oneway": {
                     "label": "Csomópont száma",
@@ -1618,6 +1635,16 @@
                     "label": "Golfpálya par száma",
                     "placeholder": "3, 4, 5…"
                 },
+                "parcel_dropoff": {
+                    "label": "Csomagátadás"
+                },
+                "parcel_pickup": {
+                    "label": "Csomagfelvétel",
+                    "options": {
+                        "undefined": "Feltehetően igen",
+                        "yes": "Igen"
+                    }
+                },
                 "park_ride": {
                     "label": "P+R",
                     "terms": "park and ride"
@@ -1631,18 +1658,12 @@
                         "multi-storey": "Parkolóház",
                         "rooftop": "Tetőn",
                         "sheds": "Garázstető",
-                        "street_side": "Út szélén",
                         "surface": "Felszíni",
                         "underground": "Föld alatti"
                     }
                 },
                 "parking/orientation": {
-                    "label": "Irány",
-                    "options": {
-                        "diagonal": "Az útra átlósan",
-                        "parallel": "Az úttal párhuzamosan",
-                        "perpendicular": "Az útra merőlegesen"
-                    }
+                    "label": "Irány"
                 },
                 "parking_entrance": {
                     "label": "Típus",
@@ -1865,10 +1886,6 @@
                 },
                 "rcn_ref": {
                     "label": "Regionális kerékpárút-hálózati csomópont"
-                },
-                "real_fire": {
-                    "label": "Kandalló vagy cserépkályha",
-                    "terms": "tűz,kályha,melegség"
                 },
                 "recycling_accepts": {
                     "label": "Elfogad"
@@ -3058,6 +3075,9 @@
                     "name": "Orvosi rendelő",
                     "terms": "doktor,orvos,szakorvos,rendelő,háziorvos,gyerekorvos"
                 },
+                "amenity/doctors/gynaecology": {
+                    "name": "Nőgyógyász"
+                },
                 "amenity/dojo": {
                     "name": "Harcművészeti edzőterem / dodzso",
                     "terms": "kick-box,karate,kung fu,aikido,taekwando,judo,jujitsu,kendo,capoeira,dzsudo,baranta,zenbukan,kempo,boksz,krav maga,csikung,vusu,saolin,kungfu"
@@ -3679,12 +3699,6 @@
                     "name": "Újságárusító automata",
                     "terms": "automata,árusító,újság"
                 },
-                "amenity/vending_machine/parcel_pickup": {
-                    "name": "Csomagfeladó automata"
-                },
-                "amenity/vending_machine/parcel_pickup_dropoff": {
-                    "name": "Csomagfeladó és átvevő automata"
-                },
                 "amenity/vending_machine/parking_tickets": {
                     "name": "Parkolójegy-automata",
                     "terms": "parkolóautomata"
@@ -4128,6 +4142,9 @@
                 },
                 "building/sty": {
                     "name": "Disznóól"
+                },
+                "building/synagogue": {
+                    "name": "Zsinagóga"
                 },
                 "building/temple": {
                     "name": "Nem keresztény templomépület"
@@ -4619,21 +4636,11 @@
                     "name": "Jelölt gyalogátkelő",
                     "terms": "zebra"
                 },
-                "highway/crossing/marked-raised": {
-                    "name": "Jelölt gyalogátkelő (megemelt)",
-                    "terms": "zebra"
-                },
                 "highway/crossing/unmarked": {
                     "name": "Jelöletlen gyalogosátkelő"
                 },
-                "highway/crossing/unmarked-raised": {
-                    "name": "Jelöletlen gyalogosátkelő (megemelt)"
-                },
                 "highway/crossing/zebra": {
                     "name": "Jelölt gyalogátkelő"
-                },
-                "highway/crossing/zebra-raised": {
-                    "name": "Jelölt gyalogátkelő (megemelt)"
                 },
                 "highway/cycleway": {
                     "name": "Kijelölt kerékpárút",
@@ -4682,9 +4689,6 @@
                 "highway/footway/marked": {
                     "name": "Jelölt gyalogátkelő"
                 },
-                "highway/footway/marked-raised": {
-                    "name": "Jelölt gyalogátkelő (megemelt)"
-                },
                 "highway/footway/sidewalk": {
                     "name": "Járda",
                     "terms": "járda,gyalogjáró,gyalogút"
@@ -4692,14 +4696,8 @@
                 "highway/footway/unmarked": {
                     "name": "Nem jelölt gyalogosátkelő"
                 },
-                "highway/footway/unmarked-raised": {
-                    "name": "Nem jelölt gyalogosátkelő (megemelt)"
-                },
                 "highway/footway/zebra": {
                     "name": "Jelölt gyalogátkelő"
-                },
-                "highway/footway/zebra-raised": {
-                    "name": "Jelölt gyalogátkelő (megemelt)"
                 },
                 "highway/give_way": {
                     "name": "Elsőbbségadás kötelező",
@@ -5824,10 +5822,6 @@
                     "name": "Hőforrás",
                     "terms": "termálvíz"
                 },
-                "natural/marsh": {
-                    "name": "Mocsár",
-                    "terms": "láp"
-                },
                 "natural/mud": {
                     "name": "Sár",
                     "terms": "iszap"
@@ -5835,9 +5829,6 @@
                 "natural/peak": {
                     "name": "Hegycsúcs",
                     "terms": "hegytető,csúcs"
-                },
-                "natural/reedbed": {
-                    "name": "Nádas"
                 },
                 "natural/reef": {
                     "name": "Zátony",
@@ -5877,10 +5868,6 @@
                 },
                 "natural/stone": {
                     "name": "Kő"
-                },
-                "natural/swamp": {
-                    "name": "Ingovány",
-                    "terms": "mocsár,ingóláp,láperdő"
                 },
                 "natural/tree": {
                     "name": "Fa"
@@ -5930,11 +5917,11 @@
                     "name": "Vizenyős terület",
                     "terms": "mocsár,vizenyő,nádas,láp,ingovány"
                 },
+                "natural/wetland/swamp": {
+                    "terms": "láp,mocsár,vizenyő"
+                },
                 "natural/wood": {
                     "name": "Erdő (természetes)"
-                },
-                "network/type/node_network": {
-                    "name": "Szabadidős hálózati csomópont"
                 },
                 "noexit/yes": {
                     "name": "Zsákutca",
@@ -5962,9 +5949,8 @@
                 "office/association": {
                     "name": "Egyesület irodája"
                 },
-                "office/bail_bond_agent": {
-                    "name": "Óvadékiroda",
-                    "terms": "óvadékügynök"
+                "office/bail_bond_agent-US-PH": {
+                    "name": "Óvadékügynök"
                 },
                 "office/charity": {
                     "name": "Jótékonysági szervezet irodája"
@@ -6245,6 +6231,10 @@
                 },
                 "point": {
                     "name": "Pont"
+                },
+                "police/checkpoint": {
+                    "name": "Rendőrségi ellenőrzőpont",
+                    "terms": "úttorlasz,torlasz,barikád"
                 },
                 "polling_station": {
                     "name": "Ideiglenes szavazóhely"
@@ -7511,22 +7501,28 @@
                     "terms": "tilos jobbra kanyarodni,jobbra menni tilos,jobbra fordulni tilos"
                 },
                 "type/restriction/no_straight_on": {
-                    "name": "Egyenesen tilos"
+                    "name": "Egyenesen tilos",
+                    "terms": "kötelező haladási irány"
                 },
                 "type/restriction/no_u_turn": {
-                    "name": "Megfordulni tilos"
+                    "name": "Megfordulni tilos",
+                    "terms": "kötelező haladási irány"
                 },
                 "type/restriction/only_left_turn": {
-                    "name": "Csak balra fordulás"
+                    "name": "Csak balra fordulás",
+                    "terms": "kötelező haladási irány"
                 },
                 "type/restriction/only_right_turn": {
-                    "name": "Csak jobbra fordulás"
+                    "name": "Csak jobbra fordulás",
+                    "terms": "kötelező haladási irány"
                 },
                 "type/restriction/only_straight_on": {
-                    "name": "Csak egyenesen tovább"
+                    "name": "Csak egyenesen tovább",
+                    "terms": "kötelező haladási irány"
                 },
                 "type/restriction/only_u_turn": {
-                    "name": "Csak visszafordulás"
+                    "name": "Csak visszafordulás",
+                    "terms": "kötelező haladási irány"
                 },
                 "type/route": {
                     "name": "Útvonal",

@@ -4,14 +4,14 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
 import de.westnordost.osmfeatures.FeatureDictionary
-import de.westnordost.streetcomplete.data.osm.mapdata.MapDataWithGeometry
 import de.westnordost.streetcomplete.R
 import de.westnordost.streetcomplete.data.elementfilter.toElementFilterExpression
 import de.westnordost.streetcomplete.data.meta.isKindOfShopExpression
-import de.westnordost.streetcomplete.data.osm.edits.update_tags.StringMapChangesBuilder
 import de.westnordost.streetcomplete.data.osm.geometry.ElementPolygonsGeometry
 import de.westnordost.streetcomplete.data.osm.mapdata.Element
+import de.westnordost.streetcomplete.data.osm.mapdata.MapDataWithGeometry
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmElementQuestType
+import de.westnordost.streetcomplete.data.osm.osmquests.Tags
 import de.westnordost.streetcomplete.data.user.achievements.QuestTypeAchievement.CITIZEN
 import de.westnordost.streetcomplete.ktx.containsAny
 import de.westnordost.streetcomplete.util.contains
@@ -38,7 +38,7 @@ class AddLevel(
     private val thingsWithLevelFilter by lazy { """
         nodes, ways, relations with level
         and amenity ~ doctors|dentist
-    """.toElementFilterExpression()}
+    """.toElementFilterExpression() }
 
     /* only nodes because ways/relations are not likely to be floating around freely in a mall
     *  outline */
@@ -64,9 +64,9 @@ class AddLevel(
         nodes with
          (${isKindOfShopExpression()})
          and !level and (name or brand)
-    """.toElementFilterExpression()}
+    """.toElementFilterExpression() }
 
-    override val commitMessage = "Add level to places"
+    override val changesetComment = "Add level to elements"
     override val wikiLink = "Key:level"
     override val icon = R.drawable.ic_quest_level
     /* disabled because in a mall with multiple levels, if there are nodes with no level defined,
@@ -175,8 +175,8 @@ class AddLevel(
 
     override fun createForm() = AddLevelForm()
 
-    override fun applyAnswerTo(answer: String, changes: StringMapChangesBuilder) {
-        changes.add("level", answer)
+    override fun applyAnswerTo(answer: String, tags: Tags, timestampEdited: Long) {
+        tags["level"] = answer
     }
 
     override val hasQuestSettings = true

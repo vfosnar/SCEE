@@ -1,12 +1,12 @@
 package de.westnordost.streetcomplete.quests.smoothness
 
 import de.westnordost.streetcomplete.R
-import de.westnordost.streetcomplete.data.meta.deleteCheckDatesForKey
+import de.westnordost.streetcomplete.data.meta.removeCheckDatesForKey
 import de.westnordost.streetcomplete.data.meta.updateWithCheckDate
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmFilterQuestType
-import de.westnordost.streetcomplete.data.osm.edits.update_tags.StringMapChangesBuilder
-import de.westnordost.streetcomplete.data.user.achievements.QuestTypeAchievement.CAR
+import de.westnordost.streetcomplete.data.osm.osmquests.Tags
 import de.westnordost.streetcomplete.data.user.achievements.QuestTypeAchievement.BICYCLIST
+import de.westnordost.streetcomplete.data.user.achievements.QuestTypeAchievement.CAR
 import de.westnordost.streetcomplete.ktx.arrayOfNotNull
 
 class AddRoadSmoothness : OsmFilterQuestType<SmoothnessAnswer>() {
@@ -20,16 +20,17 @@ class AddRoadSmoothness : OsmFilterQuestType<SmoothnessAnswer>() {
           and (access !~ private|no or (foot and foot !~ private|no))
           and (
             !smoothness
-            or smoothness older today -6 years
-            or smoothness:date < today -6 years
+            or smoothness older today -4 years
+            or smoothness:date < today -4 years
           )
     """
 
-    override val commitMessage = "Add road smoothness"
+    override val changesetComment = "Add road smoothness"
     override val wikiLink = "Key:smoothness"
     override val icon = R.drawable.ic_quest_street_surface_detail
     override val isSplitWayEnabled = true
     override val questTypeAchievements = listOf(CAR, BICYCLIST)
+    override val defaultDisabledMessage = R.string.default_disabled_msg_difficult_and_time_consuming
 
     override fun getTitle(tags: Map<String, String>): Int {
         val hasName = tags.containsKey("name")
@@ -46,18 +47,19 @@ class AddRoadSmoothness : OsmFilterQuestType<SmoothnessAnswer>() {
 
     override fun createForm() = AddSmoothnessForm()
 
-    override fun applyAnswerTo(answer: SmoothnessAnswer, changes: StringMapChangesBuilder) {
+    override fun applyAnswerTo(answer: SmoothnessAnswer, tags: Tags, timestampEdited: Long) {
         when (answer) {
             is SmoothnessValueAnswer -> {
-                changes.updateWithCheckDate("smoothness", answer.value.osmValue)
-                changes.deleteIfExists("smoothness:date")
+                tags.updateWithCheckDate("smoothness", answer.value.osmValue)
+                tags.remove("smoothness:date")
             }
             is WrongSurfaceAnswer -> {
-                changes.delete("surface")
-                changes.deleteIfExists("smoothness")
-                changes.deleteIfExists("smoothness:date")
-                changes.deleteCheckDatesForKey("smoothness")
+                tags.remove("surface")
+                tags.remove("smoothness")
+                tags.remove("smoothness:date")
+                tags.removeCheckDatesForKey("smoothness")
             }
+            is IsActuallyStepsAnswer -> throw IllegalStateException()
         }
     }
 }

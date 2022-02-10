@@ -57,7 +57,7 @@
                     "options": {
                         "designated": {
                             "description": "Přístup povolen v souladu se značením nebo specifickými místními předpisy",
-                            "title": "Vyhrazen"
+                            "title": "Vyhrazeno"
                         },
                         "destination": {
                             "description": "Přístup je povolen pouze k dosažení cíle",
@@ -447,7 +447,11 @@
                     "label": "Hotovost"
                 },
                 "castle_type": {
-                    "label": "Typ"
+                    "label": "Typ",
+                    "options": {
+                        "fortress": "Pevnost",
+                        "palace": "Palác"
+                    }
                 },
                 "changing_table": {
                     "label": "Stůl na výměnu plenek"
@@ -539,6 +543,13 @@
                     "label": "Zastřešeno",
                     "terms": "zastřešený,zastřešené,střecha,kryté,kryt,zakryté"
                 },
+                "covered_no": {
+                    "label": "Zastřešeno",
+                    "options": {
+                        "no": "Ne",
+                        "yes": "Ano"
+                    }
+                },
                 "craft": {
                     "label": "Typ"
                 },
@@ -579,9 +590,13 @@
                         "american": "Americká",
                         "asian": "Asijská",
                         "burger": "Burger",
+                        "cake": "Koláče",
                         "chicken": "Kuřecí",
                         "chinese": "Čínská",
+                        "chocolate": "Čokoláda",
                         "coffee_shop": "Kavárna",
+                        "dessert": "Dezerty",
+                        "donut": "Donuty",
                         "fish": "Ryba",
                         "french": "Francouzská",
                         "german": "Německá",
@@ -590,12 +605,21 @@
                         "indian": "Indická",
                         "italian": "Italská",
                         "japanese": "Japonská",
+                        "juice": "Džusy",
                         "kebab": "Kebab",
                         "korean": "Korejký",
                         "mexican": "Mexická",
+                        "pankcake": "Lívance",
+                        "pasta": "Těstoviny",
                         "pizza": "Pizza",
+                        "polish": "Polská",
+                        "portuguese": "Portugalská",
                         "regional": "Místní",
+                        "russian": "Ruská",
+                        "salad": "Saláty",
                         "sandwich": "Sendvič",
+                        "seafood": "Mořské plody",
+                        "spanish": "Španělská",
                         "sushi": "Suši",
                         "thai": "Thajská",
                         "turkish": "Turecká",
@@ -750,6 +774,9 @@
                     "placeholder": "45, 90, 180, 270",
                     "terms": "stupně ve směru hodinových ručiček,stupňů,sklon,orientace,kompas,směr,otočení,natočení,poloha"
                 },
+                "direction_cardinal-US-CA-NZ": {
+                    "label": "Směr"
+                },
                 "direction_clock": {
                     "label": "Směr",
                     "options": {
@@ -835,14 +862,6 @@
                     "placeholder": "00:00",
                     "terms": "trvání,doba,průběh,čas,rozmezí"
                 },
-                "ele": {
-                    "label": "Nadmořská výška",
-                    "terms": "výška,poloha,mnm,m. n. m.,metrů,nad mořem,vysoko,vrchol,vrch,nadmořská,úroveň,nízko"
-                },
-                "ele_node": {
-                    "label": "Nadmořská výška",
-                    "terms": "výška,poloha,mnm,m. n. m.,metrů,nad mořem,vysoko,vrchol,vrch,nadmořská,úroveň,nízko"
-                },
                 "electrified": {
                     "label": "Elektrifikace",
                     "options": {
@@ -864,7 +883,10 @@
                     "placeholder": "Výchozí"
                 },
                 "embassy": {
-                    "label": "Typ"
+                    "label": "Typ",
+                    "options": {
+                        "yes": "Ambasáda"
+                    }
                 },
                 "emergency": {
                     "label": "Pohotovost"
@@ -1004,10 +1026,6 @@
                 },
                 "geyser/height": {
                     "label": "Výška výtrysku"
-                },
-                "gnis/feature_id": {
-                    "label": "Identifikační číslo prvku GNIS",
-                    "terms": "id,identifikace,číslo,kód,označení,usa,antarktida,místo,značka"
                 },
                 "government": {
                     "label": "Typ"
@@ -1333,6 +1351,9 @@
                     "label": "Uzamykatelné",
                     "terms": "uzamykatelné,uzamykatelný,zámek,zamknutý,zamknout,uzamknout,zamykat,uzavřít,uzaviratelné"
                 },
+                "locked": {
+                    "label": "Zamčeno"
+                },
                 "man_made": {
                     "label": "Typ"
                 },
@@ -1580,6 +1601,13 @@
                     "label": "Par",
                     "placeholder": "3, 4, 5..."
                 },
+                "parcel_pickup": {
+                    "label": "Vyzvedávání zásilek",
+                    "options": {
+                        "no": "Ne",
+                        "yes": "Ano"
+                    }
+                },
                 "park_ride": {
                     "label": "Parkoviště P+R",
                     "terms": "p+r,par,zaparkuj a jeď,mhd,přestup,dojíždějící,kapacitní,odstavné,hromadná doprava,na kraji města,p + r,parkandride,p/r,parkuj a jeď,městská,metro,tram,bus"
@@ -1593,17 +1621,13 @@
                         "multi-storey": "Víceúrovňové",
                         "rooftop": "Na střeše",
                         "sheds": "Lehký přístřešek",
+                        "street_side": "Podél ulice",
                         "surface": "Povrchové",
                         "underground": "Podzemní"
                     }
                 },
                 "parking/orientation": {
-                    "label": "Orientace",
-                    "options": {
-                        "diagonal": "Šikmo k cestě",
-                        "parallel": "Rovnoběžně s cestou",
-                        "perpendicular": "Kolmo k cestě"
-                    }
+                    "label": "Orientace"
                 },
                 "parking_entrance": {
                     "label": "Typ",
@@ -1827,12 +1851,21 @@
                 "rcn_ref": {
                     "label": "číslo cyklotrasy"
                 },
-                "real_fire": {
-                    "label": "Pravý oheň",
-                    "terms": "oheň,krb,ohniště,vnitřní ohniště,vnitřní oheň,krb v hospodě,hospoda s krbem,gril,sezení u ohně,skutečný oheň"
-                },
                 "recycling_accepts": {
-                    "label": "Určení"
+                    "label": "Určení",
+                    "options": {
+                        "batteries": "Baterie",
+                        "cans": "Plechovky",
+                        "cardboard": "Karton",
+                        "clothes": "Oblečení",
+                        "glass": "Sklo",
+                        "glass_bottles": "Skleněné lahve",
+                        "green_waste": "Zelený odpad",
+                        "paper": "Papír",
+                        "plastic_packaging": "Plastové obaly",
+                        "scrap_metal": "Šrot",
+                        "shoes": "Boty"
+                    }
                 },
                 "recycling_type": {
                     "label": "Typ",
@@ -2301,6 +2334,7 @@
                     "options": {
                         "artificial_turf": "Umělý trávník",
                         "asphalt": "Asfalt",
+                        "compacted": "Zhutněný",
                         "concrete": "Beton",
                         "dirt": "Hlína",
                         "grass": "Tráva",
@@ -2332,10 +2366,14 @@
                     "label": "Datum posledního průzkumu",
                     "terms": "datum kontroly,návštěvy,datum,prohlídka,návštěva,kontrola,zkontrolováno,ověřeno,navštíveno,kdy,čas,poslední kontrola,aktuální"
                 },
+                "survey_point/purpose": {
+                    "label": "Účel"
+                },
                 "survey_point/structure": {
                     "label": "Struktura",
                     "options": {
                         "beacon": "Maják",
+                        "magnet": "Magnet",
                         "medallion": "Magnet"
                     }
                 },
@@ -3573,12 +3611,6 @@
                     "name": "Automat na noviny",
                     "terms": "automat,prodejní automat,noviny,časopisy"
                 },
-                "amenity/vending_machine/parcel_pickup": {
-                    "name": "Schránka na vyzvednutí zásilky"
-                },
-                "amenity/vending_machine/parcel_pickup_dropoff": {
-                    "name": "Schránka na vyzvednutí / zanechání zásilky"
-                },
                 "amenity/vending_machine/parking_tickets": {
                     "name": "Parkovací automat",
                     "terms": "automat,prodejní automat,parkování,parking"
@@ -4477,29 +4509,15 @@
                     "name": "Označený přechod",
                     "terms": "přechod,zebra,označený přechod,značený přechod,přechod pro chodce,chodci"
                 },
-                "highway/crossing/marked-raised": {
-                    "name": "Označený přechod (zvýšený)",
-                    "terms": "zvýšený přechod pro chodce,vyvýšený přechod pro chodce,pěší přechod,přechod,místo pro přecházení,křížení,chodec,zebra,zpomalovací,zklidnění dopravy,vyvýšená plocha,zvýšená plocha pro přecházení"
-                },
                 "highway/crossing/signals": {
                     "name": "Přechod se semaforem pro chodce"
-                },
-                "highway/crossing/signals-raised": {
-                    "name": "Přechod se semaforem pro chodce (zvýšený)"
                 },
                 "highway/crossing/unmarked": {
                     "name": "Neoznačený přechod",
                     "terms": "neoznačený přechod,přechod,místo pro přecházení,přechod pro chodce,neoznačený přechod pro chodce,přechod přes ulici"
                 },
-                "highway/crossing/unmarked-raised": {
-                    "name": "Neoznačený přechod (zvýšený)",
-                    "terms": "neoznačený přechod,zklidňování dopravy,zvýšený přechod,zpomalovací pás,vyvýšený pás,vyvýšený přechod,místo pro přecházení,přechod pro chodce,přechod přes ulici"
-                },
                 "highway/crossing/zebra": {
                     "name": "Označený přechod"
-                },
-                "highway/crossing/zebra-raised": {
-                    "name": "Označený přechod (zvýšený)"
                 },
                 "highway/cycleway": {
                     "name": "Cyklostezka",
@@ -4552,10 +4570,6 @@
                     "name": "Označený přechod pro chodce",
                     "terms": "označený,zebra,přechod,přechod pro chodce,chodec,chodci,značený přechod,křížení"
                 },
-                "highway/footway/marked-raised": {
-                    "name": "Označený přechod (zvýšený)",
-                    "terms": "zvýšený přechod pro chodce,vyvýšený přechod pro chodce,pěší přechod,přechod,místo pro přecházení,křížení,chodec,zebra,zpomalovací,zklidnění dopravy,vyvýšená plocha,zvýšená plocha pro přecházení"
-                },
                 "highway/footway/sidewalk": {
                     "name": "Chodník podél vozovky",
                     "terms": "chodník,pěší cesta,pěší stezka,pro pěší,chodec,chodci,pro chodce,stezka pro chodce"
@@ -4564,15 +4578,8 @@
                     "name": "Neoznačený přechod",
                     "terms": "neoznačený přechod,přechod,místo pro přecházení,přechod pro chodce,neoznačený přechod pro chodce,přechod přes ulici"
                 },
-                "highway/footway/unmarked-raised": {
-                    "name": "Neoznačený přechod (zvýšený)",
-                    "terms": "neoznačený přechod,zklidňování dopravy,zvýšený přechod,zpomalovací pás,vyvýšený pás,vyvýšený přechod,místo pro přecházení,přechod pro chodce,přechod přes ulici"
-                },
                 "highway/footway/zebra": {
                     "name": "Označený přechod pro chodce"
-                },
-                "highway/footway/zebra-raised": {
-                    "name": "Označený přechod (zvýšený)"
                 },
                 "highway/give_way": {
                     "name": "Značka Dej přednost",
@@ -5358,8 +5365,7 @@
                     "name": "paseka"
                 },
                 "man_made/courtyard": {
-                    "name": "Nádvoří",
-                    "terms": "nádvoří,dvůr,atrium,pavlač,obestavěný prostor"
+                    "name": "Nádvoří"
                 },
                 "man_made/crane": {
                     "name": "Jeřáb"
@@ -5751,9 +5757,6 @@
                 "natural/wood": {
                     "name": "přírodní les"
                 },
-                "network/type/node_network": {
-                    "name": "Bod rekreační sítě"
-                },
                 "noexit/yes": {
                     "name": "Konec cesty",
                     "terms": "slepá ulice,konec ulice,konec silnice,slepá silnice"
@@ -5779,9 +5782,6 @@
                 },
                 "office/association": {
                     "name": "Kancelář neziskové organizace"
-                },
-                "office/bail_bond_agent": {
-                    "name": "zastavárna pro získání kauce"
                 },
                 "office/charity": {
                     "name": "Kancelář charity"

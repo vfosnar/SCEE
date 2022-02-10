@@ -7,9 +7,10 @@ import de.westnordost.streetcomplete.R
 import de.westnordost.streetcomplete.data.meta.ANYTHING_UNPAVED
 import de.westnordost.streetcomplete.data.meta.MAXSPEED_TYPE_KEYS
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmFilterQuestType
-import de.westnordost.streetcomplete.data.osm.edits.update_tags.StringMapChangesBuilder
+import de.westnordost.streetcomplete.data.osm.osmquests.Tags
 import de.westnordost.streetcomplete.data.quest.AllCountriesExcept
 import de.westnordost.streetcomplete.data.user.achievements.QuestTypeAchievement.CAR
+import de.westnordost.streetcomplete.ktx.toYesNo
 
 class AddMaxSpeed(private val prefs: SharedPreferences) : OsmFilterQuestType<MaxSpeedAnswer>() {
 
@@ -25,7 +26,25 @@ class AddMaxSpeed(private val prefs: SharedPreferences) : OsmFilterQuestType<Max
          and area != yes
          and (access !~ private|no or (foot and foot !~ private|no))
     """
-    override val commitMessage = "Add speed limits"
+    override val changesetComment = "Add speed limits"
+    override val wikiLink = "Key:maxspeed"
+    override val icon = R.drawable.ic_quest_max_speed
+    override val hasMarkersAtEnds = true
+    override val isSplitWayEnabled = true
+
+    // see #813: US has different rules for each different state which need to be respected
+    override val enabledInCountries = AllCountriesExcept("US")
+    override val defaultDisabledMessage = R.string.default_disabled_msg_maxspeed
+
+    override val questTypeAchievements = listOf(CAR)
+
+    override fun getTitle(tags: Map<String, String>) =
+        if (tags.containsKey("name"))
+            R.string.quest_maxspeed_name_title2
+        else
+            R.string.quest_maxspeed_title_short2
+
+            kdiff3 is so incredibly shitty, removing accidentally duplicated line can't be undone and is a merge conflict now...
     override val wikiLink = "Key:maxspeed"
     override val icon = R.drawable.ic_quest_max_speed
     override val hasMarkersAtEnds = true
@@ -45,33 +64,28 @@ class AddMaxSpeed(private val prefs: SharedPreferences) : OsmFilterQuestType<Max
 
     override fun createForm() = AddMaxSpeedForm()
 
-    override fun applyAnswerTo(answer: MaxSpeedAnswer, changes: StringMapChangesBuilder) {
-        when(answer) {
+    override fun applyAnswerTo(answer: MaxSpeedAnswer, tags: Tags, timestampEdited: Long) {
+        val maxspeedTag = prefs.getString(PREF_MAXSPEED_TAG, MAXSPEED_TYPE)!!
+        when (answer) {
             is MaxSpeedSign -> {
-                changes.add("maxspeed", answer.value.toString())
-                changes.add(prefs.getString(PREF_MAXSPEED_TAG, MAXSPEED_TYPE)!!, "sign")
+                tags["maxspeed"] = answer.value.toString()
+                tags[maxspeedTag] = "sign"
             }
             is MaxSpeedZone -> {
-                changes.add("maxspeed", answer.value.toString())
-                changes.add(prefs.getString(PREF_MAXSPEED_TAG, MAXSPEED_TYPE)!!, answer.countryCode + ":" + answer.roadType)
+                tags["maxspeed"] = answer.value.toString()
+                tags[maxspeedTag] = answer.countryCode + ":" + answer.roadType
             }
             is AdvisorySpeedSign -> {
-                changes.add("maxspeed:advisory", answer.value.toString())
-                changes.add("${prefs.getString(PREF_MAXSPEED_TAG, MAXSPEED_TYPE)!!}:advisory", "sign")
+                tags["maxspeed:advisory"] = answer.value.toString()
+                tags[maxspeedTag + ":advisory"] = "sign"
             }
             is IsLivingStreet -> {
-                changes.modify("highway", "living_street")
+                tags["highway"] = "living_street"
             }
             is ImplicitMaxSpeed -> {
-                changes.add(prefs.getString(PREF_MAXSPEED_TAG, MAXSPEED_TYPE)!!, answer.countryCode + ":" + answer.roadType)
+                tags[maxspeedTag] = answer.countryCode + ":" + answer.roadType
                 // Lit is either already set or has been answered by the user, so this wouldn't change the value of the lit tag
-                if (answer.lit != null) {
-                    if (answer.lit) {
-                        changes.addOrModify("lit", "yes")
-                    } else {
-                        changes.addOrModify("lit", "no")
-                    }
-                }
+                answer.lit?.let { tags["lit"] = it.toYesNo() }
             }
         }
     }

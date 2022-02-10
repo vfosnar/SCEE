@@ -2,7 +2,7 @@ package de.westnordost.streetcomplete.quests.building_type
 
 import de.westnordost.streetcomplete.R
 import de.westnordost.streetcomplete.data.elementfilter.toElementFilterExpression
-import de.westnordost.streetcomplete.data.osm.edits.update_tags.StringMapChangesBuilder
+import de.westnordost.streetcomplete.data.osm.osmquests.Tags
 import de.westnordost.streetcomplete.data.osm.geometry.ElementPolygonsGeometry
 import de.westnordost.streetcomplete.data.user.achievements.QuestTypeAchievement.BUILDING
 import de.westnordost.streetcomplete.data.osm.mapdata.Element
@@ -60,6 +60,7 @@ val buildingFilter = """
          and abandoned:building != yes
          and ruins != yes and ruined != yes
     """.toElementFilterExpression()
+    override val changesetComment = "Add building types"
 
 private val nodesWithAddressFilter by lazy { """
    nodes with ~"addr:(housenumber|housename|conscriptionnumber|streetnumber|street)"
@@ -101,30 +102,30 @@ fun getBuildingsWithoutAddress(buildings: List<Element>, mapData: MapDataWithGeo
 
 }
 
-fun applyBuildingAnswer(answer: BuildingType, changes: StringMapChangesBuilder) {
+fun applyBuildingAnswer(answer: BuildingType, tags: Tags, timestampEdited: Long) {
     if (answer.osmKey == "man_made") {
-        changes.delete("building")
-        changes.add("man_made", answer.osmValue)
+            tags.remove("building")
+            tags["man_made"] = answer.osmValue
     } else if (answer.osmKey == "demolished:building") {
-        changes.delete("building")
-        changes.addOrModify(answer.osmKey, answer.osmValue)
+        tags.remove("building")
+        tags[answer.osmKey] = answer.osmValue
     } else if (answer.osmValue == "transformer_tower") {
-        changes.modify("building", answer.osmValue)
-        changes.addOrModify("power", "substation")
-        changes.addOrModify("substation", "minor_distribution")
+        tags["building"] = answer.osmValue
+        tags["power"] = "substation"
+        tags["substation"] = "minor_distribution"
     } else if (answer.osmKey != "building") {
-        changes.addOrModify(answer.osmKey, answer.osmValue)
-            if(answer == BuildingType.ABANDONED) {
-                changes.deleteIfExists("disused")
+            tags[answer.osmKey] = answer.osmValue
+            if (answer == BuildingType.ABANDONED) {
+                tags.remove("disused")
             }
-            if(answer == BuildingType.RUINS && changes.getPreviousValue("disused") == "no") {
-                changes.deleteIfExists("disused")
+            if (answer == BuildingType.RUINS && tags["disused"] == "no") {
+                tags.remove("disused")
             }
-            if(answer == BuildingType.RUINS && changes.getPreviousValue("abandoned") == "no") {
-                changes.deleteIfExists("abandoned")
+            if (answer == BuildingType.RUINS && tags["abandoned"] == "no") {
+                tags.remove("abandoned")
             }
     } else {
-        changes.modify("building", answer.osmValue)
+            tags["building"] = answer.osmValue
     }
 
 }

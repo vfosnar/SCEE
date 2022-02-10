@@ -632,7 +632,7 @@
                     "label": "Data"
                 },
                 "defibrillator/location": {
-                    "label": "Lokalizacja"
+                    "label": "Opis lokalizacji"
                 },
                 "delivery": {
                     "label": "Dostawa",
@@ -807,14 +807,6 @@
                     "placeholder": "00:00",
                     "terms": "czas trwania,trwanie"
                 },
-                "ele": {
-                    "label": "Wysokość n.p.m. (WGS84)",
-                    "terms": "wysokość"
-                },
-                "ele_node": {
-                    "label": "Wysokość n.p.m. (WGS84)",
-                    "terms": "wysokość"
-                },
                 "electrified": {
                     "label": "Elektryfikacja",
                     "options": {
@@ -976,10 +968,6 @@
                 },
                 "geyser/height": {
                     "label": "Wysokość erupcji"
-                },
-                "gnis/feature_id": {
-                    "label": "GNIS",
-                    "terms": "gnis"
                 },
                 "government": {
                     "label": "Rodzaj"
@@ -1790,10 +1778,6 @@
                 },
                 "rcn_ref": {
                     "label": "Numer regionalnej sieci rowerowej"
-                },
-                "real_fire": {
-                    "label": "Kominek",
-                    "terms": "kominek"
                 },
                 "recycling_accepts": {
                     "label": "Przyjmuje"
@@ -3176,6 +3160,10 @@
                 "amenity/nursing_home": {
                     "name": "Dom spokojnej starości"
                 },
+                "amenity/parcel_locker": {
+                    "name": "Paczkomat",
+                    "terms": "inpost,orlen paczka,aliexpress,cainiao,allegro,automat przesyłkowy,automat paczkowy"
+                },
                 "amenity/parking": {
                     "name": "Parking samochodowy",
                     "terms": "parking"
@@ -3638,14 +3626,6 @@
                 "amenity/vending_machine/newspapers": {
                     "name": "Automat z gazetami",
                     "terms": "automat z gazetami,gazety"
-                },
-                "amenity/vending_machine/parcel_pickup": {
-                    "name": "Paczkomat",
-                    "terms": "amazon,paczki,przesyłki,paczkomat,odbiór"
-                },
-                "amenity/vending_machine/parcel_pickup_dropoff": {
-                    "name": "Paczkomat z możliwością nadawania przesyłek",
-                    "terms": "paczki,przesyłki,paczkomat,odbiór,wysyłanie"
                 },
                 "amenity/vending_machine/parking_tickets": {
                     "name": "Parkomat",
@@ -4638,23 +4618,12 @@
                     "name": "Oznakowane przejście dla pieszych",
                     "terms": "oznaczone przejście dla pieszych,przejście dla pieszych,zebra,pasy"
                 },
-                "highway/crossing/marked-raised": {
-                    "name": "Oznakowane przejście dla pieszych (podwyższone)",
-                    "terms": "oznaczone przejście dla pieszych (wyniesione),zebra,przejście dla pieszych,płaska góra,próg zwalniający,prędkość,powoli"
-                },
                 "highway/crossing/unmarked": {
                     "name": "Nieoznakowane przejście",
                     "terms": "nieoznaczone przejście dla pieszych"
                 },
-                "highway/crossing/unmarked-raised": {
-                    "name": "Nieoznakowane przejście (podwyższone)",
-                    "terms": "nieoznaczone przejście dla pieszych (wyniesione),płaska góra,próg zwalniający,prędkość,powoli"
-                },
                 "highway/crossing/zebra": {
                     "name": "Oznakowane przejście dla pieszych"
-                },
-                "highway/crossing/zebra-raised": {
-                    "name": "Oznakowane przejście dla pieszych (podwyższone)"
                 },
                 "highway/cycleway": {
                     "name": "Droga rowerowa",
@@ -4710,10 +4679,6 @@
                     "name": "Oznakowane przejście dla pieszych",
                     "terms": "oznaczone przejście dla pieszych,przejście dla pieszych,zebra,pasy"
                 },
-                "highway/footway/marked-raised": {
-                    "name": "Oznakowane przejście dla pieszych (podwyższone)",
-                    "terms": "oznaczone przejście dla pieszych (wyniesione),zebra,przejście dla pieszych,płaska góra,próg zwalniający,prędkość,powoli"
-                },
                 "highway/footway/sidewalk": {
                     "name": "Chodnik przy jezdni",
                     "terms": "chodnik"
@@ -4722,15 +4687,8 @@
                     "name": "Nieoznakowane przejście",
                     "terms": "nieoznaczone przejście dla pieszych"
                 },
-                "highway/footway/unmarked-raised": {
-                    "name": "Nieoznakowane przejście (podwyższone)",
-                    "terms": "nieoznaczone przejście dla pieszych (wyniesione),płaska góra,próg zwalniający,prędkość,powoli"
-                },
                 "highway/footway/zebra": {
                     "name": "Oznakowane przejście dla pieszych"
-                },
-                "highway/footway/zebra-raised": {
-                    "name": "Oznakowane przejście dla pieszych (podwyższone)"
                 },
                 "highway/give_way": {
                     "name": "Ustąp pierwszeństwa przejazdu",
@@ -5190,7 +5148,7 @@
                     "terms": "tereny kolejowe,kolejowy,pkp,torów"
                 },
                 "landuse/recreation_ground": {
-                    "name": "Park rekreacyjno-sportowy",
+                    "name": "Teren rekreacyjno-sportowy",
                     "terms": "teren rekreacyjny,teren sportowy,rekreacja,odpoczynek,sporty,zabawy,park linowy"
                 },
                 "landuse/religious": {
@@ -5615,8 +5573,7 @@
                     "terms": "wyręba,poręba,wycinka,las,drewno,drzewo"
                 },
                 "man_made/courtyard": {
-                    "name": "Dziedziniec",
-                    "terms": "dziedziniec,podwórze,podwórzec,podworzec,patio,atrium,wirydarz,perystyl"
+                    "name": "Dziedziniec"
                 },
                 "man_made/crane": {
                     "name": "Żuraw stacjonarny",
@@ -6069,10 +6026,6 @@
                     "name": "Drzewa",
                     "terms": "drzewa,las,puszcza,tajga,las pierwotny,las tropikalny,dżungla,bór,knieja,gaj,zagaj,zagajnik,młodnik,młodniak,zadrzewienie,zalesienie"
                 },
-                "network/type/node_network": {
-                    "name": "Rekreacyjna trasa ponumerowanych węzłów",
-                    "terms": "rekreacyjna trasa ponumerowanych węzłów"
-                },
                 "noexit/yes": {
                     "name": "Brak przejścia/przejazdu",
                     "terms": "brak przejścia,brak przejazdu,koniec drogi,ślepa ulica,ślepa uliczka"
@@ -6103,10 +6056,6 @@
                 "office/association": {
                     "name": "Biuro organizacji non profit",
                     "terms": "biuro organizacji non-profit,stowarzyszenie,non-profit,nonprofit,organizacja,społeczeństwo,społeczność"
-                },
-                "office/bail_bond_agent": {
-                    "name": "Poręczyciel majątkowy",
-                    "terms": "poręczyciel majątkowy,agent obligacji,kaucja,obligacje,poręczenie majątkowe"
                 },
                 "office/charity": {
                     "name": "Organizacja charytatywna",

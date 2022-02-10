@@ -3,15 +3,15 @@ package de.westnordost.streetcomplete.quests.sidewalk
 import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
-import de.westnordost.streetcomplete.data.osm.mapdata.MapDataWithGeometry
 import de.westnordost.streetcomplete.R
 import de.westnordost.streetcomplete.data.elementfilter.toElementFilterExpression
 import de.westnordost.streetcomplete.data.meta.ANYTHING_UNPAVED
 import de.westnordost.streetcomplete.data.meta.MAXSPEED_TYPE_KEYS
-import de.westnordost.streetcomplete.data.osm.edits.update_tags.StringMapChangesBuilder
 import de.westnordost.streetcomplete.data.osm.geometry.ElementPolylinesGeometry
 import de.westnordost.streetcomplete.data.osm.mapdata.Element
+import de.westnordost.streetcomplete.data.osm.mapdata.MapDataWithGeometry
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmElementQuestType
+import de.westnordost.streetcomplete.data.osm.osmquests.Tags
 import de.westnordost.streetcomplete.data.user.achievements.QuestTypeAchievement.PEDESTRIAN
 import de.westnordost.streetcomplete.osm.estimateCycleTrackWidth
 import de.westnordost.streetcomplete.osm.estimateParkingOffRoadWidth
@@ -20,15 +20,13 @@ import de.westnordost.streetcomplete.osm.guessRoadwayWidth
 import de.westnordost.streetcomplete.util.isNearAndAligned
 import de.westnordost.streetcomplete.quests.singleTypeElementSelectionDialog
 
-class AddSidewalk(private val prefs: SharedPreferences) : OsmElementQuestType<SidewalkAnswer> {
+class AddSidewalk(private val prefs: SharedPreferences) : OsmElementQuestType<SidewalkSides> {
 
     /* the filter additionally filters out ways that are unlikely to have sidewalks:
      *
-     * + unpaved roads, roads with very low speed limits and roads that are probably not developed
-     *   enough to have sidewalk (i.e. country roads). But let's ask for urban roads at least
-     *
+     * + unpaved roads
+     * + roads that are probably not developed enough to have sidewalk (i.e. country roads)
      * + roads with a very low speed limit
-     *
      * + Also, anything explicitly tagged as no pedestrians or explicitly tagged that the sidewalk
      *   is mapped as a separate way OR that is tagged with that the cycleway is separate. If the
      *   cycleway is separate, the sidewalk is too for sure
@@ -50,7 +48,8 @@ class AddSidewalk(private val prefs: SharedPreferences) : OsmElementQuestType<Si
             or highway = residential
             or ~${(MAXSPEED_TYPE_KEYS + "maxspeed").joinToString("|")} ~ .*urban|.*zone.*
           )
-          and foot != no and access !~ private|no
+          and foot != no
+          and access !~ private|no
           and foot != use_sidepath
           and bicycle != use_sidepath
           and bicycle:backward != use_sidepath
@@ -66,11 +65,10 @@ class AddSidewalk(private val prefs: SharedPreferences) : OsmElementQuestType<Si
     """.toElementFilterExpression() }
     // highway=construction included, as situation often changes during and after construction
 
-    override val commitMessage = "Add whether there are sidewalks"
+    override val changesetComment = "Add whether there are sidewalks"
     override val wikiLink = "Key:sidewalk"
     override val icon = R.drawable.ic_quest_sidewalk
     override val isSplitWayEnabled = true
-
     override val questTypeAchievements = listOf(PEDESTRIAN)
 
     override fun getTitle(tags: Map<String, String>) = R.string.quest_sidewalk_title
@@ -105,7 +103,7 @@ class AddSidewalk(private val prefs: SharedPreferences) : OsmElementQuestType<Si
 
     private fun getMinDistanceToWays(tags: Map<String, String>): Float =
         (
-            (estimateRoadwayWidth(tags) ?: guessRoadwayWidth(tags) ) +
+            (estimateRoadwayWidth(tags) ?: guessRoadwayWidth(tags)) +
             (estimateParkingOffRoadWidth(tags) ?: 0f) +
             (estimateCycleTrackWidth(tags) ?: 0f)
         ) / 2f +
@@ -116,26 +114,15 @@ class AddSidewalk(private val prefs: SharedPreferences) : OsmElementQuestType<Si
 
     override fun createForm() = AddSidewalkForm()
 
-    override fun applyAnswerTo(answer: SidewalkAnswer, changes: StringMapChangesBuilder) {
-        changes.add("sidewalk", getSidewalkValue(answer))
+    override fun applyAnswerTo(answer: SidewalkSides, tags: Tags, timestampEdited: Long) {
+        answer.applyTo(tags)
     }
-
 
     override val hasQuestSettings = true
 
     override fun getQuestSettingsDialog(context: Context): AlertDialog =
         singleTypeElementSelectionDialog(context, prefs, PREF_SIDEWALK_HIGHWAY_SELECTION, ROADS_WITH_SIDEWALK.joinToString("|"), "set highways eligible for this quest, comma separated")
 
-    private fun getSidewalkValue(answer: SidewalkAnswer) =
-        when (answer) {
-            is SeparatelyMapped -> "separate"
-            is SidewalkSides -> when {
-                answer.left && answer.right -> "both"
-                answer.left -> "left"
-                answer.right -> "right"
-                else -> "no"
-            }
-        }
 }
 
 private val ROADS_WITH_SIDEWALK = arrayOf(

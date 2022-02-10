@@ -746,12 +746,6 @@
                     "label": "Varighet",
                     "placeholder": "00:00"
                 },
-                "ele": {
-                    "label": "Elevasjon"
-                },
-                "ele_node": {
-                    "label": "Elevasjon"
-                },
                 "electrified": {
                     "label": "Elektrifisering",
                     "options": {
@@ -900,9 +894,6 @@
                 },
                 "geyser/height": {
                     "label": "Utbruddshøyde"
-                },
-                "gnis/feature_id": {
-                    "label": "GNIS Egenskap ID"
                 },
                 "government": {
                     "label": "Type"
@@ -1622,9 +1613,6 @@
                 },
                 "rcn_ref": {
                     "label": "Sykkel Lov"
-                },
-                "real_fire": {
-                    "label": "Ekte Flamme"
                 },
                 "recycling_accepts": {
                     "label": "Godtar "
@@ -2851,9 +2839,6 @@
                 "amenity/vending_machine/newspapers": {
                     "name": "Avisautomat"
                 },
-                "amenity/vending_machine/parcel_pickup": {
-                    "name": "Pakkeboks"
-                },
                 "amenity/vending_machine/parking_tickets": {
                     "name": "Parkeringsautomat"
                 },
@@ -3487,20 +3472,11 @@
                 "highway/crossing/marked": {
                     "name": "Fotgjengerovergang"
                 },
-                "highway/crossing/marked-raised": {
-                    "name": "Fotgjengerovergang (forhøyet)"
-                },
                 "highway/crossing/unmarked": {
                     "name": "Tilrettelagt kryssing"
                 },
-                "highway/crossing/unmarked-raised": {
-                    "name": "Tilrettelagt kryssing (forhøyet)"
-                },
                 "highway/crossing/zebra": {
                     "name": "Fotgjengerovergang"
-                },
-                "highway/crossing/zebra-raised": {
-                    "name": "Fotgjengerovergang (forhøyet)"
                 },
                 "highway/cycleway": {
                     "name": "Sykkelvei"
@@ -3532,23 +3508,14 @@
                 "highway/footway/marked": {
                     "name": "Fotgjengerovergang"
                 },
-                "highway/footway/marked-raised": {
-                    "name": "Fotgjengerovergang (forhøyet)"
-                },
                 "highway/footway/sidewalk": {
                     "name": "Fortau"
                 },
                 "highway/footway/unmarked": {
                     "name": "Tilrettelagt kryssing"
                 },
-                "highway/footway/unmarked-raised": {
-                    "name": "Tilrettelagt kryssing (forhøyet)"
-                },
                 "highway/footway/zebra": {
                     "name": "Fotgjengerovergang"
-                },
-                "highway/footway/zebra-raised": {
-                    "name": "Fotgjengerovergang (forhøyet)"
                 },
                 "highway/give_way": {
                     "name": "Vikepliktskilt"

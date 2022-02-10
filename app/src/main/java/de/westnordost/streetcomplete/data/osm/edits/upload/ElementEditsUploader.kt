@@ -3,19 +3,29 @@ package de.westnordost.streetcomplete.data.osm.edits.upload
 import android.content.Context
 import android.util.Log
 import de.westnordost.streetcomplete.data.download.DownloadController
+import de.westnordost.streetcomplete.data.osm.edits.ElementEdit
+import de.westnordost.streetcomplete.data.osm.edits.ElementEditsController
+import de.westnordost.streetcomplete.data.osm.edits.ElementIdProvider
+import de.westnordost.streetcomplete.data.osm.edits.IsRevertAction
+import de.westnordost.streetcomplete.data.osm.mapdata.ElementKey
+import de.westnordost.streetcomplete.data.osm.mapdata.ElementType
+import de.westnordost.streetcomplete.data.osm.mapdata.MapData
 import de.westnordost.streetcomplete.data.osm.mapdata.MapDataApi
-import de.westnordost.streetcomplete.data.osm.edits.*
-import de.westnordost.streetcomplete.data.osm.mapdata.*
+import de.westnordost.streetcomplete.data.osm.mapdata.MapDataController
+import de.westnordost.streetcomplete.data.osm.mapdata.MapDataUpdates
+import de.westnordost.streetcomplete.data.osm.mapdata.MutableMapData
 import de.westnordost.streetcomplete.data.upload.ConflictException
 import de.westnordost.streetcomplete.data.upload.OnUploadedChangeListener
 import de.westnordost.streetcomplete.data.upload.UploadService
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 
-import javax.inject.Inject
-
-class ElementEditsUploader @Inject constructor(
+class ElementEditsUploader(
     private val elementEditsController: ElementEditsController,
     private val mapDataController: MapDataController,
     private val singleUploader: ElementEditUploader,
@@ -41,7 +51,7 @@ class ElementEditsUploader @Inject constructor(
             }
             val idProvider = elementEditsController.getIdProvider(edit.id)
             /* the sync of local change -> API and its response should not be cancellable because
-             * otherwise an inconsistency in the data would occur. F.e. no "star" for an uploaded
+             * otherwise an inconsistency in the data would occur. E.g. no "star" for an uploaded
              * change, a change could be uploaded twice etc */
             withContext(scope.coroutineContext) { uploadEdit(edit, idProvider) }
         }

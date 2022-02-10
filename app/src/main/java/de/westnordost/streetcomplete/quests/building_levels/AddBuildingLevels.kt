@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import de.westnordost.streetcomplete.R
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmFilterQuestType
-import de.westnordost.streetcomplete.data.osm.edits.update_tags.StringMapChangesBuilder
+import de.westnordost.streetcomplete.data.osm.osmquests.Tags
 import de.westnordost.streetcomplete.quests.singleTypeElementSelectionDialog
 import de.westnordost.streetcomplete.data.user.achievements.QuestTypeAchievement.BUILDING
 
@@ -22,7 +22,7 @@ class AddBuildingLevels(private val prefs: SharedPreferences) : OsmFilterQuestTy
           or (!man_made and !historic and !military and !power and !attraction and !amenity and !leisure and !aeroway)
          )
     """
-    override val commitMessage = "Add building and roof levels"
+    override val changesetComment = "Add building and roof levels"
     override val wikiLink = "Key:building:levels"
     override val icon = R.drawable.ic_quest_building_levels
 
@@ -36,9 +36,9 @@ class AddBuildingLevels(private val prefs: SharedPreferences) : OsmFilterQuestTy
 
     override fun createForm() = AddBuildingLevelsForm()
 
-    override fun applyAnswerTo(answer: BuildingLevelsAnswer, changes: StringMapChangesBuilder) {
-        changes.add("building:levels", answer.levels.toString())
-        answer.roofLevels?.let { changes.addOrModify("roof:levels", it.toString()) }
+    override fun applyAnswerTo(answer: BuildingLevelsAnswer, tags: Tags, timestampEdited: Long) {
+        tags["building:levels"] = answer.levels.toString()
+        answer.roofLevels?.let { tags["roof:levels"] = it.toString() }
     }
 
     override val hasQuestSettings = true
@@ -48,10 +48,10 @@ class AddBuildingLevels(private val prefs: SharedPreferences) : OsmFilterQuestTy
 }
 
 private val BUILDINGS_WITH_LEVELS = arrayOf(
-    "house","residential","apartments","detached","terrace","dormitory","semi",
-    "semidetached_house","bungalow","school","civic","college","university","public",
-    "hospital","kindergarten","transportation","train_station", "hotel","retail",
-    "commercial","office","manufacture","parking","farm","farm_auxiliary",
+    "house", "residential", "apartments", "detached", "terrace", "dormitory", "semi",
+    "semidetached_house", "bungalow", "school", "civic", "college", "university", "public",
+    "hospital", "kindergarten", "transportation", "train_station", "hotel", "retail",
+    "commercial", "office", "manufacture", "parking", "farm", "farm_auxiliary",
     "cabin"
 )
 
