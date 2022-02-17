@@ -57,7 +57,7 @@ class FineLocationManager(context: Context, locationUpdateCallback: (Location) -
     fun requestUpdates(minTime: Long, minDistance: Float) {
         getLastLocation()?.let { locationListener.onLocationChanged(it) }
         if (deviceHasGPS)
-            locationManager.requestLocationUpdates(GPS_PROVIDER, minTime/2, minDistance, locationListener, Looper.getMainLooper())
+            locationManager.requestLocationUpdates(GPS_PROVIDER, (minTime - 5000).coerceAtLeast(0), minDistance, locationListener, Looper.getMainLooper())
         if (deviceHasNetworkLocationProvider)
             locationManager.requestLocationUpdates(NETWORK_PROVIDER, minTime*5, minDistance, locationListener, Looper.getMainLooper())
     }
