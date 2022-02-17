@@ -6,6 +6,7 @@ import de.westnordost.streetcomplete.data.meta.CountryInfos
 import de.westnordost.streetcomplete.data.osmnotes.notequests.OsmNoteQuestType
 import de.westnordost.streetcomplete.data.quest.QuestType
 import de.westnordost.streetcomplete.data.quest.QuestTypeRegistry
+import de.westnordost.streetcomplete.measure.ArSupportChecker
 import de.westnordost.streetcomplete.quests.accepts_cash.AddAcceptsCash
 import de.westnordost.streetcomplete.quests.address.AddAddressStreet
 import de.westnordost.streetcomplete.quests.address.AddHousenumber
@@ -71,6 +72,7 @@ import de.westnordost.streetcomplete.quests.lanes.AddLanes
 import de.westnordost.streetcomplete.quests.leaf_detail.AddForestLeafType
 import de.westnordost.streetcomplete.quests.level.AddLevel
 import de.westnordost.streetcomplete.quests.max_height.AddMaxHeight
+import de.westnordost.streetcomplete.quests.max_height.AddMaxPhysicalHeight
 import de.westnordost.streetcomplete.quests.max_speed.AddMaxSpeed
 import de.westnordost.streetcomplete.quests.max_weight.AddMaxWeight
 import de.westnordost.streetcomplete.quests.motorcycle_parking_capacity.AddMotorcycleParkingCapacity
@@ -153,6 +155,8 @@ import de.westnordost.streetcomplete.quests.wheelchair_access.AddWheelchairAcces
 import de.westnordost.streetcomplete.quests.wheelchair_access.AddWheelchairAccessPublicTransport
 import de.westnordost.streetcomplete.quests.wheelchair_access.AddWheelchairAccessToilets
 import de.westnordost.streetcomplete.quests.wheelchair_access.AddWheelchairAccessToiletsPart
+import de.westnordost.streetcomplete.quests.width.AddCyclewayWidth
+import de.westnordost.streetcomplete.quests.width.AddRoadWidth
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import java.util.concurrent.FutureTask
@@ -172,6 +176,7 @@ fun questTypeRegistry(
     featureDictionaryFuture: FutureTask<FeatureDictionary>,
     countryInfos: CountryInfos,
     sharedPrefs: SharedPreferences,
+    arSupportChecker: ArSupportChecker
 ) = QuestTypeRegistry(listOf<QuestType<*>>(
 
     /* The quest types are primarily sorted by how easy they can be solved:
@@ -346,6 +351,7 @@ whether the postbox is still there in countries in which it is enabled */
     // road but information is visible usually at the beginning of the marked stretch of way
     AddMaxWeight(), // used by OSRM and other routing engines
     AddMaxHeight(), // OSRM and other routing engines
+    AddMaxPhysicalHeight(arSupportChecker), // same as above, best if it appears right after (if enabled)
     AddRoadName(),
     AddOneway(),
     AddSuspectedOneway(trafficFlowSegmentsApi, trafficFlowDao),
@@ -404,6 +410,7 @@ whether the postbox is still there in countries in which it is enabled */
     AddLanes(), // abstreet, certainly most routing engines - often requires way to be split
     // AddStreetParking(),
     AddShoulder(), // needs minimal thinking, but after AddStreetParking because a parking lane can be/look very similar to a shoulder
+    AddRoadWidth(arSupportChecker),
     AddRoadSmoothness(),
     AddPathSmoothness(),
 
@@ -412,6 +419,7 @@ whether the postbox is still there in countries in which it is enabled */
     AddCyclewaySegregation(), // Cyclosm, Valhalla, Bike Citizens Bicycle Navigation...
     AddFootwayPartSurface(),
     AddCyclewayPartSurface(),
+    AddCyclewayWidth(arSupportChecker), // should be after cycleway segregation
 
     /* should best be after road surface because it excludes unpaved roads, also, need to search
     *  for the sign which is one reason why it is disabled by default */

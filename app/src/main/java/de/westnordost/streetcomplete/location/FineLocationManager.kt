@@ -11,6 +11,7 @@ import android.os.SystemClock
 import androidx.annotation.RequiresPermission
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
+import androidx.core.location.LocationListenerCompat
 import androidx.core.location.LocationManagerCompat
 import androidx.core.os.CancellationSignal
 import androidx.core.util.Consumer
@@ -34,12 +35,10 @@ class FineLocationManager(context: Context, locationUpdateCallback: (Location) -
     private val deviceHasGPS: Boolean get() = locationManager.allProviders.contains(GPS_PROVIDER)
     private val deviceHasNetworkLocationProvider: Boolean get() = locationManager.allProviders.contains(NETWORK_PROVIDER)
 
-    private val locationListener = object : LocationUpdateListener {
-        override fun onLocationChanged(location: Location) {
-            if (location.isBetterThan(lastLocation)) {
-                lastLocation = location
-                locationUpdateCallback(location)
-            }
+    private val locationListener = LocationListenerCompat { location ->
+        if (location.isBetterThan(lastLocation)) {
+            lastLocation = location
+            locationUpdateCallback(location)
         }
     }
 

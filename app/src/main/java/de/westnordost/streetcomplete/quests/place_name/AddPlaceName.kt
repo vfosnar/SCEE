@@ -30,6 +30,7 @@ class AddPlaceName(
           or craft
           or office
           ${getStringFor(prefs, PREF_PLACE_NAME_ADDITIONS)}
+          or amenity = recycling and recycling_type = centre
           or tourism = information and information = office
           or """ +
 
@@ -47,6 +48,7 @@ class AddPlaceName(
                 "car_wash", "car_rental", "fuel",                                                                      // car stuff
                 "dentist", "doctors", "clinic", "pharmacy", "veterinary",                                              // health
                 "animal_boarding", "animal_shelter", "animal_breeding",                                                // animals
+                "coworking_space",                                                                                     // work
 
                 // name & opening hours
                 "boat_rental",
@@ -162,7 +164,7 @@ class AddPlaceName(
     }
 
     private fun hasFeatureName(tags: Map<String, String>): Boolean =
-        featureDictionaryFuture.get().byTags(tags).find().isNotEmpty()
+        featureDictionaryFuture.get().byTags(tags).isSuggestion(false).find().isNotEmpty()
 }
 
 private const val PREF_PLACE_NAME_ADDITIONS = "quest_place_name_additions"
