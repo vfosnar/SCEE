@@ -62,3 +62,4 @@ New quests may require knowledge about the changed/added OSM tags.
 * pause upload when manually scanning for quests
 * improve location services: higher GPS frequency, use last known location as initial location
 * add [requery sqlite library](https://github.com/requery/sqlite-android), which adds 3 MB, but is ca 20% faster than default SQLite
+* slightly improve performance when clicking a quest
