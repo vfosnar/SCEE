@@ -166,7 +166,7 @@ val questsModule = module {
     factory { WayTrafficFlowDao(get()) }
 
     single {
-        questTypeRegistry(get(), get(), get(named("FeatureDictionaryFuture")), get(), get())
+        questTypeRegistry(get(), get(), get(named("FeatureDictionaryFuture")), get(), get(), get())
     }
 }
 
