@@ -1,6 +1,7 @@
 package de.westnordost.streetcomplete.quests
 
 import android.content.SharedPreferences
+import de.westnordost.countryboundaries.CountryBoundaries
 import de.westnordost.osmfeatures.FeatureDictionary
 import de.westnordost.streetcomplete.data.meta.CountryInfos
 import de.westnordost.streetcomplete.data.osmnotes.notequests.OsmNoteQuestType
@@ -165,9 +166,15 @@ val questsModule = module {
     factory { RoadNameSuggestionsSource(get()) }
     factory { WayTrafficFlowDao(get()) }
 
-    single {
-        questTypeRegistry(get(), get(), get(named("FeatureDictionaryFuture")), get(), get(), get())
-    }
+    single { questTypeRegistry(
+        get(),
+        get(),
+        get(named("FeatureDictionaryFuture")),
+        get(),
+        get(named("CountryBoundariesFuture")),
+        get(),
+        get(),
+    ) }
 }
 
 fun questTypeRegistry(
@@ -175,8 +182,9 @@ fun questTypeRegistry(
     trafficFlowDao: WayTrafficFlowDao,
     featureDictionaryFuture: FutureTask<FeatureDictionary>,
     countryInfos: CountryInfos,
+    countryBoundariesFuture: FutureTask<CountryBoundaries>,
+    arSupportChecker: ArSupportChecker,
     sharedPrefs: SharedPreferences,
-    arSupportChecker: ArSupportChecker
 ) = QuestTypeRegistry(listOf<QuestType<*>>(
 
     /* The quest types are primarily sorted by how easy they can be solved:
@@ -406,7 +414,7 @@ whether the postbox is still there in countries in which it is enabled */
     AddSidewalk(sharedPrefs), // for any pedestrian routers, needs minimal thinking
     AddRoadSurface(), // used by BRouter, OsmAnd, OSRM, graphhopper, HOT map style... - sometimes requires way to be split
     AddTracktype(), // widely used in map rendering - OSM Carto, OsmAnd...
-    AddCycleway(countryInfos), // for any cyclist routers (and cyclist maps)
+    AddCycleway(countryInfos, countryBoundariesFuture), // for any cyclist routers (and cyclist maps)
     AddLanes(), // abstreet, certainly most routing engines - often requires way to be split
     // AddStreetParking(),
     AddShoulder(), // needs minimal thinking, but after AddStreetParking because a parking lane can be/look very similar to a shoulder
@@ -428,7 +436,7 @@ whether the postbox is still there in countries in which it is enabled */
     // buildings
     AddBuildingType(),
     AddBuildingLevels(sharedPrefs),
-    AddRoofShape(countryInfos, sharedPrefs),
+    AddRoofShape(countryInfos, countryBoundariesFuture, sharedPrefs),
 
     AddStepCount(), // can only be gathered when walking along this way, also needs the most effort and least useful
 

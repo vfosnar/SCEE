@@ -1,6 +1,7 @@
 package de.westnordost.streetcomplete.quests.roof_shape
 
 import android.app.AlertDialog
+import de.westnordost.countryboundaries.CountryBoundaries
 import android.content.Context
 import android.content.SharedPreferences
 import android.text.InputType
@@ -9,14 +10,20 @@ import androidx.core.widget.addTextChangedListener
 import de.westnordost.streetcomplete.R
 import de.westnordost.streetcomplete.data.elementfilter.toElementFilterExpression
 import de.westnordost.streetcomplete.data.meta.CountryInfos
+import de.westnordost.streetcomplete.data.meta.getByLocation
 import de.westnordost.streetcomplete.data.osm.mapdata.Element
 import de.westnordost.streetcomplete.data.osm.mapdata.MapDataWithGeometry
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmElementQuestType
 import de.westnordost.streetcomplete.ktx.numberOrNull
 import de.westnordost.streetcomplete.data.osm.osmquests.Tags
 import de.westnordost.streetcomplete.data.user.achievements.QuestTypeAchievement.BUILDING
+import java.util.concurrent.FutureTask
 
-class AddRoofShape(private val countryInfos: CountryInfos, private val prefs: SharedPreferences) : OsmElementQuestType<RoofShape> {
+class AddRoofShape(
+    private val countryInfos: CountryInfos,
+    private val countryBoundariesFuture: FutureTask<CountryBoundaries>,
+    private val prefs: SharedPreferences,
+) : OsmElementQuestType<RoofShape> {
 
     private val filter by lazy { """
         ways, relations with (building:levels or roof:levels)
@@ -89,7 +96,11 @@ class AddRoofShape(private val countryInfos: CountryInfos, private val prefs: Sh
 
     private fun roofsAreUsuallyFlatAt(element: Element, mapData: MapDataWithGeometry): Boolean? {
         val center = mapData.getGeometry(element.type, element.id)?.center ?: return null
-        return countryInfos.get(center.longitude, center.latitude).isRoofsAreUsuallyFlat
+        return countryInfos.getByLocation(
+            countryBoundariesFuture.get(),
+            center.longitude,
+            center.latitude,
+        ).roofsAreUsuallyFlat
     }
 
     override fun applyAnswerTo(answer: RoofShape, tags: Tags, timestampEdited: Long) {

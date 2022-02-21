@@ -295,7 +295,7 @@ The info you enter is then directly added to the OpenStreetMap in your name, wit
     <string name="quest_manySports_confirmation_specific">"Specifically these"</string>
     <string name="quest_manySports_confirmation_generic">"General purpose"</string>
     <string name="quest_sport_manySports_confirmation_title">"You selected many sports"</string>
-	<string name="quest_toiletsFee_title">"Do you have to pay to use this restroom?"</string>
+    <string name="quest_toiletsFee_title">"Do you have to pay to use this restroom?"</string>
     <string name="quest_baby_changing_table_toilets_title">"Does this restroom have a baby changing table?"</string>
     <string name="quest_baby_changing_table_title">"Does %s have a baby changing table?"</string>
     <string name="quest_way_lit_title">"Is this stretch of way lit?"</string>
@@ -1266,7 +1266,7 @@ Alternatively, you can leave a note (with a photo)."</string>
 
     <string name="quest_sidewalk_answer_none">No sidewalk at all</string>
     <string name="quest_sidewalk_answer_none_title">Selecting that sidewalks are missing</string>
-    <string name="quest_side_select_interface_explanation">Tap each side and select the situation for that side.\nDo the same for the other side if present.</string>
+    <string name="quest_side_select_interface_explanation">Tap one side and select the matching answer.\nDo the same for the other side if present.</string>
 
     <string name="no_camera_permission_warning_title">Camera permission</string>
     <string name="no_camera_permission_warning">The permission is necessary to be able to measure distances with the camera.</string>
