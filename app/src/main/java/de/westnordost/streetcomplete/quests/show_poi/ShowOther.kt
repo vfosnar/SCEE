@@ -18,14 +18,10 @@ class ShowOther : OsmFilterQuestType<Boolean>() {
 
         mapOf(
             "amenity" to arrayOf(
-                // common
-                "place_of_worship",                    // religious
-                "toilets",
-                "prison", "fire_station", "police", "ranger_station",                                             // civic
-                "townhall", "courthouse", "embassy", "community_centre", "youth_centre", "library",  // civic
-                "monastery",                                                             // religious
-                "kindergarten", "school", "college", "university", "research_institute", // education
-                "drinking_water","shower","post_box","bbq","grit_bin","clock","hunting_stand"
+                "place_of_worship", "toilets", "prison", "fire_station", "police", "ranger_station",
+                "townhall", "courthouse", "embassy", "community_centre", "youth_centre", "library",
+                "monastery", "kindergarten", "school", "college", "university", "research_institute",
+                "drinking_water","shower","post_box","bbq","grit_bin","clock","hunting_stand","fountain",
             ),
             "leisure" to arrayOf(
                 "sports_centre", "stadium", "marina",
@@ -54,8 +50,6 @@ class ShowOther : OsmFilterQuestType<Boolean>() {
         R.string.quest_thisIsOther_title
 
     override fun getTitleArgs(tags: Map<String, String>, featureName: Lazy<String?>): Array<String> {
-        if (tags["pipeline"].equals("marker"))
-            return arrayOf(tags.entries.toString())
         val name = featureName.value ?: tags.entries
         return arrayOf(name.toString())
     }
