@@ -227,6 +227,9 @@ abstract class AbstractQuestAnswerFragment<T> :
         val cantSay = AnswerItem(R.string.quest_generic_answer_notApplicable) { onClickCantSay() }
         answers.add(cantSay)
 
+        val showTags = AnswerItem(R.string.quest_generic_answer_showTags) { onClickShowTags() }
+        answers.add(showTags)
+
         createSplitWayAnswer()?.let { answers.add(it) }
         createDeleteOrReplaceElementAnswer()?.let { answers.add(it) }
 
@@ -311,6 +314,17 @@ abstract class AbstractQuestAnswerFragment<T> :
             .setMessage(R.string.quest_leave_new_note_description)
             .setNegativeButton(R.string.quest_leave_new_note_no) { _, _ -> skipQuest() }
             .setPositiveButton(R.string.quest_leave_new_note_yes) { _, _ -> composeNote() }
+            .show()
+        }
+    }
+
+    private fun onClickShowTags() {
+        val tags = osmElement?.tags ?: return
+        context?.let { c ->
+            AlertDialog.Builder(c)
+            .setTitle("Tags")
+            .setMessage(tags.map { "${it.key} = ${it.value}" }.joinToString("\n"))
+            .setNegativeButton(android.R.string.ok, null)
             .show()
         }
     }
