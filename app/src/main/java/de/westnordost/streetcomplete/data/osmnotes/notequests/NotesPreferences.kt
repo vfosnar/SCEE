@@ -11,9 +11,13 @@ class NotesPreferences(private val prefs: SharedPreferences) {
 
     var listener: Listener? = null
 
-    val blockedIds = mutableListOf<Long>()
+    val blockedIds = mutableListOf<Long>().apply {
+        addAll(prefs.getStringSet(Prefs.DONT_SHOW_NOTES_FROM_THESE_USERS, emptySet())?.mapNotNull { it.toLongOrNull() } ?: emptyList())
+    }
 
-    val blockedNames = mutableSetOf<String>()
+    val blockedNames = mutableSetOf<String>().apply {
+        addAll(prefs.getStringSet(Prefs.DONT_SHOW_NOTES_FROM_THESE_USERS, emptySet()) ?: emptySet())
+    }
 
     private val sharedPreferencesListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
         if (key == Prefs.SHOW_NOTES_NOT_PHRASED_AS_QUESTIONS) {
