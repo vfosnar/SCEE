@@ -99,6 +99,7 @@ import de.westnordost.streetcomplete.util.enclosingBoundingBox
 import de.westnordost.streetcomplete.util.initialBearingTo
 import de.westnordost.streetcomplete.view.insets_animation.respectSystemInsets
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -941,6 +942,12 @@ class MainFragment :
     }
 
     @UiThread private suspend fun showQuestDetails(quest: Quest) {
+        val elem = viewLifecycleScope.async(Dispatchers.Default) {
+            if (quest is OsmQuest)
+                mapDataWithEditsSource.get(quest.elementType, quest.elementId)
+            else
+                null
+        }
         val mapFragment = mapFragment ?: return
         if (isQuestDetailsCurrentlyDisplayedFor(quest.key)) return
         if (bottomSheetFragment != null) {
@@ -958,7 +965,7 @@ class MainFragment :
 
         val f = quest.type.createForm()
         val element = if (quest is OsmQuest) {
-            questController.getOsmElement(quest) ?: return
+            elem.await() ?: return
         } else {
             null
         }
