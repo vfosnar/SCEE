@@ -146,7 +146,7 @@ class AddCycleway(
     private fun getMinDistanceToWays(tags: Map<String, String>): Float =
         (
             (estimateRoadwayWidth(tags) ?: guessRoadwayWidth(tags)) +
-            (estimateParkingOffRoadWidth(tags) ?: 0f)
+            (estimateParkingOffRoadWidth(tags) ?: 4f)
         ) / 2f +
         4f // + generous buffer for possible grass verge
 
