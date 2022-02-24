@@ -21,6 +21,7 @@ import de.westnordost.osmfeatures.FeatureDictionary
 import de.westnordost.streetcomplete.R
 import de.westnordost.streetcomplete.data.meta.CountryInfo
 import de.westnordost.streetcomplete.data.meta.CountryInfos
+import de.westnordost.streetcomplete.data.meta.IS_SHOP_OR_DISUSED_SHOP_EXPRESSION
 import de.westnordost.streetcomplete.data.meta.getByLocation
 import de.westnordost.streetcomplete.data.osm.geometry.ElementGeometry
 import de.westnordost.streetcomplete.data.osm.mapdata.Element
@@ -38,7 +39,6 @@ import de.westnordost.streetcomplete.ktx.FragmentViewBindingPropertyDelegate
 import de.westnordost.streetcomplete.ktx.popIn
 import de.westnordost.streetcomplete.ktx.geometryType
 import de.westnordost.streetcomplete.ktx.isArea
-import de.westnordost.streetcomplete.ktx.isSomeKindOfShop
 import de.westnordost.streetcomplete.ktx.updateConfiguration
 import de.westnordost.streetcomplete.quests.shop_type.ShopGoneDialog
 import kotlinx.serialization.decodeFromString
@@ -361,7 +361,7 @@ abstract class AbstractQuestAnswerFragment<T> :
         val ctx = context ?: return
         val element = osmElement ?: return
 
-        if (element.isSomeKindOfShop()) {
+        if (IS_SHOP_OR_DISUSED_SHOP_EXPRESSION.matches(element)) {
             ShopGoneDialog(
                 ctx,
                 element.geometryType,

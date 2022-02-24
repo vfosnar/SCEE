@@ -6,7 +6,7 @@ import android.content.SharedPreferences
 import de.westnordost.osmfeatures.FeatureDictionary
 import de.westnordost.streetcomplete.R
 import de.westnordost.streetcomplete.data.elementfilter.toElementFilterExpression
-import de.westnordost.streetcomplete.data.meta.isKindOfShopExpression
+import de.westnordost.streetcomplete.data.meta.isShopExpressionFragment
 import de.westnordost.streetcomplete.data.osm.geometry.ElementPolygonsGeometry
 import de.westnordost.streetcomplete.data.osm.mapdata.Element
 import de.westnordost.streetcomplete.data.osm.mapdata.MapDataWithGeometry
@@ -62,7 +62,7 @@ class AddLevel(
 
     private val shopFilter by lazy { """
         nodes with
-         (${isKindOfShopExpression()})
+         (${isShopExpressionFragment()})
          and !level and (name or brand)
     """.toElementFilterExpression() }
 
