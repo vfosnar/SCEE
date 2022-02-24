@@ -36,21 +36,6 @@
             android:persistent="true" />
 
         <SwitchPreference
-            android:key="display.questGeometries"
-            android:title="Show quest geometries"
-            android:summary="Highlight ways and areas with quests"
-            android:persistent="true"
-            />
-
-        <SwitchPreference
-            android:key="display.3dBuildings"
-            android:title="Show 3D buildings"
-            android:summary="Need to restart or try open note to apply setting"
-            android:defaultValue="true"
-            android:persistent="true"
-            />
-
-        <SwitchPreference
             android:key="display.nonQuestionNotes"
             android:title="@string/pref_title_show_notes_not_phrased_as_questions"
             android:summaryOn="@string/pref_summaryOn_show_notes_not_phrased_as_questions"
@@ -106,8 +91,23 @@
             android:key="volume_button_zoom"
             android:title="Volume button zoom"
             android:summary="zoom in and out using volume buttons"
-            android:persistent="true"
-            />
+            android:persistent="true" />
+
+        <SwitchPreference
+            android:key="display.questGeometries"
+            android:title="Show quest geometries"
+            android:summary="Highlight ways and areas with quests"
+            android:persistent="true" />
+
+        <SwitchPreference
+            android:key="display.3dBuildings"
+            android:title="Show 3D buildings"
+            android:defaultValue="true"
+            android:persistent="true" />
+
+        <Preference
+            android:key="ignore_notes"
+            android:title="Ignore notes by users" />
 
         <de.westnordost.streetcomplete.settings.NumberPickerPreference
             android:key="map.tilecache"

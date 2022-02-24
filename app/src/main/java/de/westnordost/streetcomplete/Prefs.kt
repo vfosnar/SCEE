@@ -9,6 +9,7 @@ object Prefs {
     const val OAUTH_ACCESS_TOKEN_SECRET = "oauth.accessTokenSecret"
     const val MAP_TILECACHE_IN_MB = "map.tilecache"
     const val SHOW_NOTES_NOT_PHRASED_AS_QUESTIONS = "display.nonQuestionNotes"
+    const val DONT_SHOW_NOTES_FROM_THESE_USERS = "display.unwantedNoteCreators"
     const val AUTOSYNC = "autosync"
     const val KEEP_SCREEN_ON = "display.keepScreenOn"
     const val UNGLUE_HINT_TIMES_SHOWN = "unglueHint.shown"

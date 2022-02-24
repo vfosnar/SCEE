@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.InputType
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
@@ -98,6 +99,29 @@ class SettingsFragment :
                     val hidden = questController.unhideAll()
                     context?.toast(getString(R.string.restore_hidden_success, hidden), Toast.LENGTH_LONG)
                 } }
+                .setNegativeButton(android.R.string.cancel, null)
+                .show()
+
+            true
+        }
+
+        findPreference<Preference>("ignore_notes")?.setOnPreferenceClickListener {
+            val text = EditText(context)
+            text.setText(prefs.getStringSet(Prefs.DONT_SHOW_NOTES_FROM_THESE_USERS, emptySet())?.joinToString(","))
+            text.hint = "use comma to separate user names / ids"
+            text.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_MULTI_LINE
+
+            val layout = LinearLayout(context)
+            layout.setPadding(30,10,30,10)
+            layout.addView(text)
+
+            AlertDialog.Builder(requireContext())
+                .setTitle("enter user ids or names to ignore")
+                .setView(layout)
+                .setPositiveButton(android.R.string.ok) { _, _ ->
+                    val content = text.text.split(",").map { it.trim().lowercase() }.toSet()
+                    prefs.edit().putStringSet(Prefs.DONT_SHOW_NOTES_FROM_THESE_USERS, content).apply()
+                }
                 .setNegativeButton(android.R.string.cancel, null)
                 .show()
 

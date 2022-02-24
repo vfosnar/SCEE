@@ -65,3 +65,4 @@ New quests may require knowledge about the changed/added OSM tags.
 * slightly improve performance when clicking a quest
 * add "show tags" other answer
 * increase padding for sidewalk/cycleway quests: assume parking lanes if none are tagged
+* hide notes by specific users (select by name or id)
