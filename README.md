@@ -33,7 +33,7 @@ New quests may require knowledge about the changed/added OSM tags.
     * one for buildings that probably have no address (not using the entire address quest logic, so some buildings may actually have an address)
   * reduced auto-completion threshold (suggestions will appear after the first letter)
 * allow creating text notes in a gpx file
-  * notes.gpx file must be copied manually from Android/data/de.westnordost.streetcomplete.h3/files
+  * notes.gpx file must be copied manually from `Android/data/de.westnordost.streetcomplete.h3/files`
   * button for normal OSM notes is hidden if keyboard is shown. sorry.
 * allow pre-filling new profile from existing profile
 * delete cache: choose between deleting tile cache (background) or OSM data (quests)
@@ -66,3 +66,4 @@ New quests may require knowledge about the changed/added OSM tags.
 * add "show tags" other answer
 * increase padding for sidewalk/cycleway quests: assume parking lanes if none are tagged
 * hide notes by specific users (select by name or id)
+* "external quests": add 'external.csv' to `Android/data/de.westnordost.streetcomplete.h3/files`, containing `<type>,<id>,<message>`, e.g. `NODE,2345678,suspicious shop type` to show a quest with message 'suspicious shop type' at the node.

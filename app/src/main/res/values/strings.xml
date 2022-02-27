@@ -1058,6 +1058,8 @@ Unfortunately, due to a Google Play Store policy, no links leading to donations 
     <string name="at_housenumber">house number %s:</string>
     <string name="quest_summit_register_title">Is there a summit register at %s?</string>
     <string name="quest_is_defibrillator_inside_title">Is this defibrillator (AED) inside a building?</string>
+    <string name="quest_external_title">External quest: %s</string>
+    <string name="quest_external_ok">Remove from list</string>
 
     <string name="quest_pedestrian_crossing_island">"Does this pedestrian crossing have an island?"</string>
     <string name="quest_surface_detailed_answer_impossible_title">Describe surface</string>
@@ -1198,6 +1200,7 @@ If you are overwhelmed by the number of quests, you can always fine-tune which q
     <string name="quest_smoothness_obstacle">There is an obstacle</string>
     <string name="quest_smoothness_obstacle_hint">Please provide a general answer for the smoothness. Single obstacles like kerbs, speed bumps or cattle grids can be ignored. Repeated or unexpected obstacles should count towards the answer.</string>
     <string name="quest_smoothness_hint">🚲, 🚗, 🚙, … indicate for which vehicles the surface should be okay to use. What matters is the big picture rather than single damages.</string>
+    <string name="quest_smoothness_hint2">🚲, 🚗, 🚙, … indicate for which vehicles the surface should be okay to use.</string>
     <string name="quest_presets_delete_message">"Delete preset “%s”? The quest selection and order for it will be irrevocably lost."</string>
     <string name="quest_cuisine_title">What cuisine does %s have?</string>
     <string name="quest_healthcare_speciality_title">What healthcare speciailties does %s have? Use suggested OSM tags!</string>

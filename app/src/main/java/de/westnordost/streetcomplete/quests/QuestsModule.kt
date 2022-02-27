@@ -57,6 +57,8 @@ import de.westnordost.streetcomplete.quests.diet_type.AddVegan
 import de.westnordost.streetcomplete.quests.diet_type.AddVegetarian
 import de.westnordost.streetcomplete.quests.drinking_water.AddDrinkingWater
 import de.westnordost.streetcomplete.quests.existence.CheckExistence
+import de.westnordost.streetcomplete.quests.external.ExternalCheck
+import de.westnordost.streetcomplete.quests.external.ExternalList
 import de.westnordost.streetcomplete.quests.ferry.AddFerryAccessMotorVehicle
 import de.westnordost.streetcomplete.quests.ferry.AddFerryAccessPedestrian
 import de.westnordost.streetcomplete.quests.fire_hydrant.AddFireHydrantType
@@ -158,6 +160,7 @@ import de.westnordost.streetcomplete.quests.wheelchair_access.AddWheelchairAcces
 import de.westnordost.streetcomplete.quests.wheelchair_access.AddWheelchairAccessToiletsPart
 import de.westnordost.streetcomplete.quests.width.AddCyclewayWidth
 import de.westnordost.streetcomplete.quests.width.AddRoadWidth
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import java.util.concurrent.FutureTask
@@ -165,6 +168,7 @@ import java.util.concurrent.FutureTask
 val questsModule = module {
     factory { RoadNameSuggestionsSource(get()) }
     factory { WayTrafficFlowDao(get()) }
+    single { ExternalList(androidContext()) }
 
     single { questTypeRegistry(
         get(),
@@ -172,6 +176,7 @@ val questsModule = module {
         get(named("FeatureDictionaryFuture")),
         get(),
         get(named("CountryBoundariesFuture")),
+        get(),
         get(),
         get(),
     ) }
@@ -185,6 +190,7 @@ fun questTypeRegistry(
     countryBoundariesFuture: FutureTask<CountryBoundaries>,
     arSupportChecker: ArSupportChecker,
     sharedPrefs: SharedPreferences,
+    externalList: ExternalList,
 ) = QuestTypeRegistry(listOf<QuestType<*>>(
 
     /* The quest types are primarily sorted by how easy they can be solved:
@@ -462,4 +468,5 @@ whether the postbox is still there in countries in which it is enabled */
     ShowVacant(),
     ShowCamera(),
     ShowFixme(),
+    ExternalCheck(externalList),
 ))
