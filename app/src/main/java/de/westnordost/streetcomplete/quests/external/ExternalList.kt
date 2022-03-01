@@ -6,16 +6,17 @@ import de.westnordost.streetcomplete.data.osm.mapdata.ElementType
 import java.io.File
 import java.lang.Exception
 
-class ExternalList(context: Context) {
-    private val path = context.getExternalFilesDir(null)
-    private val file = File(path, "external.csv")
-    val thatMap = if (file.exists())
-        readExternal()
-    else
-        emptyMap()
+class ExternalList(private val context: Context) {
+    val thatMap = mutableMapOf<ElementKey, String>()
 
-    private fun readExternal(): Map<ElementKey, String> {
-        return file.readLines().mapNotNull {
+    init { reload() }
+
+    fun reload() {
+        val path = context.getExternalFilesDir(null)
+        val file = File(path, "external.csv")
+        thatMap.clear()
+        if (!file.exists()) return
+        thatMap.putAll(file.readLines().mapNotNull {
             val elementType = it.substringBefore(',').trim()
             val rest = it.substringAfter(',').trim()
             val elementId = rest.substringBefore(',').trim()
@@ -29,14 +30,22 @@ class ExternalList(context: Context) {
             } catch(e: Exception) {
                 null
             }
-        }.toMap()
+        }
+        )
     }
 
     fun remove(key: ElementKey) {
+        thatMap.remove(key)
+        val path = context.getExternalFilesDir(null)
+        val file = File(path, "external.csv")
         val lines = file.readLines().toMutableList()
         lines.removeAll {
-            val line = it.split(",").map { it.trim() }
-            line[1].toLong() == key.id && line[0] == key.type.name
+            if (!it.contains(','))
+                false
+            else {
+                val line = it.split(",").map { it.trim() }
+                line[1].toLong() == key.id && line[0] == key.type.name
+            }
         }
         file.writeText(lines.joinToString("\n"))
     }

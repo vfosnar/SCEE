@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import de.westnordost.streetcomplete.R
 import de.westnordost.streetcomplete.data.osm.mapdata.ElementKey
-import de.westnordost.streetcomplete.databinding.QuestDietTypeExplanationBinding
 import de.westnordost.streetcomplete.databinding.QuestExternalBinding
 import de.westnordost.streetcomplete.quests.AbstractQuestAnswerFragment
 import de.westnordost.streetcomplete.quests.AnswerItem
@@ -25,8 +24,10 @@ class ExternalForm(private val externalList: ExternalList) : AbstractQuestAnswer
         super.onViewCreated(view, savedInstanceState)
         val element = osmElement ?: return
         val key = ElementKey(element.type, element.id)
-
-        binding.description.text = "message for this element: ${externalList.thatMap[key]}"
+        val text = externalList.thatMap[key]
+        binding.description.text =
+            if (text == null) "entry for this element has been removed from external file since creation of this quest. please remove from list"
+            else "message for this element: $text"
     }
 
     private fun deleteFromList() {

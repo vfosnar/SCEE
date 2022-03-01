@@ -8,8 +8,10 @@ import de.westnordost.streetcomplete.data.maptiles.MapTilesDownloader
 import de.westnordost.streetcomplete.data.osm.mapdata.MapDataDownloader
 import de.westnordost.streetcomplete.data.osmnotes.NotesDownloader
 import de.westnordost.streetcomplete.ktx.format
+import de.westnordost.streetcomplete.quests.external.ExternalList
 import de.westnordost.streetcomplete.util.TilesRect
 import de.westnordost.streetcomplete.util.area
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
@@ -23,7 +25,8 @@ class Downloader(
     private val mapDataDownloader: MapDataDownloader,
     private val mapTilesDownloader: MapTilesDownloader,
     private val downloadedTilesDb: DownloadedTilesDao,
-    private val mutex: Mutex
+    private val mutex: Mutex,
+    private val externalList: ExternalList
 ) {
     suspend fun download(tiles: TilesRect, ignoreCache: Boolean) {
         val bbox = tiles.asBoundingBox(ApplicationConstants.DOWNLOAD_TILE_ZOOM)
@@ -44,6 +47,7 @@ class Downloader(
                 launch { notesDownloader.download(bbox) }
                 launch { mapDataDownloader.download(bbox) }
                 launch { mapTilesDownloader.download(bbox) }
+                launch(Dispatchers.IO) { externalList.reload() }
             }
         }
         putDownloadedAlready(tiles)
