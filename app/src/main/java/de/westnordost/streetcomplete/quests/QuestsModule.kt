@@ -87,6 +87,8 @@ import de.westnordost.streetcomplete.quests.oneway_suspects.data.WayTrafficFlowD
 import de.westnordost.streetcomplete.quests.opening_hours.AddOpeningHours
 import de.westnordost.streetcomplete.quests.opening_hours_signed.CheckOpeningHoursSigned
 import de.westnordost.streetcomplete.quests.orchard_produce.AddOrchardProduce
+import de.westnordost.streetcomplete.quests.osmose.OsmoseDao
+import de.westnordost.streetcomplete.quests.osmose.OsmoseQuest
 import de.westnordost.streetcomplete.quests.parking_access.AddBikeParkingAccess
 import de.westnordost.streetcomplete.quests.parking_access.AddParkingAccess
 import de.westnordost.streetcomplete.quests.parking_fee.AddBikeParkingFee
@@ -169,6 +171,7 @@ val questsModule = module {
     factory { RoadNameSuggestionsSource(get()) }
     factory { WayTrafficFlowDao(get()) }
     single { ExternalList(androidContext()) }
+    single { OsmoseDao(get()) }
 
     single { questTypeRegistry(
         get(),
@@ -179,6 +182,7 @@ val questsModule = module {
         get(),
         get(),
         get(),
+        get()
     ) }
 }
 
@@ -191,6 +195,7 @@ fun questTypeRegistry(
     arSupportChecker: ArSupportChecker,
     sharedPrefs: SharedPreferences,
     externalList: ExternalList,
+    osmoseDao: OsmoseDao
 ) = QuestTypeRegistry(listOf<QuestType<*>>(
 
     /* The quest types are primarily sorted by how easy they can be solved:
@@ -469,4 +474,5 @@ whether the postbox is still there in countries in which it is enabled */
     ShowCamera(),
     ShowFixme(),
     ExternalCheck(externalList),
+    OsmoseQuest(osmoseDao, sharedPrefs)
 ))
