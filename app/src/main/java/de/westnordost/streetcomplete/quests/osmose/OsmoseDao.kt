@@ -50,8 +50,8 @@ class OsmoseDao(private val db: Database) {
             db.replaceMany(NAME,
                 arrayOf(UUID, ITEM, TITLE, SUBTITLE, ELEMENT_TYPE, ELEMENT_ID, FALSE_POSITIVE),
                 bodylines.mapNotNull {
-                    if (it.size < 14) {
-                        Log.i(TAG, "skip line: too short: $it")
+                    if (it.size != 14) {
+                        Log.i(TAG, "skip line: not split into 14 items: $it")
                         null
                     }
                     else {

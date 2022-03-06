@@ -1062,6 +1062,7 @@ Unfortunately, due to a Google Play Store policy, no links leading to donations 
     <string name="quest_summit_register_title">Is there a summit register at %s?</string>
     <string name="quest_is_defibrillator_inside_title">Is this defibrillator (AED) inside a building?</string>
     <string name="quest_external_title">External quest: %s</string>
+    <string name="quest_external_message">Use for checking specific pre-defined elements, similar to notes. To use it, add \'external.csv\' to \`Android/data/de.westnordost.streetcomplete.h3/files\`, containing \`type,id,message\`, e.g. NODE,1234,does this really exist?</string>
     <string name="quest_external_ok">Remove from list</string>
 
     <string name="quest_pedestrian_crossing_island">"Does this pedestrian crossing have an island?"</string>

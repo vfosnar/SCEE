@@ -12,6 +12,7 @@ class ExternalCheck(private val externalList: ExternalList) : OsmElementQuestTyp
     override val changesetComment = "this should never be uploaded"
     override val wikiLink = "nope"
     override val icon = R.drawable.ic_quest_external
+    override val defaultDisabledMessage = R.string.quest_external_message
 
     val thatMap = externalList.thatMap
 

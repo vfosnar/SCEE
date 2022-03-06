@@ -66,4 +66,13 @@ New quests may require knowledge about the changed/added OSM tags.
 * add "show tags" other answer
 * increase padding for sidewalk/cycleway quests: assume parking lanes if none are tagged
 * hide notes by specific users (select by name or id)
-* "external quests": add 'external.csv' to `Android/data/de.westnordost.streetcomplete.h3/files`, containing `<type>,<id>,<message>`, e.g. `NODE,2345678,suspicious shop type` to show a quest with message 'suspicious shop type' at the node.
+* allow disabling notes quest
+* "external quests" (experimental)
+  * allows defining own note-like quests
+  * nothing can be done, except for showing a note and all tags of the involved element
+  * to use it, add 'external.csv' to `Android/data/de.westnordost.streetcomplete.h3/files`, containing `<type>,<id>,<message>`
+  * e.g. `NODE,2345678,suspicious shop type` to show a quest with message 'suspicious shop type' at the node.
+* osmose issues (experimental)
+  * simply shows issues, with the ability to report a false positive
+  * a quest setting allows disabling "item" type
+  * some issues are not working, notably everything involving more than a single element
