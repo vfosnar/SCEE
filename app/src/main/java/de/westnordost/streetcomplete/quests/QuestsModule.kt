@@ -130,6 +130,7 @@ import de.westnordost.streetcomplete.quests.show_poi.ShowRecycling
 import de.westnordost.streetcomplete.quests.show_poi.ShowTrafficStuff
 import de.westnordost.streetcomplete.quests.show_poi.ShowVacant
 import de.westnordost.streetcomplete.quests.sidewalk.AddSidewalk
+import de.westnordost.streetcomplete.quests.smoking.AddSmoking
 import de.westnordost.streetcomplete.quests.smoothness.AddPathSmoothness
 import de.westnordost.streetcomplete.quests.smoothness.AddRoadSmoothness
 import de.westnordost.streetcomplete.quests.sport.AddSport
@@ -143,6 +144,7 @@ import de.westnordost.streetcomplete.quests.surface.AddPathSurface
 import de.westnordost.streetcomplete.quests.surface.AddPitchSurface
 import de.westnordost.streetcomplete.quests.surface.AddRoadSurface
 import de.westnordost.streetcomplete.quests.surface.RemoveWrongSurface
+import de.westnordost.streetcomplete.quests.surface.AddSidewalkSurface
 import de.westnordost.streetcomplete.quests.tactile_paving.AddTactilePavingBusStop
 import de.westnordost.streetcomplete.quests.tactile_paving.AddTactilePavingCrosswalk
 import de.westnordost.streetcomplete.quests.tactile_paving.AddTactilePavingKerb
@@ -393,6 +395,8 @@ whether the postbox is still there in countries in which it is enabled */
 
     AddLevel(featureDictionaryFuture, sharedPrefs), // requires to search for the place on several levels (or at least find a mall map)
 
+    AddSmoking(), // often marked on the entrance, if not, visible/smellable inside
+
     AddAirConditioning(), // often visible from the outside, if not, visible/feelable inside
 
     /* ↓ 4.quests that may need to go inside ------------------------------------------------ */
@@ -438,6 +442,7 @@ whether the postbox is still there in countries in which it is enabled */
     AddCyclewaySegregation(), // Cyclosm, Valhalla, Bike Citizens Bicycle Navigation...
     AddFootwayPartSurface(),
     AddCyclewayPartSurface(),
+    AddSidewalkSurface(),
     AddCyclewayWidth(arSupportChecker), // should be after cycleway segregation
 
     /* should best be after road surface because it excludes unpaved roads, also, need to search

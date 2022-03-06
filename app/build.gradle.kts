@@ -35,8 +35,8 @@ android {
         applicationId = "de.westnordost.streetcomplete.h3"
         minSdk = 21
         targetSdk = 31
-        versionCode = 4100
-        versionName = "41.0-beta1"
+        versionCode = 4102
+        versionName = "41.1"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -182,7 +182,7 @@ dependencies {
 
     // serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
-    implementation("com.charleskorn.kaml:kaml:0.40.0")
+    implementation("com.charleskorn.kaml:kaml:0.42.0")
 
     // map and location
     implementation("com.mapzen.tangram:tangram:0.17.1")
@@ -241,6 +241,12 @@ tasks.register<UpdateNsiPresetsTask>("updateNsiPresets") {
     version = nsiVersion
     targetDir = "$projectDir/src/main/assets/osmfeatures/brands"
 }
+
+// tasks.register<DownloadBrandLogosTask>("downloadBrandLogos") {
+//     group = "streetcomplete"
+//     version = nsiVersion
+//     targetDir = "$projectDir/src/main/assets/osmfeatures/brands"
+// }
 
 tasks.register<UpdateAppTranslationsTask>("updateTranslations") {
     group = "streetcomplete"

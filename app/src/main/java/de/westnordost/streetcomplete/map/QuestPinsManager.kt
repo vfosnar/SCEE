@@ -4,9 +4,8 @@ import android.content.SharedPreferences
 import android.content.res.Resources
 import android.graphics.RectF
 import android.util.Log
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import de.westnordost.streetcomplete.Prefs
 import de.westnordost.streetcomplete.R
 import de.westnordost.streetcomplete.data.osm.geometry.ElementPointGeometry
@@ -44,8 +43,8 @@ class QuestPinsManager(
     private val questTypeRegistry: QuestTypeRegistry,
     private val resources: Resources,
     private val visibleQuestsSource: VisibleQuestsSource,
-    private val prefs: SharedPreferences
-) : LifecycleObserver {
+    private val prefs: SharedPreferences,
+) : DefaultLifecycleObserver {
 
     // draw order in which the quest types should be rendered on the map
     private val questTypeOrders: MutableMap<QuestType<*>, Int> = mutableMapOf()
@@ -92,7 +91,7 @@ class QuestPinsManager(
         }
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY) fun onDestroy() {
+    override fun onDestroy(owner: LifecycleOwner) {
         stop()
         viewLifecycleScope.cancel()
     }
