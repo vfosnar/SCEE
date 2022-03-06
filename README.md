@@ -14,6 +14,15 @@ New quests may require knowledge about the changed/added OSM tags.
   * service building type: substation, well, pumping station, ...
   * ask for cuisine of restaurants and fast food, including some auto-complete function for very common values
   * ask for healthcare specialty of amenity = doctors
+  * "external quests" (experimental)
+    * allows defining own note-like quests
+    * nothing can be done, except for showing a note and all tags of the involved element
+    * to use it, add 'external.csv' to `Android/data/de.westnordost.streetcomplete.h3/files`, containing `<type>,<id>,<message>`
+    * e.g. `NODE,2345678,suspicious shop type` to show a quest with message 'suspicious shop type' at the node.
+  * osmose issues (experimental)
+    * simply shows issues, with the ability to report a false positive
+    * a quest setting allows disabling "item" type
+    * some issues are not working, notably everything involving more than a single element
 * quest changes
   * allow "paved" surface without note (because one lane concrete, one lane asphalt is too common)
   * ask type for more surveillance cameras
@@ -32,10 +41,12 @@ New quests may require knowledge about the changed/added OSM tags.
     * one for buildings that definitely have an address
     * one for buildings that probably have no address (not using the entire address quest logic, so some buildings may actually have an address)
   * reduced auto-completion threshold (suggestions will appear after the first letter)
+  * increase padding for sidewalk/cycleway quests: assume parking lanes if none are tagged
+  * allow disabling notes quest (by mnalis)
 * allow creating text notes in a gpx file
   * notes.gpx file must be copied manually from `Android/data/de.westnordost.streetcomplete.h3/files`
   * button for normal OSM notes is hidden if keyboard is shown. sorry.
-* allow pre-filling new profile from existing profile
+* allow pre-filling new profile from existing profile (copy / clone)
 * delete cache: choose between deleting tile cache (background) or OSM data (quests)
 * option to show quest geometries even without selecting a quest pin (ways are shown at intermediate zoom, areas at high zoom)
 * option to zoom in/out using volume buttons
@@ -64,15 +75,4 @@ New quests may require knowledge about the changed/added OSM tags.
 * add [requery sqlite library](https://github.com/requery/sqlite-android), which adds 3 MB, but is ca 20% faster than default SQLite
 * slightly improve performance when clicking a quest
 * add "show tags" other answer
-* increase padding for sidewalk/cycleway quests: assume parking lanes if none are tagged
 * hide notes by specific users (select by name or id)
-* allow disabling notes quest
-* "external quests" (experimental)
-  * allows defining own note-like quests
-  * nothing can be done, except for showing a note and all tags of the involved element
-  * to use it, add 'external.csv' to `Android/data/de.westnordost.streetcomplete.h3/files`, containing `<type>,<id>,<message>`
-  * e.g. `NODE,2345678,suspicious shop type` to show a quest with message 'suspicious shop type' at the node.
-* osmose issues (experimental)
-  * simply shows issues, with the ability to report a false positive
-  * a quest setting allows disabling "item" type
-  * some issues are not working, notably everything involving more than a single element
