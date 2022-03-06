@@ -1,5 +1,6 @@
 package de.westnordost.streetcomplete.quests.osmose
 
+import android.content.SharedPreferences
 import android.util.Log
 import de.westnordost.streetcomplete.data.osm.mapdata.BoundingBox
 import de.westnordost.streetcomplete.data.Database
@@ -17,9 +18,10 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.IOException
 
-class OsmoseDao(private val db: Database) {
-    private val TAG = "osmose"
-
+class OsmoseDao(
+    private val db: Database,
+    private val sharedPrefs: SharedPreferences
+) {
     val client = OkHttpClient()
 
     suspend fun download(bbox: BoundingBox) {
@@ -47,6 +49,7 @@ class OsmoseDao(private val db: Database) {
             //  and the element string needs to be split by '_'
             // currently both are not parsed and thus skipped
             // multiple elements: use the first, and the others only for highlighting geometry
+            val blockedItems = sharedPrefs.getString(PREF_OSMOSE_ITEMS, "")!!.split(',')
             db.replaceMany(NAME,
                 arrayOf(UUID, ITEM, TITLE, SUBTITLE, ELEMENT_TYPE, ELEMENT_ID, FALSE_POSITIVE),
                 bodylines.mapNotNull {
@@ -60,15 +63,15 @@ class OsmoseDao(private val db: Database) {
                             Log.i(TAG, "skip line: element parse error for ${it[13]}, line: $it")
                             null
                         }
-                        else if (it[2].toIntOrNull() == null) {
-                            Log.i(TAG, "skip line: item type parse error for ${it[2]}, line: $it")
+                        else if (blockedItems.contains(it[2])) {
+                            Log.i(TAG, "skip line: item type ${it[2]} blocked, line: $it")
                             null
                         }
                         else {
                             Log.i(TAG, "inserting: ${it[0]}, ${it[2]}, ${it[5]}, ${it[6]}, ${key.type}, ${key.id}")
                             arrayOf(
                                 it[0],
-                                it[2].toInt(),
+                                it[2],
                                 it[5],
                                 it[6],
                                 key.type.toString(),
@@ -94,7 +97,7 @@ class OsmoseDao(private val db: Database) {
                     it.getString(UUID),
                     it.getString(TITLE),
                     it.getString(SUBTITLE),
-                    it.getInt(ITEM)
+                    it.getString(ITEM)
                 )
         }.toMap()
         Log.i(TAG, "getAll: found ${problems.size} problems")
@@ -102,11 +105,10 @@ class OsmoseDao(private val db: Database) {
     }
 
     fun get(element: ElementKey): OsmoseIssue? {
-        Log.i(TAG, "checking for $element")
         return db.queryOne(NAME,
         where = "$ELEMENT_TYPE = '${element.type}' AND $ELEMENT_ID = ${element.id} AND $FALSE_POSITIVE != 1",
         columns = arrayOf(UUID, TITLE, SUBTITLE, ITEM)
-        ) { OsmoseIssue(it.getString(UUID), it.getString(TITLE), it.getString(SUBTITLE), it.getInt(ITEM)) }
+        ) { OsmoseIssue(it.getString(UUID), it.getString(TITLE), it.getString(SUBTITLE), it.getString(ITEM)) }
     }
 
     private fun reportFalsePositive(uuid: String) {
@@ -168,11 +170,14 @@ class OsmoseDao(private val db: Database) {
 
 }
 
+private const val TAG = "osmose"
+private const val PREF_OSMOSE_ITEMS = "quest_osmose_items"
+
 data class OsmoseIssue(
     val uuid: String,
     val title: String,
     val subtitle: String,
-    val item: Int
+    val item: String // never used as number
 )
 
 object OsmoseTable {

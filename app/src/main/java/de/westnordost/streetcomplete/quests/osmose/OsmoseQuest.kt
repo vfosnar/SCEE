@@ -26,21 +26,16 @@ class OsmoseQuest(private val db: OsmoseDao, private val prefs: SharedPreference
     override fun getApplicableElements(mapData: MapDataWithGeometry): Iterable<Element> {
         // not working
         val elements = mutableListOf<Element>()
-        // maybe better get a map with all items from db, that's a lot faster...
         val map = db.getAll()
-        val hiddenItemTypes = prefs.getString(PREF_OSMOSE_ITEMS, "")!!.split(',')
         mapData.forEach {
-            val problem = map[ElementKey(it.type, it.id)] ?: return@forEach
-            if (!hiddenItemTypes.contains(problem.uuid))
+            if (map.contains(ElementKey(it.type, it.id)))
                 elements.add(it)
         }
         return elements
     }
 
-    override fun isApplicableTo(element: Element): Boolean {
-        val problem = db.get(ElementKey(element.type, element.id)) ?: return false
-        return !prefs.getString(PREF_OSMOSE_ITEMS, "")!!.split(',').contains(problem.uuid)
-    }
+    override fun isApplicableTo(element: Element): Boolean =
+        db.get(ElementKey(element.type, element.id)) != null
 
     override fun createForm() = OsmoseForm(db)
 
@@ -51,6 +46,7 @@ class OsmoseQuest(private val db: OsmoseDao, private val prefs: SharedPreference
 
     override val hasQuestSettings = true
 
+    // actual ignoring of stuff happens when downloading
     override fun getQuestSettingsDialog(context: Context): AlertDialog =
         singleTypeElementSelectionDialog(context, prefs, PREF_OSMOSE_ITEMS, "", "set osmose item types to hide, comma separated")
 
