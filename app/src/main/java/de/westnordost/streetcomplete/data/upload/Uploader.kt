@@ -64,7 +64,7 @@ class Uploader(
                 // uploaders can run concurrently
                 launch { noteEditsUploader.upload() }
                 launch { elementEditsUploader.upload() }
-                launch { osmoseDao.reportFalsePositives() }
+                launch { osmoseDao.reportChanges() }
             }
         }
 

@@ -11,14 +11,14 @@ import de.westnordost.streetcomplete.data.osm.osmquests.OsmElementQuestType
 import de.westnordost.streetcomplete.data.osm.osmquests.Tags
 import de.westnordost.streetcomplete.quests.singleTypeElementSelectionDialog
 
-class OsmoseQuest(private val db: OsmoseDao, private val prefs: SharedPreferences) : OsmElementQuestType<String> {
+class OsmoseQuest(private val db: OsmoseDao, private val prefs: SharedPreferences) : OsmElementQuestType<OsmoseAnswer> {
 
     override fun getTitle(tags: Map<String, String>) = R.string.quest_osmose_title
 
     override fun getTitleArgs(tags: Map<String, String>, featureName: Lazy<String?>): Array<String> =
         arrayOf(tags.toString())
 
-    override val changesetComment = "should not appear in any changeset"
+    override val changesetComment = "Fix osmose issues"
     override val wikiLink = "Osmose"
     override val icon = R.drawable.ic_quest_osmose
     override val defaultDisabledMessage = R.string.quest_osmose_message
@@ -39,9 +39,11 @@ class OsmoseQuest(private val db: OsmoseDao, private val prefs: SharedPreference
 
     override fun createForm() = OsmoseForm(db)
 
-    override fun applyAnswerTo(answer: String, tags: Tags, timestampEdited: Long) {
-        if (answer.isNotBlank())
-            db.setAsFalsePositive(answer)
+    override fun applyAnswerTo(answer: OsmoseAnswer, tags: Tags, timestampEdited: Long) {
+        if (answer is AdjustTagAnswer) {
+            tags[answer.tag] = answer.newValue
+            db.setDone(answer.uuid)
+        }
     }
 
     override val hasQuestSettings = true

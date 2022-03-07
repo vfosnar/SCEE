@@ -2,6 +2,7 @@ package de.westnordost.streetcomplete.quests.osmose
 
 import android.content.SharedPreferences
 import android.util.Log
+import de.westnordost.streetcomplete.ApplicationConstants.USER_AGENT
 import de.westnordost.streetcomplete.data.osm.mapdata.BoundingBox
 import de.westnordost.streetcomplete.data.Database
 import de.westnordost.streetcomplete.data.osm.mapdata.ElementKey
@@ -33,6 +34,7 @@ class OsmoseDao(
         val level = 1 // what is the use?
         val request = Request.Builder()
             .url("$csvUrl?zoom=$zoom&item=xxxx&level=$level&limit=500&bbox=${bbox.min.longitude}%2C${bbox.min.latitude}%2C${bbox.max.longitude}%2C${bbox.max.latitude}")
+            .header("User-Agent", USER_AGENT)
             .build() // any headers necessary?
         Log.i(TAG, "downloading for bbox: $bbox using request ${request.url()}")
         try {
@@ -106,30 +108,32 @@ class OsmoseDao(
 
     fun get(element: ElementKey): OsmoseIssue? {
         return db.queryOne(NAME,
-        where = "$ELEMENT_TYPE = '${element.type}' AND $ELEMENT_ID = ${element.id} AND $FALSE_POSITIVE != 1",
+        where = "$ELEMENT_TYPE = '${element.type}' AND $ELEMENT_ID = ${element.id} AND $FALSE_POSITIVE = 0",
         columns = arrayOf(UUID, TITLE, SUBTITLE, ITEM)
         ) { OsmoseIssue(it.getString(UUID), it.getString(TITLE), it.getString(SUBTITLE), it.getString(ITEM)) }
     }
 
-    private fun reportFalsePositive(uuid: String) {
-        val url = "https://osmose.openstreetmap.fr/api/0.3/issue/$uuid/false"
+    private fun reportChange(uuid: String, falsePositive: Boolean) {
+        val url = "https://osmose.openstreetmap.fr/api/0.3/issue/$uuid/" +
+            if (falsePositive) "false"
+            else "done"
         val request = Request.Builder().url(url).build()
         try {
             client.newCall(request).execute()
             db.delete(NAME, where = "$UUID = '$uuid'")
         } catch (e: IOException) {
             // just do nothing, so it's tried again (hopefully...)
-            Log.i(TAG, "error while uploading: ${e.message}")
+            Log.i(TAG, "error while uploading: ${e.message} to $url")
         }
     }
 
-    fun reportFalsePositives() {
-        Log.i(TAG, "uploading false positives")
+    fun reportChanges() {
+        Log.i(TAG, "uploading changes")
         val falsePositive = db.query(NAME,
-            where = "$FALSE_POSITIVE = 1",
-            columns = arrayOf(UUID)
-        ) { it.getString(UUID) }
-        falsePositive.forEach { reportFalsePositive(it) }
+            where = "$FALSE_POSITIVE != 0",
+            columns = arrayOf(UUID, FALSE_POSITIVE)
+        ) { Pair(it.getString(UUID), it.getInt(FALSE_POSITIVE) == 1) }
+        falsePositive.forEach { reportChange(it.first, it.second) }
     }
 
     fun setAsFalsePositive(uuid: String) {
@@ -137,6 +141,22 @@ class OsmoseDao(
         db.update(NAME,
             values = listOf(FALSE_POSITIVE to 1),
             where = "$UUID = '$uuid'"
+        )
+    }
+
+    fun setDone(uuid: String) {
+        if (uuid.isEmpty()) return
+        db.update(NAME,
+            values = listOf(FALSE_POSITIVE to -1),
+            where = "$UUID = '$uuid'"
+        )
+    }
+
+    // for undo: undo all issues for this element. not perfect, but usually enough
+    fun setNothing(element: ElementKey) {
+        db.update(NAME,
+            values = listOf(FALSE_POSITIVE to 0),
+            where = "$ELEMENT_TYPE = '${element.type.name}' AND $ELEMENT_ID = ${element.id}"
         )
     }
 
