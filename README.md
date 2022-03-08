@@ -21,8 +21,9 @@ New quests may require knowledge about the changed/added OSM tags.
     * e.g. `NODE,2345678,suspicious shop type` to show a quest with message 'suspicious shop type' at the node.
   * osmose issues (experimental)
     * simply shows issues, with the ability to report a false positive
+    * some issues concerning a specific tag allow editing the tag value
     * a quest setting allows disabling "item" type
-    * some issues are not working, notably everything involving more than a single element
+    * some issues are not shown, notably everything involving more than a single element
 * quest changes
   * allow "paved" surface without note (because one lane concrete, one lane asphalt is too common)
   * ask type for more surveillance cameras
@@ -75,4 +76,5 @@ New quests may require knowledge about the changed/added OSM tags.
 * add [requery sqlite library](https://github.com/requery/sqlite-android), which adds 3 MB, but is ca 20% faster than default SQLite
 * slightly improve performance when clicking a quest
 * add "show tags" other answer
-* hide notes by specific users (select by name or id)
+* allow hiding notes by specific users (select by name or id)
+* allow forcing resurvey of specific tags
