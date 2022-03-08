@@ -76,9 +76,9 @@ class AddMaxSpeed(private val prefs: SharedPreferences) : OsmFilterQuestType<Max
 
     override fun getQuestSettingsDialog(context: Context): AlertDialog? {
         return AlertDialog.Builder(context)
-            .setTitle("select maxspeed tag")
+            .setTitle("select tag for implicit maxspeed (e.g. IT:rural")
             .setNegativeButton(android.R.string.cancel, null)
-            .setItems(arrayOf(MAXSPEED_TYPE, SOURCE_MAXSPEED)) { dialogInterface, i ->
+            .setItems(arrayOf(MAXSPEED_TYPE, SOURCE_MAXSPEED)) { _, i ->
                 prefs.edit()
                     .putString(PREF_MAXSPEED_TAG, if (i == 0) MAXSPEED_TYPE else SOURCE_MAXSPEED)
                     .apply()
