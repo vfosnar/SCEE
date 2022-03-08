@@ -9,6 +9,7 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
+import androidx.core.content.edit
 import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.ListPreference
@@ -71,6 +72,44 @@ class SettingsFragment :
 
         findPreference<Preference>("quests")?.setOnPreferenceClickListener {
             listener?.onClickedQuestSelection()
+            true
+        }
+
+        findPreference<Preference>("quests.advanced_resurvey")?.setOnPreferenceClickListener {
+            val layout = LinearLayout(context)
+            layout.setPadding(30,10,30,10)
+            layout.orientation = LinearLayout.VERTICAL
+            val keyText = TextView(context)
+            keyText.text = "Always resurvey these keys if there is no check date key"
+            val keyEditText = EditText(context)
+            keyEditText.inputType = InputType.TYPE_CLASS_TEXT
+            keyEditText.hint = "separate multiple keys using ,"
+            keyEditText.setText(prefs.getString(Prefs.RESURVEY_KEYS, ""))
+
+            val dateText = TextView(context)
+            dateText.text = "Instead of using resurvey intervals, resurvey above keys if check date older than:"
+            val dateEditText = EditText(context)
+            dateEditText.inputType = InputType.TYPE_CLASS_TEXT
+            dateEditText.hint = "format must be YYYY-MM-DD"
+            dateEditText.setText(prefs.getString(Prefs.RESURVEY_DATE, ""))
+
+            layout.addView(keyText)
+            layout.addView(keyEditText)
+            layout.addView(dateText)
+            layout.addView(dateEditText)
+
+            AlertDialog.Builder(requireContext())
+                .setTitle("Set advances resurvey date and keys")
+                .setView(layout)
+                .setNegativeButton(android.R.string.cancel, null)
+                .setPositiveButton(android.R.string.ok) { _, _ ->
+                    prefs.edit {
+                        putString(Prefs.RESURVEY_DATE, dateEditText.text.toString())
+                        putString(Prefs.RESURVEY_KEYS, keyEditText.text.toString())
+                    }
+                    resurveyIntervalsUpdater.update()
+                }
+             .show()
             true
         }
 

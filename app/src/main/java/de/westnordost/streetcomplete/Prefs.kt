@@ -17,6 +17,8 @@ object Prefs {
     const val LANGUAGE_SELECT = "language.select"
     const val THEME_BACKGROUND = "theme.background_type"
 
+    const val RESURVEY_KEYS = "quests.resurvey_keys"
+    const val RESURVEY_DATE = "quests.resurvey_date"
     const val RESURVEY_INTERVALS = "quests.resurveyIntervals"
     const val SHOW_QUEST_GEOMETRIES = "display.questGeometries"
     const val SHOW_3D_BUILDINGS = "display.3dBuildings"

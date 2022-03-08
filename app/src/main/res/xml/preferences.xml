@@ -35,6 +35,11 @@
             android:entryValues="@array/pref_entryvalues_resurvey_intervals"
             android:persistent="true" />
 
+        <Preference
+            android:key="quests.advanced_resurvey"
+            android:title="Advanced resurvey"
+            android:summary="force resurvey for specific tags" />
+
         <SwitchPreference
             android:key="display.nonQuestionNotes"
             android:title="@string/pref_title_show_notes_not_phrased_as_questions"
