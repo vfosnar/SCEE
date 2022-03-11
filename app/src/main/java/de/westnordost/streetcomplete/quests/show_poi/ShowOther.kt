@@ -13,7 +13,7 @@ class ShowOther : OsmFilterQuestType<Boolean>() {
          or historic
          or club
          or information and information !~ office
-         or tourism ~ viewpoint|artworks|wilderness_hut
+         or tourism ~ viewpoint|artwork|wilderness_hut
          or """.trimIndent() +
 
         mapOf(
