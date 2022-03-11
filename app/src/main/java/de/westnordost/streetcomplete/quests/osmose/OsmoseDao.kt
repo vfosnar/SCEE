@@ -7,6 +7,10 @@ import de.westnordost.streetcomplete.data.osm.mapdata.BoundingBox
 import de.westnordost.streetcomplete.data.Database
 import de.westnordost.streetcomplete.data.osm.mapdata.ElementKey
 import de.westnordost.streetcomplete.data.osm.mapdata.ElementType
+import de.westnordost.streetcomplete.data.osm.osmquests.OsmQuestDao
+import de.westnordost.streetcomplete.data.osm.osmquests.OsmQuestsHiddenDao
+import de.westnordost.streetcomplete.data.quest.OsmQuestKey
+import de.westnordost.streetcomplete.data.quest.QuestType
 import de.westnordost.streetcomplete.quests.osmose.OsmoseTable.Columns.ELEMENT_ID
 import de.westnordost.streetcomplete.quests.osmose.OsmoseTable.Columns.ELEMENT_TYPE
 import de.westnordost.streetcomplete.quests.osmose.OsmoseTable.Columns.FALSE_POSITIVE
@@ -21,7 +25,9 @@ import java.io.IOException
 
 class OsmoseDao(
     private val db: Database,
-    private val sharedPrefs: SharedPreferences
+    private val sharedPrefs: SharedPreferences,
+    private val hiddenDao: OsmQuestsHiddenDao,
+    private val questDao: OsmQuestDao
 ) {
     val client = OkHttpClient()
 
@@ -113,7 +119,7 @@ class OsmoseDao(
         ) { OsmoseIssue(it.getString(UUID), it.getString(TITLE), it.getString(SUBTITLE), it.getString(ITEM)) }
     }
 
-    private fun reportChange(uuid: String, falsePositive: Boolean) {
+    private fun reportChange(uuid: String, falsePositive: Boolean, questKey: OsmQuestKey) {
         val url = "https://osmose.openstreetmap.fr/api/0.3/issue/$uuid/" +
             if (falsePositive) "false"
             else "done"
@@ -121,6 +127,10 @@ class OsmoseDao(
         try {
             client.newCall(request).execute()
             db.delete(NAME, where = "$UUID = '$uuid'")
+            if (falsePositive) {
+                hiddenDao.delete(questKey) // no need to hide quest any more
+                questDao.delete(questKey) // but need to delete quest, as it isn't solved
+            }
         } catch (e: IOException) {
             // just do nothing, so it's tried again (hopefully...)
             Log.i(TAG, "error while uploading: ${e.message} to $url")
@@ -130,10 +140,17 @@ class OsmoseDao(
     fun reportChanges() {
         Log.i(TAG, "uploading changes")
         val falsePositive = db.query(NAME,
-            where = "$FALSE_POSITIVE != 0",
-            columns = arrayOf(UUID, FALSE_POSITIVE)
-        ) { Pair(it.getString(UUID), it.getInt(FALSE_POSITIVE) == 1) }
-        falsePositive.forEach { reportChange(it.first, it.second) }
+            where = "$FALSE_POSITIVE != 0"
+        ) { Triple(
+            it.getString(UUID),
+            it.getInt(FALSE_POSITIVE) == 1,
+            OsmQuestKey(
+                ElementType.valueOf(it.getString(ELEMENT_TYPE)),
+                it.getLong(ELEMENT_ID),
+                "OsmoseQuest"
+            )
+        ) }
+        falsePositive.forEach { reportChange(it.first, it.second, it.third) }
     }
 
     fun setAsFalsePositive(uuid: String) {

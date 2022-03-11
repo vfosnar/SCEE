@@ -62,7 +62,7 @@ class OsmoseForm(private val db: OsmoseDao) : AbstractQuestAnswerFragment<Osmose
             buttonPanelAnswers.add(
                 AnswerItem(R.string.quest_osmose_false_positive) {
                     db.setAsFalsePositive(issue?.uuid ?: "")
-                    skipQuest()
+                    skipQuest() // hide, so the quest disappears
                 }
             )
         updateButtonPanel()
