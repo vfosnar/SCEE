@@ -15,7 +15,7 @@ class ShowBusiness : OsmFilterQuestType<Boolean>() {
          or craft
          or office
          or tourism = information and information = office
-         or healthcare = laboratory
+         or healthcare ~ laboratory|psychotherapist|physiotherapist
          or """.trimIndent() +
 
         // The common list is shared by the name quest, the opening hours quest and the wheelchair quest.

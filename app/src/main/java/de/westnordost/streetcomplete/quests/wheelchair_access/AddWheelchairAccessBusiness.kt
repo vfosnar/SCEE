@@ -90,7 +90,7 @@ class AddWheelchairAccessBusiness(
             "healthcare" to arrayOf(
                 // common
                 "audiologist", "optometrist", "counselling", "speech_therapist",
-                "sample_collection", "blood_donation",
+                "sample_collection", "blood_donation", "psychotherapist", "laboratory"
             ),
         ).map { it.key + " ~ " + it.value.joinToString("|") }.joinToString("\n or ") +
         "  \n)"

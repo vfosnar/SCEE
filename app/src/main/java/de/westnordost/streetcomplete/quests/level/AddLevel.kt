@@ -37,7 +37,10 @@ class AddLevel(
 
     private val thingsWithLevelFilter by lazy { """
         nodes, ways, relations with level
-        and amenity ~ doctors|dentist
+        and (
+         amenity ~ doctors|dentist
+         or healthcare ~ psychotherapist|physiotherapist
+        )
     """.toElementFilterExpression() }
 
     /* only nodes because ways/relations are not likely to be floating around freely in a mall
@@ -114,7 +117,7 @@ class AddLevel(
             // add doctors, no matter what
             val doctorsWithoutLevel = shopsWithoutLevel.filter { it.isDoctor() }
             result.addAll(doctorsWithoutLevel)
-            shopsWithoutLevel.removeIf { it.isDoctor() } // used -> remove
+            shopsWithoutLevel.removeAll { it.isDoctor() } // used -> remove
         }
 
         // get geometry of all malls in the area
@@ -171,7 +174,7 @@ class AddLevel(
         return null
     }
 
-    fun Element.isDoctor() = tags["amenity"] == "doctors" || tags["amenity"] == "dentist"
+    private fun Element.isDoctor() = tags["amenity"] == "doctors" || tags["amenity"] == "dentist" || tags["healthcare"] in listOf("psychotherapist", "physiotherapist")
 
     override fun createForm() = AddLevelForm()
 

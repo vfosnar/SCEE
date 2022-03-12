@@ -34,30 +34,26 @@ class AddContactPhone : OsmFilterQuestType<String>() {
 }
 
 val PLACES_FOR_CONTACT_QUESTS = mapOf(
-"amenity" to arrayOf(
-"restaurant", "cafe", "internet_cafe",
-"cinema", "townhall", "embassy", "community_centre", "youth_centre", "library",
-"dentist", "doctors", "clinic", "veterinary", "animal_shelter",
-"arts_centre", "ferry_terminal"
-),
-"tourism" to arrayOf(
-"zoo", "aquarium", "gallery", "museum",
-),
-"shop" to arrayOf(
-"beauty", "massage", "hairdresser","wool","tattoo","electrical","glaziery",
-"computer","electronics","hifi","bicycle","outdoor","sports","art","craft","model",
-"musical_instrument","camera","books","travel_agency","cheese","chocolate","coffee","health_food"
-),
-"leisure" to arrayOf(
-"fitness_centre", "bowling_alley", "sports_centre"
-),
-"office" to arrayOf(
-"insurance", "government", "travel_agent", "tax_advisor", "religion", "employment_agency",
-"lawyer", "estate_agent", "therapist", "notary"
-),
-"craft" to arrayOf(
-"carpenter", "shoemaker", "tailor", "photographer", "dressmaker",
-"electronics_repair", "stonemason", "winery"
-)
+    "amenity" to arrayOf(
+        "restaurant", "cafe", "internet_cafe",
+        "cinema", "townhall", "embassy", "community_centre", "youth_centre", "library",
+        "dentist", "doctors", "clinic", "veterinary", "animal_shelter",
+        "arts_centre", "ferry_terminal"
+    ),
+    "tourism" to arrayOf("zoo", "aquarium", "gallery", "museum", ),
+    "shop" to arrayOf(
+        "beauty", "massage", "hairdresser","wool","tattoo","electrical","glaziery",
+        "computer","electronics","hifi","bicycle","outdoor","sports","art","craft","model",
+        "musical_instrument","camera","books","travel_agency","cheese","chocolate","coffee","health_food"
+    ),
+    "leisure" to arrayOf("fitness_centre", "bowling_alley", "sports_centre"),
+    "office" to arrayOf(
+        "insurance", "government", "travel_agent", "tax_advisor", "religion", "employment_agency",
+        "lawyer", "estate_agent", "therapist", "notary"
+    ),
+    "craft" to arrayOf(
+        "carpenter", "shoemaker", "tailor", "photographer", "dressmaker",
+        "electronics_repair", "stonemason", "winery"
+    ),
+    "healthcare" to arrayOf("psychotherapist", "physiotherapist", "laboratory")
 ).map { it.key + " ~ " + it.value.joinToString("|") }.joinToString("\n or ")
-

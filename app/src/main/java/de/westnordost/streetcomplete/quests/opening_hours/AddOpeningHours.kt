@@ -90,7 +90,7 @@ class AddOpeningHours(
                 "sample_collection", "blood_donation",
 
                 // name & opening hours
-                "physiotherapist", "podiatrist",
+                "physiotherapist", "podiatrist", "psychotherapist", "laboratory"
             ),
         ).map { it.key + " ~ " + it.value.joinToString("|") }.joinToString("\n or ") + "\n" + """
             )
