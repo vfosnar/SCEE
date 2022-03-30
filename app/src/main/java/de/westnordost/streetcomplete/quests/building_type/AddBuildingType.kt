@@ -53,6 +53,7 @@ val buildingFilter = """
          and !amenity
          and !leisure
          and !aeroway
+         and !railway
          and !description
          and location != underground
          and abandoned != yes
@@ -60,7 +61,6 @@ val buildingFilter = """
          and abandoned:building != yes
          and ruins != yes and ruined != yes
     """.toElementFilterExpression()
-
 private val nodesWithAddressFilter by lazy { """
    nodes with ~"addr:(housenumber|housename|conscriptionnumber|streetnumber|street)"
     """.toElementFilterExpression()}

@@ -114,7 +114,7 @@
             android:key="ignore_notes"
             android:title="Ignore notes by users" />
 
-        <de.westnordost.streetcomplete.settings.NumberPickerPreference
+        <de.westnordost.streetcomplete.screens.settings.NumberPickerPreference
             android:key="map.tilecache"
             android:title="@string/pref_title_map_cache"
             android:summary="@string/pref_tilecache_size_summary"

@@ -27,7 +27,6 @@ import de.westnordost.osmfeatures.FeatureDictionary
 import de.westnordost.streetcomplete.R
 import de.westnordost.streetcomplete.data.meta.CountryInfo
 import de.westnordost.streetcomplete.data.meta.CountryInfos
-import de.westnordost.streetcomplete.data.meta.IS_SHOP_OR_DISUSED_SHOP_EXPRESSION
 import de.westnordost.streetcomplete.data.meta.getByLocation
 import de.westnordost.streetcomplete.data.osm.geometry.ElementGeometry
 import de.westnordost.streetcomplete.data.osm.mapdata.Element
@@ -41,12 +40,13 @@ import de.westnordost.streetcomplete.data.quest.QuestType
 import de.westnordost.streetcomplete.data.quest.QuestTypeRegistry
 import de.westnordost.streetcomplete.databinding.ButtonPanelButtonBinding
 import de.westnordost.streetcomplete.databinding.FragmentQuestAnswerBinding
-import de.westnordost.streetcomplete.ktx.FragmentViewBindingPropertyDelegate
+import de.westnordost.streetcomplete.osm.IS_SHOP_OR_DISUSED_SHOP_EXPRESSION
 import de.westnordost.streetcomplete.ktx.popIn
-import de.westnordost.streetcomplete.ktx.geometryType
-import de.westnordost.streetcomplete.ktx.isArea
-import de.westnordost.streetcomplete.ktx.updateConfiguration
 import de.westnordost.streetcomplete.quests.shop_type.ShopGoneDialog
+import de.westnordost.streetcomplete.util.FragmentViewBindingPropertyDelegate
+import de.westnordost.streetcomplete.util.ktx.geometryType
+import de.westnordost.streetcomplete.util.ktx.isArea
+import de.westnordost.streetcomplete.util.ktx.updateConfiguration
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -203,9 +203,9 @@ abstract class AbstractQuestAnswerFragment<T> :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.titleLabel.text = resources.getHtmlQuestTitle(questType, osmElement, featureDictionaryFuture)
+        binding.titleLabel.text = resources.getHtmlQuestTitle(questType, osmElement)
 
-        val levelLabelText = osmElement?.let { resources.getLocationLabelString(it.tags) }
+        val levelLabelText = osmElement?.let { resources.getNameAndLocationLabelString(it.tags, featureDictionary) }
         binding.titleHintLabel.isGone = levelLabelText == null
         if (levelLabelText != null) {
             binding.titleHintLabel.text = levelLabelText
@@ -376,7 +376,7 @@ abstract class AbstractQuestAnswerFragment<T> :
     }
 
     protected fun composeNote() {
-        val questTitle = englishResources.getQuestTitle(questType, osmElement, featureDictionaryFuture)
+        val questTitle = englishResources.getQuestTitle(questType, osmElement)
         listener?.onComposeNote(questKey, questTitle)
     }
 

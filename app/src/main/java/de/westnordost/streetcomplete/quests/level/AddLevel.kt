@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import de.westnordost.osmfeatures.FeatureDictionary
 import de.westnordost.streetcomplete.R
 import de.westnordost.streetcomplete.data.elementfilter.toElementFilterExpression
-import de.westnordost.streetcomplete.data.meta.isShopExpressionFragment
 import de.westnordost.streetcomplete.data.osm.geometry.ElementPolygonsGeometry
 import de.westnordost.streetcomplete.data.osm.mapdata.Element
 import de.westnordost.streetcomplete.data.osm.mapdata.MapDataWithGeometry
@@ -14,8 +13,9 @@ import de.westnordost.streetcomplete.data.osm.osmquests.OsmElementQuestType
 import de.westnordost.streetcomplete.data.osm.osmquests.Tags
 import de.westnordost.streetcomplete.data.user.achievements.QuestTypeAchievement.CITIZEN
 import de.westnordost.streetcomplete.ktx.containsAny
-import de.westnordost.streetcomplete.util.contains
-import de.westnordost.streetcomplete.util.isInMultipolygon
+import de.westnordost.streetcomplete.osm.isShopExpressionFragment
+import de.westnordost.streetcomplete.util.math.contains
+import de.westnordost.streetcomplete.util.math.isInMultipolygon
 import java.util.concurrent.FutureTask
 
 class AddLevel(
@@ -77,12 +77,11 @@ class AddLevel(
     *  the user cannot find the place on any level in the mall, delete the element completely. */
     override val isReplaceShopEnabled = false
     override val isDeleteElementEnabled = true
-
     override val questTypeAchievements = listOf(CITIZEN)
 
     override fun getTitle(tags: Map<String, String>) = when {
         !hasProperName(tags)  -> R.string.quest_place_level_no_name_title
-        !hasFeatureName(tags) -> R.string.quest_level_title
+        !hasFeatureName(tags) -> R.string.quest_level_title2
         else                  -> R.string.quest_place_level_name_type_title
     }
 
