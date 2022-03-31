@@ -24,16 +24,16 @@ class ShowTrafficStuff : OsmFilterQuestType<Boolean>() {
     override val defaultDisabledMessage = R.string.default_disabled_msg_poi_traffic
 
     override fun getTitle(tags: Map<String, String>) =
-        R.string.quest_thisIsOther_title
+        R.string.quest_poi_traffic_title
 
-    override fun getTitleArgs(tags: Map<String, String>, featureName: Lazy<String?>): Array<String> {
-        val name = if ((!tags["crossing"].isNullOrBlank() && !tags["traffic_calming"].isNullOrBlank())
+    override fun getTitleArgs(tags: Map<String, String>): Array<String> {
+        val args = if ((!tags["crossing"].isNullOrBlank() && !tags["traffic_calming"].isNullOrBlank())
                         || tags["type"] == "restriction"
                         || tags["highway"] == "elevator")
-            tags.entries
+            tags.entries.toString()
         else
-            featureName.value ?: tags.entries
-        return arrayOf(name.toString())
+            ""
+        return arrayOf(args)
     }
 
     override fun createForm() = ShowTrafficStuffAnswerForm()

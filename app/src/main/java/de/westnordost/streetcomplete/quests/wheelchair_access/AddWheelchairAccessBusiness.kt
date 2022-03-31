@@ -8,7 +8,6 @@ import de.westnordost.streetcomplete.data.osm.osmquests.OsmFilterQuestType
 import de.westnordost.streetcomplete.data.osm.osmquests.Tags
 import de.westnordost.streetcomplete.data.user.achievements.QuestTypeAchievement.WHEELCHAIR
 import de.westnordost.streetcomplete.osm.IS_SHOP_OR_DISUSED_SHOP_EXPRESSION
-import de.westnordost.streetcomplete.ktx.containsAny
 
 class AddWheelchairAccessBusiness : OsmFilterQuestType<WheelchairAccess>() {
 
@@ -99,7 +98,6 @@ class AddWheelchairAccessBusiness : OsmFilterQuestType<WheelchairAccess>() {
     override val questTypeAchievements = listOf(WHEELCHAIR)
 
     override fun getTitle(tags: Map<String, String>) = R.string.quest_wheelchairAccess_outside_title
-    }
 
     override fun getHighlightedElements(element: Element, getMapData: () -> MapDataWithGeometry) =
         getMapData().filter(IS_SHOP_OR_DISUSED_SHOP_EXPRESSION)

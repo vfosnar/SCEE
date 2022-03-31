@@ -9,8 +9,8 @@ import de.westnordost.streetcomplete.data.osm.mapdata.Element
 import de.westnordost.streetcomplete.data.osm.mapdata.MapDataWithGeometry
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmElementQuestType
 import de.westnordost.streetcomplete.quests.address.containsAnyNode
-import de.westnordost.streetcomplete.util.LatLonRaster
-import de.westnordost.streetcomplete.util.isInMultipolygon
+import de.westnordost.streetcomplete.util.math.LatLonRaster
+import de.westnordost.streetcomplete.util.math.isInMultipolygon
 
 class AddBuildingType : OsmElementQuestType<BuildingType> {
 

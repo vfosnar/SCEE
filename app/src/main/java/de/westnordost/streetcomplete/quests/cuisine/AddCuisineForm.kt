@@ -3,9 +3,9 @@ package de.westnordost.streetcomplete.quests.cuisine
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
+import androidx.core.widget.doAfterTextChanged
 import de.westnordost.streetcomplete.R
 import de.westnordost.streetcomplete.quests.AbstractQuestFormAnswerFragment
-import de.westnordost.streetcomplete.util.TextChangedWatcher
 import de.westnordost.streetcomplete.databinding.QuestCuisineSuggestionBinding
 
 class AddCuisineForm : AbstractQuestFormAnswerFragment<String>() {
@@ -15,7 +15,7 @@ class AddCuisineForm : AbstractQuestFormAnswerFragment<String>() {
 
     val cuisines = mutableListOf<String>()
 
-    val cuisine get() = binding.cuisineInput?.text?.toString().orEmpty().trim()
+    val cuisine get() = binding.cuisineInput.text?.toString().orEmpty().trim()
 
     val suggestions = listOf("vietnamese", "italian", "indian", "japanese", "chinese", "asian", "russian", "french", "american", "mexican",
         "regional", "georgian", "czech", "heuriger", "korean", "spanish", "thai", "greek", "turkish",
@@ -25,7 +25,7 @@ class AddCuisineForm : AbstractQuestFormAnswerFragment<String>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        suggestions?.let {
+        suggestions.let {
             binding.cuisineInput.setAdapter(
                 ArrayAdapter(
                 requireContext(),
@@ -34,7 +34,7 @@ class AddCuisineForm : AbstractQuestFormAnswerFragment<String>() {
             )
         }
 
-        binding.cuisineInput.addTextChangedListener(TextChangedWatcher { checkIsFormComplete() })
+        binding.cuisineInput.doAfterTextChanged { checkIsFormComplete() }
 
         binding.addCuisineButton.setOnClickListener {
             if (isFormComplete()) {

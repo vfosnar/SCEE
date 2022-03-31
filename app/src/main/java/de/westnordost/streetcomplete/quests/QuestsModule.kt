@@ -479,7 +479,7 @@ whether the postbox is still there in countries in which it is enabled */
     ShowMachine(),
     ShowVacant(),
     ShowCamera(),
-    ShowFixme(),
+    ShowFixme(sharedPrefs),
     ExternalCheck(externalList),
     OsmoseQuest(osmoseDao, sharedPrefs)
 ))

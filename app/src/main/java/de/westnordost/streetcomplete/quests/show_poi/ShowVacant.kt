@@ -2,9 +2,11 @@ package de.westnordost.streetcomplete.quests.show_poi
 
 import de.westnordost.streetcomplete.R
 import de.westnordost.streetcomplete.data.meta.*
-import de.westnordost.streetcomplete.data.osm.edits.update_tags.StringMapChangesBuilder
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmFilterQuestType
 import de.westnordost.streetcomplete.data.osm.osmquests.Tags
+import de.westnordost.streetcomplete.osm.KEYS_THAT_SHOULD_BE_REMOVED_WHEN_SHOP_IS_REPLACED
+import de.westnordost.streetcomplete.osm.removeCheckDates
+import de.westnordost.streetcomplete.osm.updateCheckDate
 import de.westnordost.streetcomplete.quests.shop_type.IsShopVacant
 import de.westnordost.streetcomplete.quests.shop_type.ShopType
 import de.westnordost.streetcomplete.quests.shop_type.ShopTypeAnswer
@@ -25,11 +27,11 @@ class ShowVacant : OsmFilterQuestType<ShopTypeAnswer>() {
     override val defaultDisabledMessage = R.string.default_disabled_msg_poi_vacant
 
     override fun getTitle(tags: Map<String, String>) =
-        R.string.quest_thisIsVacant_title
+        R.string.quest_poi_vacant_title
 
     override fun createForm() = ShopTypeForm()
 
-    override fun getTitleArgs(tags: Map<String, String>, featureName: Lazy<String?>): Array<String> {
+    override fun getTitleArgs(tags: Map<String, String>): Array<String> {
         return arrayOf(tags.entries.toString())
     }
 

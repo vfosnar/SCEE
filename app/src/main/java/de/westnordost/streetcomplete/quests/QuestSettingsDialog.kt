@@ -16,14 +16,14 @@ fun singleTypeElementSelectionDialog(context: Context, prefs: SharedPreferences,
     textInput.addTextChangedListener {
         val button = dialog?.getButton(AlertDialog.BUTTON_POSITIVE)
         button?.isEnabled = textInput.text.toString().let {
-            it.lowercase().matches("[a-z_,\\s]+".toRegex())
+            it.lowercase().matches("[a-z0-9_?,\\s]+".toRegex())
                 && !it.trim().endsWith(',')
                 && !it.contains(",,")
                 && it.isNotEmpty() }
     }
     dialog = dialog(context, message, prefs.getString(pref, defaultValue)?.replace("|",", ") ?: "", textInput)
         .setPositiveButton(android.R.string.ok) { _, _ ->
-            prefs.edit().putString(pref, textInput.text.toString().lowercase().filter { !it.isWhitespace() }.replace(",","|")).apply()
+            prefs.edit().putString(pref, textInput.text.toString().split(",").joinToString("|") { it.trim() }).apply()
         }
         .setNeutralButton("reset") { _, _ ->
             prefs.edit().remove(pref).apply()
@@ -52,7 +52,7 @@ fun fullElementSelectionDialog(context: Context, prefs: SharedPreferences, pref:
 
     dialog = dialog(context, message, prefs.getString(pref, "") ?: "", textInput)
         .setPositiveButton(android.R.string.ok) { _, _ ->
-            prefs.edit().putString(pref, textInput.text.toString().lowercase()).apply()
+            prefs.edit().putString(pref, textInput.text.toString()).apply()
         }
         .setNeutralButton("reset") { _, _ ->
             prefs.edit().remove(pref).apply()

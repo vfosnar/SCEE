@@ -16,15 +16,10 @@ class ShowRecycling : OsmFilterQuestType<Boolean>() {
     override val defaultDisabledMessage = R.string.default_disabled_msg_poi_recycling
 
     override fun getTitle(tags: Map<String, String>) =
-        R.string.quest_thisIsOther_title
+        R.string.quest_poi_recycling_title
 
-    override fun getTitleArgs(tags: Map<String, String>, featureName: Lazy<String?>): Array<String> {
-        val name = if (!tags["recycling_type"].isNullOrBlank())
-            tags.entries
-        else
-            featureName.value ?: tags.entries
-        return arrayOf(name.toString())
-    }
+    override fun getTitleArgs(tags: Map<String, String>): Array<String>
+        = arrayOf(if (!tags["recycling_type"].isNullOrBlank()) tags.entries.toString() else "")
 
     override fun createForm() = ShowRecyclingAnswerForm()
 

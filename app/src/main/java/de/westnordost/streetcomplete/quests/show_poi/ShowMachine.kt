@@ -18,18 +18,18 @@ class ShowMachine : OsmFilterQuestType<Boolean>() {
     override val defaultDisabledMessage = R.string.default_disabled_msg_poi_machine
 
     override fun getTitle(tags: Map<String, String>) =
-        if (tags["amenity"].equals("atm") || !tags["atm"].isNullOrEmpty())
-            R.string.quest_thisIsAtm_title
+        if (!tags["atm"].isNullOrEmpty() && tags["atm"] != "no")
+            R.string.quest_poi_has_atm_title
         else if (tags["amenity"].equals("vending_machine"))
-            R.string.quest_thisIsVendingMachine_title
+            R.string.quest_poi_vending_title
         else
-            R.string.quest_thisIsOther_title
+            R.string.quest_poi_machine_title
 
-    override fun getTitleArgs(tags: Map<String, String>, featureName: Lazy<String?>): Array<String> {
+    override fun getTitleArgs(tags: Map<String, String>): Array<String> {
         return if (tags["amenity"].equals("vending_machine"))
             arrayOf(tags["vending"] ?: tags.entries.toString())
         else
-            arrayOf((featureName.value ?: tags.entries).toString())
+            arrayOf("<no vending tag>")
     }
 
     override fun createForm() = NoAnswerFragment()

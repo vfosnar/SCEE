@@ -1,11 +1,10 @@
 package de.westnordost.streetcomplete.quests.show_poi
 
 import de.westnordost.streetcomplete.R
-import de.westnordost.streetcomplete.data.osm.edits.update_tags.StringMapChangesBuilder
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmFilterQuestType
 import de.westnordost.streetcomplete.data.osm.osmquests.Tags
-import de.westnordost.streetcomplete.ktx.containsAny
 import de.westnordost.streetcomplete.quests.NoAnswerFragment
+import de.westnordost.streetcomplete.util.ktx.containsAny
 
 class ShowBusiness : OsmFilterQuestType<Boolean>() {
     override val elementFilter = """
@@ -64,20 +63,7 @@ class ShowBusiness : OsmFilterQuestType<Boolean>() {
     override val isReplaceShopEnabled = true
     override val defaultDisabledMessage = R.string.default_disabled_msg_poi_business
 
-    override fun getTitle(tags: Map<String, String>) =
-        if (hasProperName(tags))
-            R.string.quest_thisIsBusiness_name_title
-        else
-            R.string.quest_thisIsOther_title
-
-    private fun hasProperName(tags: Map<String, String>?): Boolean =
-        tags?.keys?.containsAny(listOf("name", "brand")) ?: false
-
-    override fun getTitleArgs(tags: Map<String, String>, featureName: Lazy<String?>): Array<String> {
-        val name = tags["name"] ?: tags["brand"] ?: featureName.value
-        val name2 = featureName.value ?: tags.entries
-        return if (name != null) arrayOf(name2.toString(),name) else arrayOf(name2.toString())
-    }
+    override fun getTitle(tags: Map<String, String>) = R.string.quest_poi_business_title
 
     override fun createForm() = NoAnswerFragment()
 

@@ -6,7 +6,7 @@ import de.westnordost.streetcomplete.data.osm.geometry.ElementGeometry
 import de.westnordost.streetcomplete.data.osm.mapdata.LatLon
 import de.westnordost.streetcomplete.screens.main.map.tangram.KtMapController
 import de.westnordost.streetcomplete.screens.main.map.tangram.toLngLat
-import de.westnordost.streetcomplete.map.tangram.toTangramGeometry
+import de.westnordost.streetcomplete.screens.main.map.tangram.toTangramGeometry
 
 /** Takes care of displaying pins on the map, e.g. quest pins or pins for recent edits */
 class PinsMapComponent(ctrl: KtMapController) {

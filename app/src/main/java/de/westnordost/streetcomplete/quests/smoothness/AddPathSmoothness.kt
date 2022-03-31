@@ -34,6 +34,9 @@ class AddPathSmoothness : OsmFilterQuestType<SmoothnessAnswer>() {
 
     override fun getTitle(tags: Map<String, String>) = R.string.quest_smoothness_title
 
+    override fun getTitleArgs(tags: Map<String, String>): Array<String>
+        = arrayOf(tags["surface"].toString())
+
     override fun createForm() = AddSmoothnessForm()
 
     override fun applyAnswerTo(answer: SmoothnessAnswer, tags: Tags, timestampEdited: Long) {

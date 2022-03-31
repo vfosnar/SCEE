@@ -20,12 +20,7 @@ class ShowBench : OsmFilterQuestType<Boolean>() {
     override val defaultDisabledMessage = R.string.default_disabled_msg_poi_bench
 
     override fun getTitle(tags: Map<String, String>) =
-        R.string.quest_thisIsOther_title
-
-    override fun getTitleArgs(tags: Map<String, String>, featureName: Lazy<String?>): Array<String> {
-        val name = featureName.value ?: tags.entries
-        return arrayOf(name.toString())
-    }
+        R.string.quest_poi_seating_title
 
     override fun createForm() = NoAnswerFragment()
 

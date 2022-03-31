@@ -15,7 +15,7 @@ class OsmoseQuest(private val db: OsmoseDao, private val prefs: SharedPreference
 
     override fun getTitle(tags: Map<String, String>) = R.string.quest_osmose_title
 
-    override fun getTitleArgs(tags: Map<String, String>, featureName: Lazy<String?>): Array<String> =
+    override fun getTitleArgs(tags: Map<String, String>): Array<String> =
         arrayOf(tags.toString())
 
     override val changesetComment = "Fix osmose issues"
@@ -24,7 +24,6 @@ class OsmoseQuest(private val db: OsmoseDao, private val prefs: SharedPreference
     override val defaultDisabledMessage = R.string.quest_osmose_message
 
     override fun getApplicableElements(mapData: MapDataWithGeometry): Iterable<Element> {
-        // not working
         val elements = mutableListOf<Element>()
         val map = db.getAll()
         mapData.forEach {

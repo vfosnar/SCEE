@@ -14,7 +14,7 @@ class AddServiceBuildingType : OsmFilterQuestType<String>() {
 
     override fun getTitle(tags: Map<String, String>) = R.string.quest_service_building_type_title
 
-    override fun getTitleArgs(tags: Map<String, String>, featureName: Lazy<String?>): Array<String> {
+    override fun getTitleArgs(tags: Map<String, String>): Array<String> {
         val title = tags["operator"]?.let { " ($it)" } ?: ""
         return arrayOf(title)
     }

@@ -20,11 +20,6 @@ class AddContactWebsite : OsmFilterQuestType<String>() {
 
     override fun getTitle(tags: Map<String, String>) = R.string.quest_contact_website
 
-    override fun getTitleArgs(tags: Map<String, String>, featureName: Lazy<String?>): Array<String> {
-        val name = tags["name"]
-        return if (name != null) arrayOf(name) else arrayOf()
-    }
-
     override fun createForm() = AddContactWebsiteForm()
 
     override fun applyAnswerTo(answer: String, tags: Tags, timestampEdited: Long) {

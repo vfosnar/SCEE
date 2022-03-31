@@ -17,9 +17,9 @@ class ShowCamera : OsmFilterQuestType<Boolean>() {
     override val defaultDisabledMessage = R.string.default_disabled_msg_poi_camera
 
     override fun getTitle(tags: Map<String, String>) =
-        R.string.quest_thisIsOther_title
+        R.string.quest_poi_camera_title
 
-    override fun getTitleArgs(tags: Map<String, String>, featureName: Lazy<String?>) =
+    override fun getTitleArgs(tags: Map<String, String>) =
         arrayOf(tags.entries.toString())
 
     override fun createForm() = NoAnswerFragment()

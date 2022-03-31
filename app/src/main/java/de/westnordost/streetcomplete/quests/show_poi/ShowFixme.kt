@@ -1,15 +1,19 @@
 package de.westnordost.streetcomplete.quests.show_poi
 
+import android.app.AlertDialog
+import android.content.Context
+import android.content.SharedPreferences
 import de.westnordost.streetcomplete.R
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmFilterQuestType
 import de.westnordost.streetcomplete.data.osm.osmquests.Tags
+import de.westnordost.streetcomplete.quests.singleTypeElementSelectionDialog
 
-class ShowFixme : OsmFilterQuestType<Boolean>() {
+class ShowFixme(private val prefs: SharedPreferences) : OsmFilterQuestType<Boolean>() {
     override val elementFilter = """
         nodes, ways, relations with
           (fixme or FIXME)
-          and fixme !~ "continue|continue?|yes|Baum oder Strauch|Use for reference, adjust surroundings using the description, but please do NOT move."
-          and FIXME !~ continue|continue?|yes
+          and fixme !~ "${prefs.getString(PREF_FIXME_IGNORE, FIXME_IGNORE_DEFAULT)}"
+          and FIXME !~ "${prefs.getString(PREF_FIXME_IGNORE, FIXME_IGNORE_DEFAULT)}"
     """
     override val changesetComment = "Remove fixme"
     override val wikiLink = "Key:fixme"
@@ -21,16 +25,8 @@ class ShowFixme : OsmFilterQuestType<Boolean>() {
 
     override fun createForm() = ShowFixmeAnswerForm()
 
-    override fun getTitleArgs(tags: Map<String, String>, featureName: Lazy<String?>): Array<String> {
-        val name = tags.entries.mapNotNull {
-            when (it.key) {
-                "fixme", "FIXME" -> null
-                else -> it
-            }
-        }
-        val fixme = tags["fixme"] ?: tags["FIXME"]
-        return arrayOf(fixme.toString(),name.toString())
-    }
+    override fun getTitleArgs(tags: Map<String, String>): Array<String>
+        = arrayOf((tags["fixme"] ?: tags["FIXME"]).toString())
 
     override fun applyAnswerTo(answer: Boolean, tags: Tags, timestampEdited: Long) {
         if (!answer) {
@@ -38,4 +34,13 @@ class ShowFixme : OsmFilterQuestType<Boolean>() {
             tags.remove("FIXME")
         }
     }
+
+    override val hasQuestSettings = true
+
+    // actual ignoring of stuff happens when downloading
+    override fun getQuestSettingsDialog(context: Context): AlertDialog =
+        singleTypeElementSelectionDialog(context, prefs, PREF_FIXME_IGNORE, FIXME_IGNORE_DEFAULT, "Select fixme values to ignore")
 }
+
+private const val PREF_FIXME_IGNORE = "quest_fixme_ignore"
+private const val FIXME_IGNORE_DEFAULT = "yes|continue|continue?"

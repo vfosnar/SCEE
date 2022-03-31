@@ -30,7 +30,7 @@ class ExternalCheck(private val externalList: ExternalList) : OsmElementQuestTyp
 
     override fun getTitle(tags: Map<String, String>): Int = R.string.quest_external_title
 
-    override fun getTitleArgs(tags: Map<String, String>, featureName: Lazy<String?>): Array<String> =
+    override fun getTitleArgs(tags: Map<String, String>): Array<String> =
         arrayOf(tags.toString())
 
     override fun applyAnswerTo(answer: Boolean, tags: Tags, timestampEdited: Long) {

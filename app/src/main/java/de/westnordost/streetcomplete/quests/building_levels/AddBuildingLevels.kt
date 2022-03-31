@@ -13,7 +13,7 @@ class AddBuildingLevels(private val prefs: SharedPreferences) : OsmFilterQuestTy
 
     override val elementFilter = """
         ways, relations with
-         building ~ ${prefs.getString(PREF_BUILDING_LEVELS_SELECTION, BUILDINGS_WITH_LEVELS.joinToString("|"))}
+         building ~ ${prefs.getString(PREF_BUILDING_LEVELS_SELECTION, BUILDINGS_WITH_LEVELS)}
          and !building:levels
          and !man_made
          and location != underground
@@ -43,7 +43,7 @@ class AddBuildingLevels(private val prefs: SharedPreferences) : OsmFilterQuestTy
     override val hasQuestSettings = true
 
     override fun getQuestSettingsDialog(context: Context): AlertDialog =
-        singleTypeElementSelectionDialog(context, prefs, PREF_BUILDING_LEVELS_SELECTION, BUILDINGS_WITH_LEVELS.joinToString("|"), "set building types eligible for this quest, comma separated")
+        singleTypeElementSelectionDialog(context, prefs, PREF_BUILDING_LEVELS_SELECTION, BUILDINGS_WITH_LEVELS, "set building types eligible for this quest, comma separated")
 }
 
 private val BUILDINGS_WITH_LEVELS = arrayOf(
@@ -52,6 +52,6 @@ private val BUILDINGS_WITH_LEVELS = arrayOf(
     "hospital", "kindergarten", "transportation", "train_station", "hotel", "retail",
     "commercial", "office", "manufacture", "parking", "farm", "farm_auxiliary",
     "cabin"
-)
+).joinToString("|")
 
 private const val PREF_BUILDING_LEVELS_SELECTION = "quest_building_levels_selection"

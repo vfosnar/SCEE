@@ -9,7 +9,7 @@ import de.westnordost.streetcomplete.Prefs.ResurveyIntervals.MORE_OFTEN
 import de.westnordost.streetcomplete.Prefs.ResurveyIntervals.valueOf
 import de.westnordost.streetcomplete.data.elementfilter.filters.CompareTagAge
 import de.westnordost.streetcomplete.data.elementfilter.filters.RelativeDate
-import de.westnordost.streetcomplete.data.meta.toCheckDate
+import de.westnordost.streetcomplete.osm.toCheckDate
 
 /** This class is just to access the user's preference about which multiplier for the resurvey
  *  intervals to use */

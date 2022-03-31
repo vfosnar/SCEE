@@ -35,6 +35,9 @@ class AddRoadSmoothness : OsmFilterQuestType<SmoothnessAnswer>() {
         if (tags["area"] == "yes") R.string.quest_smoothness_square_title
         else                       R.string.quest_smoothness_road_title
 
+    override fun getTitleArgs(tags: Map<String, String>): Array<String>
+        = arrayOf(tags["surface"].toString())
+
     override fun createForm() = AddSmoothnessForm()
 
     override fun applyAnswerTo(answer: SmoothnessAnswer, tags: Tags, timestampEdited: Long) {

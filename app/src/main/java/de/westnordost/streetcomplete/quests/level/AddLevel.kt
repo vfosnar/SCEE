@@ -12,8 +12,8 @@ import de.westnordost.streetcomplete.data.osm.mapdata.MapDataWithGeometry
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmElementQuestType
 import de.westnordost.streetcomplete.data.osm.osmquests.Tags
 import de.westnordost.streetcomplete.data.user.achievements.QuestTypeAchievement.CITIZEN
-import de.westnordost.streetcomplete.ktx.containsAny
 import de.westnordost.streetcomplete.osm.isShopExpressionFragment
+import de.westnordost.streetcomplete.util.ktx.containsAny
 import de.westnordost.streetcomplete.util.math.contains
 import de.westnordost.streetcomplete.util.math.isInMultipolygon
 import java.util.concurrent.FutureTask
@@ -79,22 +79,7 @@ class AddLevel(
     override val isDeleteElementEnabled = true
     override val questTypeAchievements = listOf(CITIZEN)
 
-    override fun getTitle(tags: Map<String, String>) = when {
-        !hasProperName(tags)  -> R.string.quest_place_level_no_name_title
-        !hasFeatureName(tags) -> R.string.quest_level_title2
-        else                  -> R.string.quest_place_level_name_type_title
-    }
-
-    override fun getTitleArgs(tags: Map<String, String>, featureName: Lazy<String?>): Array<String> {
-        val name = tags["name"] ?: tags["brand"]
-        val hasProperName = name != null
-        val hasFeatureName = hasFeatureName(tags)
-        return when {
-            !hasProperName  -> arrayOf(featureName.value.toString())
-            !hasFeatureName -> arrayOf(name!!)
-            else            -> arrayOf(name!!, featureName.value.toString())
-        }
-    }
+    override fun getTitle(tags: Map<String, String>) = R.string.quest_level_title2
 
     private fun hasName(tags: Map<String, String>) = hasProperName(tags) || hasFeatureName(tags)
 

@@ -3,9 +3,9 @@ package de.westnordost.streetcomplete.quests.healthcare_speciality
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
+import androidx.core.widget.doAfterTextChanged
 import de.westnordost.streetcomplete.R
 import de.westnordost.streetcomplete.quests.AbstractQuestFormAnswerFragment
-import de.westnordost.streetcomplete.util.TextChangedWatcher
 import de.westnordost.streetcomplete.databinding.QuestCuisineSuggestionBinding
 
 class AddHealthcareSpecialityForm : AbstractQuestFormAnswerFragment<String>() {
@@ -15,7 +15,7 @@ class AddHealthcareSpecialityForm : AbstractQuestFormAnswerFragment<String>() {
 
     val specialities = mutableListOf<String>()
 
-    val speciality get() = binding.cuisineInput?.text?.toString().orEmpty().trim()
+    val speciality get() = binding.cuisineInput.text?.toString().orEmpty().trim()
 
     val suggestions = listOf(
         "allergology",
@@ -75,7 +75,7 @@ class AddHealthcareSpecialityForm : AbstractQuestFormAnswerFragment<String>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        suggestions?.let {
+        suggestions.let {
             binding.cuisineInput.setAdapter(
                 ArrayAdapter(
                     requireContext(),
@@ -84,7 +84,7 @@ class AddHealthcareSpecialityForm : AbstractQuestFormAnswerFragment<String>() {
             )
         }
 
-        binding.cuisineInput.addTextChangedListener(TextChangedWatcher { checkIsFormComplete() })
+        binding.cuisineInput.doAfterTextChanged { checkIsFormComplete() }
 
         binding.addCuisineButton.setOnClickListener {
             if (isFormComplete()) {
