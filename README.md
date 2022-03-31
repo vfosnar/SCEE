@@ -44,6 +44,7 @@ New quests may require knowledge about the changed/added OSM tags.
   * reduced auto-completion threshold (suggestions will appear after the first letter)
   * increase padding for sidewalk/cycleway quests: assume parking lanes if none are tagged
   * allow disabling notes quest (by mnalis)
+  * show surface tag for smoothness quests
 * allow creating text notes in a gpx file
   * notes.gpx file must be copied manually from `Android/data/de.westnordost.streetcomplete.h3/files`
   * button for normal OSM notes is hidden if keyboard is shown. sorry.
@@ -57,7 +58,7 @@ New quests may require knowledge about the changed/added OSM tags.
   * level filter: only show quests on the chosen level (this may take a few seconds to initialize)
   * temporarily reverse quest order: to show different quests without hiding or changing quest visibility/order
   * quest profile/preset switcher
-  * switch between aerial and map backgrounds
+  * ~switch between aerial and map backgrounds~ (disabled until aerial background is working again)
 * show a hide button when answering a quest
   * click temporarily hides quest until app restart (cannot be undone other than restarting)
   * long click is a shortcut for can't say -> no, just hide
@@ -68,6 +69,7 @@ New quests may require knowledge about the changed/added OSM tags.
   * more contrast for better visibility during the day
   * more natural colors for water, grass and forest areas
   * no fancy style for railways and highways
+  * more contrast for hint texts
 * (more) transparent buildings: to display indoor paths
 * don't let manual download override cache: OSM data will only be re-downloaded if older than 12 hours
 * increase map tile cache time from 12 hours to 8 days: map tiles will now not be re-downloaded for 8 days, even if manual download was initiated
@@ -75,6 +77,6 @@ New quests may require knowledge about the changed/added OSM tags.
 * improve location services: higher GPS frequency, use last known location as initial location
 * add [requery sqlite library](https://github.com/requery/sqlite-android), which adds 3 MB, but is ca 20% faster than default SQLite
 * slightly improve performance when clicking a quest
-* add "show tags" other answer
+* add "show/edit tags" other answer
 * allow hiding notes by specific users (select by name or id)
-* allow forcing resurvey of specific tags
+* allow forcing resurvey of specific tags (only works if there is possibility of resurvey)
