@@ -242,6 +242,7 @@ fun questTypeRegistry(
     AddReligionToWaysideShrine(),
 
     AddPowerPolesMaterial(),
+    AddBenchMaterial(),
 
     AddIsBuildingUnderground(), // should be before AddHousenumber to avoid asking for underground buildings
 
