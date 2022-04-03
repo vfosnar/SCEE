@@ -8,6 +8,7 @@ import de.westnordost.streetcomplete.data.osm.osmquests.OsmFilterQuestType
 import de.westnordost.streetcomplete.data.osm.osmquests.Tags
 import de.westnordost.streetcomplete.data.user.achievements.QuestTypeAchievement.OUTDOORS
 import de.westnordost.streetcomplete.data.user.achievements.QuestTypeAchievement.PEDESTRIAN
+
 class AddBenchMaterial : OsmFilterQuestType<BenchMaterial>() {
 
     override val elementFilter = """
@@ -20,7 +21,6 @@ class AddBenchMaterial : OsmFilterQuestType<BenchMaterial>() {
     override val wikiLink = "Tag:amenity=bench"
     override val icon = R.drawable.ic_quest_bench_material
     override val questTypeAchievements = listOf(PEDESTRIAN, OUTDOORS)
-
 
     override fun getTitle(tags: Map<String, String>) = R.string.quest_benchMaterial_title
 
