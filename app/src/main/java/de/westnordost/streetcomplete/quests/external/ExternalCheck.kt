@@ -9,8 +9,8 @@ import de.westnordost.streetcomplete.data.osm.osmquests.Tags
 
 class ExternalCheck(private val externalList: ExternalList) : OsmElementQuestType<Boolean> {
 
-    override val changesetComment = "this should never be uploaded"
-    override val wikiLink = "nope"
+    override val changesetComment = "Edit user-defined list of elements"
+    override val wikiLink = "Tags"
     override val icon = R.drawable.ic_quest_external
     override val defaultDisabledMessage = R.string.quest_external_message
 
