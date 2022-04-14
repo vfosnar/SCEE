@@ -66,13 +66,13 @@ class FineLocationManager(context: Context, locationUpdateCallback: (Location) -
     fun getLastLocation() : Location? {
         if (deviceHasGPS) {
             locationManager.getLastKnownLocation(GPS_PROVIDER)?.let {
-                if (it.elapsedRealtimeNanos / 1000000 > SystemClock.elapsedRealtime() - 30000)
+                if (it.elapsedRealtimeNanos / 1000000 > SystemClock.elapsedRealtime() - TWO_MINUTES)
                     return it
             }
         }
         if (deviceHasNetworkLocationProvider) {
             locationManager.getLastKnownLocation(NETWORK_PROVIDER)?.let {
-                if (it.elapsedRealtimeNanos / 1000000 > SystemClock.elapsedRealtime() - 30000)
+                if (it.elapsedRealtimeNanos / 1000000 > SystemClock.elapsedRealtime() - TWO_MINUTES)
                     return it
             }
         }
@@ -142,6 +142,7 @@ private fun Location.isBetterThan(previous: Location?): Boolean {
         isMoreAccurate -> true
         isNewer && !isLessAccurate -> true
         isNewer && !isMuchLessAccurate && isFromSameProvider -> true
+        isNewer && !isMuchLessAccurate && this.provider == GPS_PROVIDER -> true
         else -> false
     }
 }
