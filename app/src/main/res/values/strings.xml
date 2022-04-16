@@ -1264,6 +1264,19 @@ If there are no signs along the whole street which apply for the highlighted sec
     <string name="quest_seating_indoor_and_outdoor">Both indoor and outdoor seating</string>
     <string name="default_disabled_msg_summer_outdoor_seating">"This quest type is disabled by default because it may require checking during specific part of the year in order to verify outdoor seating."</string>
 
+    <string name="quest_seating_parklet">Next to the curb, or where parking used to b</string>
+    <string name="quest_seating_pedestrian_zone">In a pedestrian zone</string>
+    <string name="quest_seating_street">In a street area</string>
+    <string name="quest_seating_sidewalk">On the sidewalk </string>
+    <string name="quest_seating_patio">In a patio</string>
+    <string name="quest_seating_terrace">On a terrace </string>
+    <string name="quest_seating_balcony">On a balcony</string>
+    <string name="quest_seating_veranda">On a veranda/porch </string>
+    <string name="quest_seating_roof">On a roof</string>
+    <string name="quest_seating_garden">In a garden area</string>
+    <string name="quest_seating_beach">At a beach</string>
+    <string name="quest_outdoor_seating_name_title">What kind of outdoor seating does this place have?</string>
+
     <string name="quest_segregated_title">How are the footway and cycleway laid out here?</string>
     <string name="quest_segregated_separated">Segregated from one another</string>
     <string name="quest_segregated_mixed">Cyclists and pedestrians share the same space</string>
