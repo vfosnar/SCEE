@@ -14,6 +14,8 @@ New quests may require knowledge about the changed/added OSM tags.
   * service building type: substation, well, pumping station, ...
   * ask for cuisine of restaurants and fast food, including some auto-complete function for very common values
   * ask for healthcare specialty of amenity = doctors
+  * ask for material of benches and picnic tables (by @mnalis)
+  * ask for outdoor seating type
   * "external quests" (experimental)
     * allows defining own note-like quests
     * nothing can be done, except for showing a note and all tags of the involved element
@@ -74,7 +76,10 @@ New quests may require knowledge about the changed/added OSM tags.
 * don't let manual download override cache: OSM data will only be re-downloaded if older than 12 hours
 * increase map tile cache time from 12 hours to 8 days: map tiles will now not be re-downloaded for 8 days, even if manual download was initiated
 * pause upload when manually scanning for quests
-* improve location services: higher GPS frequency, use last known location as initial location
+* improve location services
+  * higher GPS frequency
+  * use last known location as initial location if less than 2 minutes old
+  * always prefer GPS location over older network location
 * add [requery sqlite library](https://github.com/requery/sqlite-android), which adds 3 MB, but is ca 20% faster than default SQLite
 * slightly improve performance when clicking a quest
 * add "show/edit tags" other answer
