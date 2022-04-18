@@ -1,8 +1,12 @@
 package de.westnordost.streetcomplete.quests.contact
 
 import de.westnordost.streetcomplete.R
+import de.westnordost.streetcomplete.data.osm.mapdata.Element
+import de.westnordost.streetcomplete.data.osm.mapdata.MapDataWithGeometry
+import de.westnordost.streetcomplete.data.osm.mapdata.filter
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmFilterQuestType
 import de.westnordost.streetcomplete.data.osm.osmquests.Tags
+import de.westnordost.streetcomplete.osm.IS_SHOP_OR_DISUSED_SHOP_EXPRESSION
 
 class AddContactPhone : OsmFilterQuestType<String>() {
 
@@ -19,6 +23,9 @@ class AddContactPhone : OsmFilterQuestType<String>() {
     override val icon = R.drawable.ic_quest_phone
 
     override fun getTitle(tags: Map<String, String>) = R.string.quest_contact_phone
+
+    override fun getHighlightedElements(element: Element, getMapData: () -> MapDataWithGeometry) =
+        getMapData().filter(IS_SHOP_OR_DISUSED_SHOP_EXPRESSION)
 
     override fun createForm() = AddContactPhoneForm()
 
