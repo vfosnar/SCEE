@@ -39,6 +39,7 @@ import de.westnordost.streetcomplete.quests.building_type.BuildingType.MOSQUE
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.OFFICE
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.PAGODA
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.PARKING
+import de.westnordost.streetcomplete.quests.building_type.BuildingType.PRESBYTERY
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.RETAIL
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.RIDING_HALL
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.ROOF
@@ -107,6 +108,7 @@ enum class BuildingType(val osmKey: String, val osmValue: String) {
     PAGODA          ("building", "pagoda"),
     SYNAGOGUE       ("building", "synagogue"),
     SHRINE          ("building", "shrine"),
+    PRESBYTERY      ("building", "presbytery"),
 
     CARPORT         ("building", "carport"),
     GARAGE          ("building", "garage"),
@@ -170,7 +172,7 @@ enum class BuildingTypeCategory(val type: BuildingType?, val subTypes: List<Buil
         COLLEGE, GOVERNMENT, STADIUM, FIRE_STATION, OFFICE, GRANDSTAND, SPORTS_HALL,
     )),
     RELIGIOUS(BuildingType.RELIGIOUS, listOf(
-        CHURCH, CATHEDRAL, CHAPEL, MOSQUE, TEMPLE, PAGODA, SYNAGOGUE, SHRINE
+        CHURCH, CATHEDRAL, CHAPEL, MOSQUE, TEMPLE, PAGODA, SYNAGOGUE, SHRINE, PRESBYTERY
     )),
     FOR_CARS(null, listOf(
         GARAGE, GARAGES, CARPORT, PARKING

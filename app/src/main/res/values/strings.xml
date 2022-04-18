@@ -774,6 +774,7 @@ However, before uploading your changes, the app checks with a &lt;a href=\"https
     <string name="quest_buildingType_church">Church</string>
     <string name="quest_buildingType_chapel">Chapel</string>
     <string name="quest_buildingType_cathedral">Cathedral</string>
+    <string name="quest_buildingType_presbytery">Persbytery</string>
     <string name="quest_buildingType_mosque">Mosque</string>
     <string name="quest_buildingType_temple">Temple building</string>
     <string name="quest_buildingType_pagoda">Pagoda</string>

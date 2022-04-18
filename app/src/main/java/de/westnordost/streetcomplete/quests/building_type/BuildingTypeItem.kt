@@ -44,6 +44,7 @@ import de.westnordost.streetcomplete.quests.building_type.BuildingType.MOSQUE
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.OFFICE
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.PAGODA
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.PARKING
+import de.westnordost.streetcomplete.quests.building_type.BuildingType.PRESBYTERY
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.RELIGIOUS
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.RESIDENTIAL
 import de.westnordost.streetcomplete.quests.building_type.BuildingType.RETAIL
@@ -120,6 +121,7 @@ fun BuildingType.asItem(): Item<BuildingType?> = when (this) {
     PAGODA -> Item(this, R.drawable.ic_building_temple, R.string.quest_buildingType_pagoda)
     SYNAGOGUE -> Item(this, R.drawable.ic_religion_jewish, R.string.quest_buildingType_synagogue)
     SHRINE -> Item(this, R.drawable.ic_building_temple, R.string.quest_buildingType_shrine)
+    PRESBYTERY -> Item(this, R.drawable.ic_religion_christian, R.string.quest_buildingType_presbytery)
 
     CARPORT -> Item(this, R.drawable.ic_building_carport, R.string.quest_buildingType_carport, R.string.quest_buildingType_carport_description)
     GARAGE -> Item(this, R.drawable.ic_building_garage, R.string.quest_buildingType_garage)
