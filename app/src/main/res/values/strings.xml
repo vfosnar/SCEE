@@ -1267,7 +1267,7 @@ If there are no signs along the whole street which apply for the highlighted sec
     <string name="quest_seating_indoor_and_outdoor">Both indoor and outdoor seating</string>
     <string name="default_disabled_msg_summer_outdoor_seating">"This quest type is disabled by default because it may require checking during specific part of the year in order to verify outdoor seating."</string>
 
-    <string name="quest_seating_parklet">Next to the curb, or where parking used to b</string>
+    <string name="quest_seating_parklet">Next to the curb, or where parking used to be</string>
     <string name="quest_seating_pedestrian_zone">In a pedestrian zone</string>
     <string name="quest_seating_street">In a street area</string>
     <string name="quest_seating_sidewalk">On the sidewalk </string>
