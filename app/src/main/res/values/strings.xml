@@ -1514,6 +1514,9 @@ Alternatively, you can leave a note (with a photo)."</string>
 
     <string name="quest_toiletsFee_title">"Do you have to pay to use this restroom?"</string>
 
+    <string name="quest_tree_genus_title">What is the genus or species of this tree?</string>
+    <string name="quest_tree_error">"Not recognized. Try entering the genus, species or english name of the tree. Otherwise, consider leaving a note."</string>
+
     <string name="quest_tourism_information_title">What type of tourist information is this?</string>
     <string name="quest_tourism_information_office">Tourist information office</string>
     <string name="quest_tourism_information_board">Information board</string>
