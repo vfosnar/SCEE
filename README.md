@@ -16,6 +16,10 @@ New quests may require knowledge about the changed/added OSM tags.
   * ask for healthcare specialty of amenity = doctors
   * ask for material of benches and picnic tables (by @mnalis)
   * ask for outdoor seating type
+  * ask for species / genus of trees
+    * uses suggestions from existing tags
+    * provide your own suggestions by putting 'treess.txt' in `Android/data/de.westnordost.streetcomplete.h3/files`, with content `<Species> (<localName>)`
+    * Species will go into `species` tag, localName is used for display and search
   * "external quests" (experimental)
     * allows defining own note-like quests
     * nothing can be done, except for showing a note and all tags of the involved element

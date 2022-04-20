@@ -16,6 +16,7 @@ import de.westnordost.streetcomplete.util.math.enclosingBoundingBox
 import org.koin.android.ext.android.inject
 import java.io.IOException
 import androidx.core.widget.doAfterTextChanged
+import java.io.File
 
 class AddTreeGenusForm : AbstractQuestFormAnswerFragment<Tree>() {
 
@@ -89,6 +90,12 @@ class AddTreeGenusForm : AbstractQuestFormAnswerFragment<Tree>() {
         try {
             context?.assets?.open("trees.txt")?.bufferedReader()?.useLines { seq ->
                 treeSet.addAll(seq.mapNotNull { it.toTree(true) })
+            }
+        } catch (e: IOException) { } // file may not exist, so a exception is no surprise
+        // and try loading from file in external folder
+        try {
+            context?.getExternalFilesDir(null)?.let { dir ->
+                treeSet.addAll(File(dir, "trees.txt").readLines().mapNotNull { it.toTree(true) })
             }
         } catch (e: IOException) { } // file may not exist, so a exception is no surprise
 
