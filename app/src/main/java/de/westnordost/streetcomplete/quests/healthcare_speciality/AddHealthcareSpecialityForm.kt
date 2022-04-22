@@ -7,6 +7,7 @@ import androidx.core.widget.doAfterTextChanged
 import de.westnordost.streetcomplete.R
 import de.westnordost.streetcomplete.quests.AbstractQuestFormAnswerFragment
 import de.westnordost.streetcomplete.databinding.QuestCuisineSuggestionBinding
+import de.westnordost.streetcomplete.quests.cuisine.cuisineValues
 
 class AddHealthcareSpecialityForm : AbstractQuestFormAnswerFragment<String>() {
 
@@ -16,61 +17,6 @@ class AddHealthcareSpecialityForm : AbstractQuestFormAnswerFragment<String>() {
     val specialities = mutableListOf<String>()
 
     val speciality get() = binding.cuisineInput.text?.toString().orEmpty().trim()
-
-    val suggestions = listOf(
-        "allergology",
-        "anaesthetics",
-        "cardiology",
-        "cardiothoracic_surgery",
-        "child_psychiatry",
-        "community",
-        "dermatology",
-        "dermatovenereology",
-        "diagnostic_radiology",
-        "emergency",
-        "endocrinology",
-        "gastroenterology",
-        "general",
-        "geriatrics",
-        "gynaecology",
-        "haematology",
-        "hepatology",
-        "infectious_diseases",
-        "intensive",
-        "internal",
-        "maxillofacial_surgery",
-        "nephrology",
-        "neurology",
-        "neuropsychiatry",
-        "neurosurgery",
-        "nuclear",
-        "occupational",
-        "oncology",
-        "ophthalmology",
-        "orthodontics",
-        "orthopaedics",
-        "otolaryngology",
-        "paediatric_surgery",
-        "paediatrics",
-        "palliative",
-        "pathology",
-        "physiatry",
-        "plastic_surgery",
-        "podiatry",
-        "proctology",
-        "psychiatry",
-        "pulmonology",
-        "radiology",
-        "radiotherapy",
-        "rheumatology",
-        "stomatology",
-        "surgery",
-        "transplant",
-        "trauma",
-        "tropical",
-        "urology",
-        "vascular_surgery",
-    )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -104,4 +50,135 @@ class AddHealthcareSpecialityForm : AbstractQuestFormAnswerFragment<String>() {
     }
 
     override fun isFormComplete() = (speciality.isNotEmpty() || specialities.isNotEmpty()) && !speciality.contains(";")
+
+    companion object {
+        val suggestions = (healthcareSpecialityWiki.split("\n").mapNotNull {
+            if (it.isBlank()) null
+            else it.trim()
+        } + healthcareSpecialityValues.split("\n").mapNotNull {
+            if (it.isBlank()) null
+            else it.trim()
+        }).toSet().toTypedArray()
+    }
 }
+const val healthcareSpecialityWiki = """
+allergology
+anaesthetics
+cardiology
+cardiothoracic_surgery
+child_psychiatry
+community
+dermatology
+dermatovenereology
+diagnostic_radiology
+emergency
+endocrinology
+gastroenterology
+general
+geriatrics
+gynaecology
+haematology
+hepatology
+infectious_diseases
+intensive
+internal
+maxillofacial_surgery
+nephrology
+neurology
+neuropsychiatry
+neurosurgery
+nuclear
+occupational
+oncology
+ophthalmology
+orthodontics
+orthopaedics
+otolaryngology
+paediatric_surgery
+paediatrics
+palliative
+pathology
+physiatry
+plastic_surgery
+podiatry
+proctology
+psychiatry
+pulmonology
+radiology
+radiotherapy
+rheumatology
+stomatology
+surgery
+transplant
+trauma
+tropical
+urology
+vascular_surgery
+"""
+
+const val healthcareSpecialityValues = """
+general
+chiropractic
+ophthalmology
+paediatrics
+biology
+gynaecology
+psychiatry
+dentist
+orthopaedics
+internal
+dermatology
+orthodontics
+vaccination
+osteopathy
+otolaryngology
+radiology
+surgery
+cardiology
+urology
+physiotherapy
+dentistry
+emergency
+dialysis
+covid19
+community
+neurology
+acupuncture
+plastic_surgery
+traditional_chinese_medicine
+weight_loss
+intensive
+naturopathy
+oncology
+physiatry
+homeopathy
+clinic
+blood_check
+occupational
+gastroenterology
+child_psychiatry
+dental_oral_maxillo_facial_surgery
+podiatry
+maternity
+pulmonology
+optometry
+fertility
+endocrinology
+massage_therapy
+dermatovenereology
+stomatology
+psychotherapist
+family_medicine
+diagnostic_radiology
+general;emergency
+kinesitherapy
+pathology
+trauma
+nephrology
+behavior
+psychology
+geriatrics
+ayurveda
+anaesthetics
+otorhinolaryngology
+"""
