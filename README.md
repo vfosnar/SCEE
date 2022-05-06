@@ -66,7 +66,7 @@ New quests may require knowledge about the changed/added OSM tags.
   * quest profile/preset switcher
   * ~switch between aerial and map backgrounds~ (disabled until aerial background is working again)
 * show a hide button when answering a quest
-  * click temporarily hides quest until app restart (cannot be undone other than restarting)
+  * click temporarily hides quest until quests are reloaded from database (e.g. by answering other quest for same element, or by opening edit history)
   * long click is a shortcut for can't say -> no, just hide
 * don't update statistics on upload: they are not counted anyway when uploading with this version (due to different name)
 * allow choosing satellite/aerial images as background (will be enabled in StreetComplete once proper implementation is finished)
