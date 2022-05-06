@@ -21,16 +21,23 @@ class AddContactWebsiteForm : AbstractQuestFormAnswerFragment<String>() {
         super.onViewCreated(view, savedInstanceState)
         binding.nameInput.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_URI
 
-        binding.nameInput.setText(PREFILL)
+        binding.nameInput.setText(prefill)
         binding.nameInput.doAfterTextChanged { checkIsFormComplete() }
     }
 
     override fun onClickOk() {
+        prefill = if (contact.contains("//"))
+            contact.substringBefore("//") + "//"
+        else
+            ""
         applyAnswer(contact)
     }
 
 
-    override fun isFormComplete() = contact.isNotEmpty() && contact != PREFILL
-}
+    override fun isFormComplete() = contact.isNotEmpty() && contact != prefill
 
-private const val PREFILL = "http://"
+    companion object {
+        private var prefill = "http://"
+    }
+
+}
