@@ -89,3 +89,4 @@ New quests may require knowledge about the changed/added OSM tags.
 * add "show/edit tags" other answer
 * allow hiding notes by specific users (select by name or id)
 * allow forcing resurvey of specific tags (only works if there is possibility of resurvey)
+* show other quests for the same element (even hidden and disabled ones)
