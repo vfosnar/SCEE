@@ -173,6 +173,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="8dp"
+        android:visibility="gone"
         android:scaleX="0.5"
         android:scaleY="0.5"
         android:alpha="0"/>
