@@ -72,6 +72,7 @@ abstract class AbstractQuestAnswerFragment<T> :
     override val bottomSheetTitle get() = binding.speechBubbleTitleContainer
     override val bottomSheetContent get() = binding.speechbubbleContentContainer
     override val floatingBottomView get() = binding.okButton
+    override val floatingBottomView2 get() = binding.hideButton
     override val backButton get() = binding.closeButton
 
     protected val scrollView: NestedScrollView get() = binding.scrollView
