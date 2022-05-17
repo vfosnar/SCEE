@@ -35,8 +35,8 @@ android {
         applicationId = "de.westnordost.streetcomplete.h3"
         minSdk = 21
         targetSdk = 31
-        versionCode = 4301
-        versionName = "43.0"
+        versionCode = 4302
+        versionName = "43.1"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -173,6 +173,7 @@ dependencies {
     implementation("de.westnordost:osmapi-map:2.0")
     implementation("de.westnordost:osmapi-changesets:2.0")
     implementation("de.westnordost:osmapi-notes:2.0")
+    implementation("de.westnordost:osmapi-traces:2.0")
     implementation("de.westnordost:osmapi-user:2.0")
     implementation("com.squareup.okhttp3:okhttp:3.14.9")
     implementation("se.akerfeldt:okhttp-signpost:1.1.0")
