@@ -1577,5 +1577,15 @@ Alternatively, you can leave a note (with a photo)."</string>
     <string name="quest_wheelchairAccess_description_toilets">"A wheelchair sign like this might be visible if the restroom is accessible.
 Partially means that a wheelchair can enter and use the restroom, but no handrail or adapted hand basin is present."</string>
 
+    <string name="pref_export">Export settings</string>
+    <string name="pref_import">Import settings</string>
+    <string name="import_export_profiles">Presets</string>
+    <string name="import_export_settings">App settings</string>
+    <string name="import_export_hidden_quests">Hidden quests</string>
+    <string name="import_error">Import error</string>
+    <string name="import_warning">This will overwrite your settings or quest presets (depending on choice below)</string>
+    <string name="restart_required">Restart required</string>
+    <string name="restart_required_message">Some change requires restarting the app. This does not work automatically on some Android versions, so you may need to start the app again manually</string>
+
 
 </resources>

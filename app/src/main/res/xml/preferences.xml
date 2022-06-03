@@ -128,6 +128,14 @@
             android:positiveButtonText="@android:string/ok"
             android:negativeButtonText="@android:string/cancel" />
 
+        <Preference
+            android:key="export"
+            android:title="@string/pref_export" />
+
+        <Preference
+            android:key="import"
+            android:title="@string/pref_import" />
+
     </PreferenceCategory>
 
     <PreferenceCategory
