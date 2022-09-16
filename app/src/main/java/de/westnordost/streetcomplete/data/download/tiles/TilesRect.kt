@@ -36,6 +36,41 @@ fun Collection<TilePos>.minTileRect(): TilesRect? {
     return TilesRect(left, top, right, bottom)
 }
 
+/** Returns up to two TileRects that together enclose all the tiles.
+ *  These TilesRects should contain fewer tiles not in the collection than [minTileRect].
+ *  This method is specifically aimed at the SpatialCache to avoid loading the whole bbox after
+ *  scrolling diagonally, and may not produce good results in other situations.
+ *  If the collection can't be (simply) divided into two smaller TileRects, [minTileRect] is
+ *  returned.*/
+fun Collection<TilePos>.upToTwoMinTileRects(): List<TilesRect>? {
+    val minTileRect = minTileRect() ?: return null
+    if (minTileRect.size == size)
+        return listOf(minTileRect)
+
+    val grouped = groupBy { it.y } // sort tiles in lines
+    val lines = grouped.keys.sorted()
+    if (lines != (lines.min()..lines.max()).toList())
+        return listOf(minTileRect) // can't deal with missing lines
+
+    val minXTop = grouped[lines.first()]!!.minOf { it.x }
+    val maxXTop = grouped[lines.first()]!!.maxOf { it.x }
+    val minXBottom = grouped[lines.last()]!!.minOf { it.x }
+    val maxXBottom = grouped[lines.last()]!!.maxOf { it.x }
+    val changeLine = lines.firstOrNull { line ->
+        grouped[line]!!.minOf { it.x } != minXTop || grouped[line]!!.maxOf { it.x } != maxXTop
+    } ?: return listOf(minTileRect)
+    if ((changeLine..lines.last()).any { line ->
+            grouped[line]!!.minOf { it.x } != minXBottom || grouped[line]!!.maxOf { it.x } != maxXBottom
+        })
+        // can't simply divide into two smaller TileRects this way
+        return listOf(minTileRect)
+
+    return listOf(
+        TilesRect(minXTop, lines.first(), maxXTop, changeLine-1),
+        TilesRect(minXBottom, changeLine, maxXBottom, lines.last())
+    )
+}
+
 /** Returns the tile that encloses the position at the given zoom level */
 fun LatLon.enclosingTilePos(zoom: Int): TilePos {
     return TilePos(

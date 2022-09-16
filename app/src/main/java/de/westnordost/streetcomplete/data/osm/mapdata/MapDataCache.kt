@@ -1,7 +1,7 @@
 package de.westnordost.streetcomplete.data.osm.mapdata
 
 import de.westnordost.streetcomplete.data.download.tiles.enclosingTilesRect
-import de.westnordost.streetcomplete.data.download.tiles.minTileRect
+import de.westnordost.streetcomplete.data.download.tiles.upToTwoMinTileRects
 import de.westnordost.streetcomplete.data.osm.geometry.ElementGeometry
 import de.westnordost.streetcomplete.data.osm.geometry.ElementGeometryEntry
 import de.westnordost.streetcomplete.data.osm.geometry.ElementPointGeometry
@@ -274,22 +274,29 @@ class MapDataCache(
         result.boundingBox = bbox
         val nodes: Collection<Node>
         if (tilesToFetch.isNotEmpty()) {
-            // fetch needed data
-            val fetchBBox = tilesToFetch.minTileRect()!!.asBoundingBox(tileZoom)
-            val (elements, geometries) = fetchMapData(fetchBBox)
-
             // get nodes from spatial cache
             // this may not contain all nodes, but tiles that were cached initially might
             // get dropped when the caches are updated
             // duplicate fetch might be unnecessary in many cases, but it's very fast anyway
             nodes = HashSet<Node>().apply { addAll(spatialCache.get(bbox)) }
 
-            update(updatedElements = elements, updatedGeometries = geometries, bbox = fetchBBox)
+            // fetch needed data and put it to cache
+            val fetchBBoxes = tilesToFetch.upToTwoMinTileRects()!!.map { it.asBoundingBox(tileZoom) }
+            if (fetchBBoxes.size == 2) {
+                val (elements1, geometries1) = fetchMapData(fetchBBoxes.first())
+                val (elements2, geometries2) = fetchMapData(fetchBBoxes.last())
+                // could maybe do a single update if SpatialCache.replaceAllInTiles would be used in update
+                update(updatedElements = elements1, updatedGeometries = geometries1, bbox = fetchBBoxes.first())
+                update(updatedElements = elements2, updatedGeometries = geometries2, bbox = fetchBBoxes.last())
+            } else {
+                val (elements, geometries) = fetchMapData(fetchBBoxes.single())
+                update(updatedElements = elements, updatedGeometries = geometries, bbox = fetchBBoxes.single())
 
-            // return data if we need exactly what was just fetched
-            if (fetchBBox == bbox) {
-                result.putAll(elements, geometries + elements.filterIsInstance<Node>().map { it.toElementGeometryEntry() })
-                return result
+                // return data if what we need is exactly what was just fetched
+                if (fetchBBoxes.single() == bbox) {
+                    result.putAll(elements, geometries + elements.filterIsInstance<Node>().map { it.toElementGeometryEntry() })
+                    return result
+                }
             }
 
             // get nodes again, this contains the newly added nodes, but maybe not the old ones if cache was trimmed
