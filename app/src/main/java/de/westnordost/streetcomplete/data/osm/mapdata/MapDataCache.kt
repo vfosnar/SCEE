@@ -35,6 +35,12 @@ class MapDataCache(
     private val wayIdsByNodeIdCache = HashMap<Long, MutableList<Long>>(initialCapacity / 2)
     private val relationIdsByElementKeyCache = HashMap<ElementKey, MutableList<Long>>(initialCapacity / 10)
 
+    var noTrim = false
+        set(value) {
+            field = value
+            spatialCache.noTrim = value
+        }
+
     /**
      * Removes elements and geometries with keys in [deletedKeys] from cache.
      * Puts the [updatedElements] and [updatedGeometries] into cache. Nodes are handled by
@@ -336,6 +342,7 @@ class MapDataCache(
      * not contained in the remaining tiles.
      */
     fun trim(tiles: Int) = synchronized(this) {
+        if (noTrim) return
         spatialCache.trim(tiles)
         trimNonSpatialCaches()
     }

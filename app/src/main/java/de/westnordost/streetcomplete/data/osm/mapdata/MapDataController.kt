@@ -7,6 +7,10 @@ import de.westnordost.streetcomplete.data.osm.geometry.ElementGeometryCreator
 import de.westnordost.streetcomplete.data.osm.geometry.ElementGeometryDao
 import de.westnordost.streetcomplete.data.osm.geometry.ElementGeometryEntry
 import de.westnordost.streetcomplete.util.ktx.format
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import java.lang.System.currentTimeMillis
 import java.util.concurrent.CopyOnWriteArrayList
 
@@ -37,6 +41,8 @@ class MapDataController internal constructor(
         fun onCleared()
     }
     private val listeners: MutableList<Listener> = CopyOnWriteArrayList()
+
+    private val scope = CoroutineScope(SupervisorJob())
 
     private val cache = MapDataCache(
         SPATIAL_CACHE_TILE_ZOOM,
@@ -75,16 +81,20 @@ class MapDataController internal constructor(
 
             cache.update(oldElementKeys, mapData, geometryEntries, bbox) // use bbox, and not of the padded mapData.boundingBox
 
-            elementDB.deleteAll(oldElementKeys)
-            geometryDB.deleteAll(oldElementKeys)
-            geometryDB.putAll(geometryEntries)
-            elementDB.putAll(mapData)
-        }
+            cache.noTrim = true
+            scope.launch(Dispatchers.IO) {
+                elementDB.deleteAll(oldElementKeys)
+                geometryDB.deleteAll(oldElementKeys)
+                geometryDB.putAll(geometryEntries)
+                elementDB.putAll(mapData)
+                cache.noTrim = false
 
-        Log.i(TAG,
-            "Persisted ${geometryEntries.size} and deleted ${oldElementKeys.size} elements and geometries" +
-            " in ${((currentTimeMillis() - time) / 1000.0).format(1)}s"
-        )
+                Log.i(TAG,
+                    "Persisted ${geometryEntries.size} and deleted ${oldElementKeys.size} elements and geometries" +
+                        " in ${((currentTimeMillis() - time) / 1000.0).format(1)}s"
+                )
+            }
+        }
 
         val mapDataWithGeometry = MutableMapDataWithGeometry(mapData, geometryEntries)
         mapDataWithGeometry.boundingBox = mapData.boundingBox

@@ -30,6 +30,8 @@ class SpatialCache<K, T>(
     private val byKey = initialCapacity?.let { HashMap<K, T>(it) } ?: HashMap<K, T>()
     val size get() = byTile.size
 
+    var noTrim = false
+
     /** @return a new list of all keys in the cache */
     fun getKeys(): List<K> = synchronized(this) { byKey.keys.toList() }
 
@@ -140,7 +142,7 @@ class SpatialCache<K, T>(
      *  Empty tiles are kept, as the barely use memory. This avoids empty tiles pushing other
      *  tiles out of the cache and thus may avoid database fetches. */
     fun trim(tiles: Int = maxTiles) = synchronized(this) {
-        if (byTile.count { it.value.isNotEmpty() } <= tiles) return
+        if (noTrim || byTile.count { it.value.isNotEmpty() } <= tiles) return
 
         while (byTile.count { it.value.isNotEmpty() } > tiles) {
             removeTile(byTile.entries.firstOrNull { it.value.isNotEmpty() }?.key ?: byTile.keys.first())
