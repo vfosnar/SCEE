@@ -119,9 +119,9 @@ class SpatialCache<K, T>(
         val requiredTiles = bbox.asListOfEnclosingTilePos()
 
         val tilesToFetch = requiredTiles.filterNot { byTile.containsKey(it) }
-        if (tilesToFetch.isNotEmpty()) {
-            val newItems = fetch(tilesToFetch.minTileRect()!!.asBoundingBox(tileZoom))
-            replaceAllInTiles(newItems, tilesToFetch)
+        tilesToFetch.upToTwoMinTileRects()?.forEach {
+            val newItems = fetch(it.asBoundingBox(tileZoom))
+            replaceAllInTiles(newItems, it.asTilePosSequence().toList())
         }
 
         val items = requiredTiles.flatMap { tile ->
