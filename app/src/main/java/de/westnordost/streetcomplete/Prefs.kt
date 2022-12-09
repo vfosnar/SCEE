@@ -63,6 +63,10 @@ object Prefs {
     enum class Theme(val appCompatNightMode: Int) {
         LIGHT(AppCompatDelegate.MODE_NIGHT_NO),
         DARK(AppCompatDelegate.MODE_NIGHT_YES),
+        DARK_REV1(AppCompatDelegate.MODE_NIGHT_YES),
+        DARK_REV2(AppCompatDelegate.MODE_NIGHT_YES),
+        DARK_REV3(AppCompatDelegate.MODE_NIGHT_YES),
+        DARK_HELIUM(AppCompatDelegate.MODE_NIGHT_YES),
         AUTO(AppCompatDelegate.MODE_NIGHT_AUTO),
         SYSTEM(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
     }

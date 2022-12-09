@@ -1,8 +1,10 @@
 package de.westnordost.streetcomplete.screens.main.map.components
 
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.content.res.Resources
 import com.mapzen.tangram.SceneUpdate
+import de.westnordost.streetcomplete.Prefs
 import de.westnordost.streetcomplete.screens.main.map.VectorTileProvider
 import de.westnordost.streetcomplete.screens.main.map.tangram.KtMapController
 import de.westnordost.streetcomplete.util.ktx.isApril1st
@@ -15,7 +17,8 @@ import java.util.Locale
 class SceneMapComponent(
     private val resources: Resources,
     private val ctrl: KtMapController,
-    private val vectorTileProvider: VectorTileProvider
+    private val vectorTileProvider: VectorTileProvider,
+    private val prefs: SharedPreferences
 ) {
     private var sceneUpdates: MutableSet<List<Pair<String, String>>> = mutableSetOf()
 
@@ -77,10 +80,11 @@ class SceneMapComponent(
     private fun getSceneFilePath(): String {
         val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         val isNightMode = currentNightMode == Configuration.UI_MODE_NIGHT_YES
-        val april1 = if (isApril1st()) "wonky-" else ""
-        val scene = april1 + when {
+        val theme = Prefs.Theme.valueOf(prefs.getString(Prefs.THEME_SELECT, "AUTO")!!)
+        val scene = when {
             isAerialView -> "scene-satellite.yaml"
-            isNightMode -> "scene-dark.yaml"
+            isNightMode && theme == Prefs.Theme.AUTO -> "scene-dark.yaml"
+            isNightMode -> "scene-${theme.toString().lowercase()}.yaml"
             else -> "scene-light.yaml"
         }
         return "${vectorTileProvider.sceneFilePath}/$scene"
