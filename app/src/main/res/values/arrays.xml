@@ -31,6 +31,7 @@
         <item>dark_rev1</item>
         <item>dark_rev2</item>
         <item>dark_rev3</item>
+        <item>dark_rev4</item>
         <item>dark_helium</item>
     </string-array>
 
@@ -41,6 +42,7 @@
         <item>DARK_REV1</item>
         <item>DARK_REV2</item>
         <item>DARK_REV3</item>
+        <item>DARK_REV4</item>
         <item>DARK_HELIUM</item>
     </string-array>
 
