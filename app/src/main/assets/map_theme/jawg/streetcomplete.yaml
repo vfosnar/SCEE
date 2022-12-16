@@ -124,6 +124,7 @@ layers:
                 size: 66px
                 sprite: function() { return feature.kind }
                 sprite_default: quest
+                color: global.pin_dot_color
                 collide: false
                 offset: [-8px, -33px]
     streetcomplete_pins:
@@ -135,6 +136,7 @@ layers:
                     interactive: true
                     priority: function() { return 1.0 - feature.importance / 100000.0 }
                     order: function() { return 100000 + feature.importance }
+                    color: global.pin_dot_color
                     repeat_group: pin
                     size: 66px
                     sprite: function() { return feature.kind }
@@ -146,6 +148,7 @@ layers:
                 pin-dots:
                     priority: 1
                     order: 1
+                    color: global.pin_dot_color
                     size: 16px
                     collide: false
                     offset: [-1.5px, -12px]
@@ -156,6 +159,7 @@ layers:
                     priority: 1
                     order: 1
                     repeat_group: pin_dot
+                    color: global.pin_dot_color
                     size: 16px
                     collide: true
                     offset: [-1.5px, -12px]

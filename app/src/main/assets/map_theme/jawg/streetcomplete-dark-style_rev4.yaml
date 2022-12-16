@@ -29,5 +29,6 @@ global:
 
     oneway_arrow_color: '#ccf'
     barrier_color: '#bbb'
+    pin_dot_color: '#999'
 
     tunnel_color: [0., 0., 0., 0.2]
