@@ -68,6 +68,9 @@ class OsmQuestController internal constructor(
     private val allQuestTypes get() = questTypeRegistry.filterIsInstance<OsmElementQuestType<*>>()
         .sortedBy { it.chonkerIndex }
 
+    private var isReplacingForBbox = 0
+    private val dataToUpdate = mutableListOf<OsmQuest>() to mutableListOf<OsmQuestKey>()
+
     private val mapDataSourceListener = object : MapDataWithEditsSource.Listener {
 
         /** For the given elements, replace the current quests with the given ones. Called when
@@ -101,12 +104,19 @@ class OsmQuestController internal constructor(
                 updateQuests(quests, obsoleteQuestKeys)
             }
 
+            if (isReplacingForBbox > 0) {
+                synchronized(dataToUpdate) {
+                    dataToUpdate.first += quests
+                    dataToUpdate.second += obsoleteQuestKeys
+                }
+            }
             onUpdated(added = quests, deletedKeys = obsoleteQuestKeys)
         }
 
         /** Replace all quests of the given types in the given bounding box with the given quests.
          *  Called on download of a quest type for a bounding box. */
         override fun onReplacedForBBox(bbox: BoundingBox, mapDataWithGeometry: MapDataWithGeometry) {
+            ++isReplacingForBbox
             val quests = createQuestsForBBox(bbox, mapDataWithGeometry, allQuestTypes)
             val obsoleteQuestKeys: List<OsmQuestKey>
             synchronized(this) {
@@ -116,6 +126,14 @@ class OsmQuestController internal constructor(
             }
 
             onUpdated(added = quests, deletedKeys = obsoleteQuestKeys)
+            --isReplacingForBbox
+            if (dataToUpdate.first.isNotEmpty() || dataToUpdate.second.isNotEmpty()) {
+                synchronized(dataToUpdate) {
+                    onUpdated(added = dataToUpdate.first.toList(), deletedKeys = dataToUpdate.second.toList())
+                    dataToUpdate.first.clear()
+                    dataToUpdate.second.clear()
+                }
+            }
         }
 
         override fun onCleared() {
