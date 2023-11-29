@@ -23,7 +23,7 @@ class AddPisteRef : OsmFilterQuestType<PisteRefAnswer>() {
     override val defaultDisabledMessage = R.string.default_disabled_msg_ee
 
     override fun getApplicableElements(mapData: MapDataWithGeometry): Iterable<Element> {
-        return if (isWinter(mapData.nodes.first().position)) mapData.filter(filter).asIterable()
+        return if (isWinter(mapData.nodes.firstOrNull()?.position)) mapData.filter(filter).asIterable()
             else emptyList()
     }
 

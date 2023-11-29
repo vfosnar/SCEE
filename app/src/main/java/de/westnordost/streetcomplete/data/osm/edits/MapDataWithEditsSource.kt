@@ -495,6 +495,8 @@ class MapDataWithEditsSource internal constructor(
         }
         return sequence {
             val waysContainingNode = getWaysForNode(movedNode.id)
+            if (waysContainingNode.any { getWayComplete(it.id) == null })
+                return@sequence // maybe this helps?
             val relationsContainingNode = getRelationsForNode(movedNode.id)
             val relationsContainingWayContainingNode = waysContainingNode.flatMap { getRelationsForWay(it.id) }
 
