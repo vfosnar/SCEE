@@ -3,9 +3,9 @@ package de.westnordost.streetcomplete.screens.main.map
 import android.content.res.Resources
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
+import com.mapbox.geojson.FeatureCollection
 import org.maplibre.android.maps.MapLibreMap
 import de.westnordost.streetcomplete.data.download.tiles.TilesRect
-import de.westnordost.streetcomplete.data.download.tiles.enclosingTilesRect
 import de.westnordost.streetcomplete.data.osm.mapdata.ElementType
 import de.westnordost.streetcomplete.data.quest.OsmNoteQuestKey
 import de.westnordost.streetcomplete.data.quest.OsmQuestKey
@@ -17,20 +17,24 @@ import de.westnordost.streetcomplete.data.quest.VisibleQuestsSource
 import de.westnordost.streetcomplete.data.visiblequests.QuestTypeOrderSource
 import de.westnordost.streetcomplete.screens.main.map.components.Pin
 import de.westnordost.streetcomplete.screens.main.map.components.PinsMapComponent
-import de.westnordost.streetcomplete.screens.main.map.maplibre.screenAreaToBoundingBox
-import de.westnordost.streetcomplete.util.math.contains
+import de.westnordost.streetcomplete.screens.main.map.components.toFeature
+import de.westnordost.streetcomplete.screens.main.map.maplibre.toLatLon
+import de.westnordost.streetcomplete.util.ktx.nowAsEpochMilliseconds
+import de.westnordost.streetcomplete.util.logs.Log
+import de.westnordost.streetcomplete.util.math.enclosingBoundingBox
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelChildren
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
-import kotlin.coroutines.coroutineContext
+import org.maplibre.android.geometry.LatLngBounds
+import org.maplibre.android.style.sources.CustomGeometrySource
+import org.maplibre.android.style.sources.CustomGeometrySourceOptions
+import org.maplibre.android.style.sources.GeometryTileProvider
 
 /** Manages the layer of quest pins in the map view:
  *  Gets told by the QuestsMapFragment when a new area is in view and independently pulls the quests
@@ -54,7 +58,36 @@ class QuestPinsManager(
 
     private val viewLifecycleScope: CoroutineScope = CoroutineScope(SupervisorJob())
 
-    private var updateJob: Job? = null
+    private val pinsSource = CustomGeometrySource(
+        id = "pins-source",
+        options = CustomGeometrySourceOptions()
+            .withMaxZoom(TILES_ZOOM) // avoids requesting data at zoom higher than 16 (thanks to overscale)
+            .withMinZoom(14), // we will have to create all pins up to 3 times for z14, z15, and z16 (if the user zooms to those levels)
+        // alternatively min = max = 14 is possible, but then quests for many more tiles will be loaded unnecessarily (and always!)
+        provider = object : GeometryTileProvider {
+            override fun getFeaturesForBounds(bounds: LatLngBounds, zoomLevel: Int): FeatureCollection {
+                // looks like it's actually requesting whole tiles (didn't verify though)
+                val bbox = listOf(bounds.northEast.toLatLon(), bounds.southWest.toLatLon()).enclosingBoundingBox()
+                val t1 = nowAsEpochMilliseconds()
+                val quests = visibleQuestsSource.getAllVisible(bbox)
+                val t2 = nowAsEpochMilliseconds()
+                // todo: this is inefficient, often creates pins for the same quest again (e.g. on zoom)
+                val pins = quests.map { createQuestPins(it) }.flatten()
+                val features = pins.sortedBy { it.order }.map { it.toFeature() }
+                val t3 = nowAsEpochMilliseconds()
+                // todo: performance check
+                Log.i("test", "get features for z $zoomLevel, took ${t2-t1}+${t3-t2} ms")
+                return FeatureCollection.fromFeatures(features)
+            }
+        }
+    ).apply {
+        maxOverscaleFactorForParentTiles = 10 // use data at higher zoom levels
+        isVolatile = true
+    }
+
+    init {
+        map.style?.addSource(pinsSource)
+    }
 
     /** Switch visibility of quest pins layer */
     var isVisible: Boolean = false
@@ -68,11 +101,8 @@ class QuestPinsManager(
 
     private val visibleQuestsListener = object : VisibleQuestsSource.Listener {
         override fun onUpdatedVisibleQuests(added: Collection<Quest>, removed: Collection<QuestKey>) {
-            val oldUpdateJob = updateJob
-            updateJob = viewLifecycleScope.launch {
-                oldUpdateJob?.join() // don't cancel, as updateQuestPins only updates existing data
-                updateQuestPins(added, removed)
-            }
+            Log.i("test", "update pins -> invalidate and hope for reload")
+            pinsSource.invalidateRegion(LatLngBounds.world())
         }
 
         override fun onVisibleQuestsInvalidated() {
@@ -123,7 +153,6 @@ class QuestPinsManager(
 
     private fun invalidate() {
         clear()
-        onNewScreenPosition()
     }
 
     private fun clear() {
@@ -131,7 +160,10 @@ class QuestPinsManager(
             questsInViewMutex.withLock {
                 questsInView.clear()
                 lastDisplayedRect = null
-                withContext(Dispatchers.Main) { pinsMapComponent.clear() }
+                withContext(Dispatchers.Main) {
+                    pinsSource.invalidateRegion(LatLngBounds.world()) // todo: does it work?
+                }
+                Log.i("test", "clear pins source")
             }
         }
     }
@@ -140,63 +172,7 @@ class QuestPinsManager(
         properties.toQuestKey()
 
     fun onNewScreenPosition() {
-        if (!isStarted || !isVisible) return
-        val zoom = map.cameraPosition.zoom
-        // require zoom >= 14, which is the lowest zoom level where quests are shown
-        if (zoom < 14) return
-        viewLifecycleScope.launch(Dispatchers.Main) {
-            val displayedArea = map.screenAreaToBoundingBox()
-            val tilesRect = displayedArea.enclosingTilesRect(TILES_ZOOM)
-            // area too big -> skip (performance)
-            if (tilesRect.size > 16) return@launch
-            if (lastDisplayedRect?.contains(tilesRect) != true) {
-                lastDisplayedRect = tilesRect
-                onNewTilesRect(tilesRect)
-            }
-        }
-    }
-
-    private fun onNewTilesRect(tilesRect: TilesRect) {
-        val bbox = tilesRect.asBoundingBox(TILES_ZOOM)
-        updateJob?.cancel()
-        updateJob = viewLifecycleScope.launch {
-            val quests = withContext(Dispatchers.IO) {
-                synchronized(visibleQuestsSource) {
-                    if (!coroutineContext.isActive) {
-                        null
-                    } else {
-                        visibleQuestsSource.getAllVisible(bbox)
-                    }
-                }
-            } ?: return@launch
-            setQuestPins(quests)
-        }
-    }
-
-    private suspend fun setQuestPins(quests: List<Quest>) {
-        questsInViewMutex.withLock {
-            questsInView.clear()
-            quests.forEach { questsInView[it.key] = createQuestPins(it) }
-            if (coroutineContext.isActive) {
-                withContext(Dispatchers.Main) { pinsMapComponent.set(questsInView.values.flatten()) }
-            }
-        }
-    }
-
-    private suspend fun updateQuestPins(added: Collection<Quest>, removed: Collection<QuestKey>) {
-        val displayedBBox = lastDisplayedRect?.asBoundingBox(TILES_ZOOM)
-        val addedInView = added.filter { displayedBBox?.contains(it.position) != false }
-        var deletedAny = false
-        questsInViewMutex.withLock {
-            addedInView.forEach { questsInView[it.key] = createQuestPins(it) }
-            removed.forEach { if (questsInView.remove(it) != null) deletedAny = true }
-
-            if (deletedAny || addedInView.isNotEmpty()) {
-                if (coroutineContext.isActive) {
-                    withContext(Dispatchers.Main) { pinsMapComponent.set(questsInView.values.flatten()) }
-                }
-            }
-        }
+        return
     }
 
     private fun initializeQuestTypeOrders() {

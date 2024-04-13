@@ -18,8 +18,6 @@ import de.westnordost.streetcomplete.screens.main.map.maplibre.toPoint
 
 /** Takes care of displaying pins on the map, e.g. quest pins or pins for recent edits */
 class PinsMapComponent(private val map: MapLibreMap) {
-    private val pinsSource = GeoJsonSource(SOURCE)
-
     val layers: List<Layer> = listOf(
         CircleLayer("pin-dot-layer", SOURCE)
             .withFilter(gte(zoom(), 14f))
@@ -54,21 +52,14 @@ class PinsMapComponent(private val map: MapLibreMap) {
     fun getProperties(properties: JsonObject): Map<String, String> =
         properties.getProperties()
 
-
-    init {
-        pinsSource.isVolatile = true
-        map.style?.addSource(pinsSource)
-    }
-
     /** Show given pins. Previously shown pins are replaced with these.  */
     @UiThread fun set(pins: Collection<Pin>) {
-        val mapLibreFeatures = pins.sortedBy { it.order }.map { it.toFeature() }
-        pinsSource.setGeoJson(FeatureCollection.fromFeatures(mapLibreFeatures))
+        // todo: this is also called from other places than quest pins manager, currently broken
     }
 
     /** Clear pins */
     @UiThread fun clear() {
-        pinsSource.clear()
+        // todo: this is also called from other places than quest pins manager, currently broken
     }
 
     companion object {
@@ -83,7 +74,7 @@ data class Pin(
     val order: Int = 0
 )
 
-private fun Pin.toFeature(): Feature {
+fun Pin.toFeature(): Feature {
     val p = JsonObject()
     p.addProperty("icon-image", iconName)
     properties.forEach { p.addProperty(it.first, it.second) }
