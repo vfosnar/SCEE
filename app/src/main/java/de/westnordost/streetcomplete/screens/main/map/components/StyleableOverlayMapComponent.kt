@@ -43,8 +43,6 @@ class StyleableOverlayMapComponent(private val context: Context, private val map
         GeoJsonOptions().withMinZoom(16)
     )
 
-    private val darkenedColors = HashMap<String, String>()
-
     private val isNightMode: Boolean get() {
         val currentNightMode = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         return currentNightMode == Configuration.UI_MODE_NIGHT_YES
@@ -199,7 +197,7 @@ class StyleableOverlayMapComponent(private val context: Context, private val map
 
     init {
         overlaySource.isVolatile = true
-        map.style?.addSource(overlaySource)
+//        map.style?.addSource(overlaySource)
     }
 
     /** Show given map data with each the given style */
@@ -208,111 +206,11 @@ class StyleableOverlayMapComponent(private val context: Context, private val map
         overlaySource.setGeoJson(FeatureCollection.fromFeatures(mapLibreFeatures))
     }
 
-    private fun StyledElement.toFeatures(): List<Feature> {
-        val p = JsonObject()
-        p.addProperty(ELEMENT_ID, element.id)
-        p.addProperty(ELEMENT_TYPE, element.type.name)
-
-        return when (style) {
-            is PointStyle -> {
-                if (style.icon != null) p.addProperty("icon", style.icon)
-                if (style.label != null) p.addProperty("label", style.label)
-
-                listOf(Feature.fromGeometry(geometry.center.toPoint(), p))
-            }
-            is PolygonStyle -> {
-                if (style.color != INVISIBLE) {
-                    p.addProperty("color", style.color)
-                    p.addProperty("outline-color", getDarkenedColor(style.color))
-                    p.addProperty("opacity", 0.8f)
-                } else {
-                    p.addProperty("opacity", 0f)
-                }
-
-                if (style.height != null) {
-                    p.addProperty("height", style.height)
-                }
-
-                val f = Feature.fromGeometry(geometry.toMapLibreGeometry(), p)
-                val point = if (style.label != null || style.icon != null) {
-                    val pp = JsonObject()
-                    if (style.icon != null) pp.addProperty("icon", style.icon)
-                    if (style.label != null) pp.addProperty("label", style.label)
-                    Feature.fromGeometry(geometry.center.toPoint(),pp)
-                } else null
-
-                listOfNotNull(f, point)
-            }
-            is PolylineStyle -> {
-                val line = geometry.toMapLibreGeometry()
-                val width = getLineWidth(element.tags)
-                if (isBridge(element.tags)) p.addProperty("bridge", true)
-
-                val left = style.strokeLeft?.let {
-                    val p2 = p.deepCopy()
-                    p2.addProperty("width", 3f)
-                    p2.addProperty("offset", -(width / 2f + 1.5f))
-                    if (it.color != INVISIBLE) {
-                        p2.addProperty("color", it.color)
-                    } else {
-                        p2.addProperty("opacity", 0f)
-                    }
-                    if (it.dashed) p2.addProperty("dashed", true)
-                    Feature.fromGeometry(line, p2)
-                }
-
-                val right = style.strokeRight?.let {
-                    val p2 = p.deepCopy()
-                    p2.addProperty("width", 3f)
-                    p2.addProperty("offset", +(width / 2f + 1.5f))
-                    if (it.color != INVISIBLE) {
-                        p2.addProperty("color", it.color)
-                    } else {
-                        p2.addProperty("opacity", 0f)
-                    }
-                    if (it.dashed) p2.addProperty("dashed", true)
-                    Feature.fromGeometry(line, p2)
-                }
-
-                val center = style.stroke.let {
-                    val p2 = p.deepCopy()
-                    p2.addProperty("width", width)
-                    if (it != null && it.color != INVISIBLE) {
-                        p2.addProperty("color", it.color)
-                        p2.addProperty("outline-color", getDarkenedColor(it.color))
-                    } else {
-                        p2.addProperty("opacity", 0f)
-                    }
-                    if (it?.dashed == true) p2.addProperty("dashed", true)
-                    Feature.fromGeometry(line, p2)
-                }
-
-                val label = if (style.label != null) {
-                    Feature.fromGeometry(
-                        geometry.center.toPoint(),
-                        JsonObject().apply { addProperty("label", style.label) }
-                    )
-                } else null
-
-                listOfNotNull(left, right, center, label)
-            }
-        }
-    }
-
     fun getElementKey(properties: JsonObject): ElementKey? {
         val id = properties[ELEMENT_ID]?.asLong ?: return null
         val type = properties[ELEMENT_TYPE]?.asString ?: return null
         return ElementKey(ElementType.valueOf(type), id)
     }
-
-    // no need to parse, modify and write to string darkening the same colors for every single element
-    private fun getDarkenedColor(color: String): String =
-        darkenedColors.getOrPut(color) {
-            val rgb = color.toRGB()
-            val hsv = rgb.toHsv()
-            val darkenedHsv = hsv.copy(value = hsv.value * 2 / 3)
-            darkenedHsv.toRgb().toHexString()
-        }
 
     /** Clear map data */
     @UiThread fun clear() {
@@ -321,11 +219,22 @@ class StyleableOverlayMapComponent(private val context: Context, private val map
 
     companion object {
         private const val SOURCE = "overlay-source"
-
-        private const val ELEMENT_TYPE = "element_type"
-        private const val ELEMENT_ID = "element_id"
     }
 }
+
+private const val ELEMENT_TYPE = "element_type"
+private const val ELEMENT_ID = "element_id"
+private val darkenedColors = HashMap<String, String>()
+
+// todo: the map and stuff accessing it should NOT be standalone, but for testing it's ok
+// no need to parse, modify and write to string darkening the same colors for every single element
+private fun getDarkenedColor(color: String): String =
+    darkenedColors.getOrPut(color) {
+        val rgb = color.toRGB()
+        val hsv = rgb.toHsv()
+        val darkenedHsv = hsv.copy(value = hsv.value * 2 / 3)
+        darkenedHsv.toRgb().toHexString()
+    }
 
 data class StyledElement(
     val element: Element,
@@ -346,3 +255,94 @@ private fun getLineWidth(tags: Map<String, String>): Float = when (tags["highway
 
 private fun isBridge(tags: Map<String, String>): Boolean =
     tags["bridge"] != null && tags["bridge"] != "no"
+
+fun StyledElement.toFeatures(): List<Feature> {
+    val p = JsonObject()
+    p.addProperty(ELEMENT_ID, element.id)
+    p.addProperty(ELEMENT_TYPE, element.type.name)
+
+    return when (style) {
+        is PointStyle -> {
+            if (style.icon != null) p.addProperty("icon", style.icon)
+            if (style.label != null) p.addProperty("label", style.label)
+
+            listOf(Feature.fromGeometry(geometry.center.toPoint(), p))
+        }
+        is PolygonStyle -> {
+            if (style.color != INVISIBLE) {
+                p.addProperty("color", style.color)
+                p.addProperty("outline-color", getDarkenedColor(style.color))
+                p.addProperty("opacity", 0.8f)
+            } else {
+                p.addProperty("opacity", 0f)
+            }
+
+            if (style.height != null) {
+                p.addProperty("height", style.height)
+            }
+
+            val f = Feature.fromGeometry(geometry.toMapLibreGeometry(), p)
+            val point = if (style.label != null || style.icon != null) {
+                val pp = JsonObject()
+                if (style.icon != null) pp.addProperty("icon", style.icon)
+                if (style.label != null) pp.addProperty("label", style.label)
+                Feature.fromGeometry(geometry.center.toPoint(),pp)
+            } else null
+
+            listOfNotNull(f, point)
+        }
+        is PolylineStyle -> {
+            val line = geometry.toMapLibreGeometry()
+            val width = getLineWidth(element.tags)
+            if (isBridge(element.tags)) p.addProperty("bridge", true)
+
+            val left = style.strokeLeft?.let {
+                val p2 = p.deepCopy()
+                p2.addProperty("width", 3f)
+                p2.addProperty("offset", -(width / 2f + 1.5f))
+                if (it.color != INVISIBLE) {
+                    p2.addProperty("color", it.color)
+                } else {
+                    p2.addProperty("opacity", 0f)
+                }
+                if (it.dashed) p2.addProperty("dashed", true)
+                Feature.fromGeometry(line, p2)
+            }
+
+            val right = style.strokeRight?.let {
+                val p2 = p.deepCopy()
+                p2.addProperty("width", 3f)
+                p2.addProperty("offset", +(width / 2f + 1.5f))
+                if (it.color != INVISIBLE) {
+                    p2.addProperty("color", it.color)
+                } else {
+                    p2.addProperty("opacity", 0f)
+                }
+                if (it.dashed) p2.addProperty("dashed", true)
+                Feature.fromGeometry(line, p2)
+            }
+
+            val center = style.stroke.let {
+                val p2 = p.deepCopy()
+                p2.addProperty("width", width)
+                if (it != null && it.color != INVISIBLE) {
+                    p2.addProperty("color", it.color)
+                    p2.addProperty("outline-color", getDarkenedColor(it.color))
+                } else {
+                    p2.addProperty("opacity", 0f)
+                }
+                if (it?.dashed == true) p2.addProperty("dashed", true)
+                Feature.fromGeometry(line, p2)
+            }
+
+            val label = if (style.label != null) {
+                Feature.fromGeometry(
+                    geometry.center.toPoint(),
+                    JsonObject().apply { addProperty("label", style.label) }
+                )
+            } else null
+
+            listOfNotNull(left, right, center, label)
+        }
+    }
+}

@@ -29,6 +29,8 @@ fun MapLibreMap.screenAreaToBoundingBox(): BoundingBox =
 
 fun LatLngBounds.toBoundingBox() =
     BoundingBox(latitudeSouth, longitudeWest, latitudeNorth, longitudeEast)
+fun BoundingBox.toLatLngBounds() =
+    LatLngBounds.fromLatLngs(listOf(min.toLatLng(), max.toLatLng()))
 
 fun LatLng.toLatLon() = LatLon(latitude, longitude)
 fun LatLon.toLatLng() = LatLng(latitude, longitude)

@@ -18,6 +18,7 @@ import de.westnordost.streetcomplete.data.visiblequests.QuestTypeOrderSource
 import de.westnordost.streetcomplete.screens.main.map.components.Pin
 import de.westnordost.streetcomplete.screens.main.map.components.PinsMapComponent
 import de.westnordost.streetcomplete.screens.main.map.components.toFeature
+import de.westnordost.streetcomplete.screens.main.map.maplibre.toBoundingBox
 import de.westnordost.streetcomplete.screens.main.map.maplibre.toLatLon
 import de.westnordost.streetcomplete.util.ktx.nowAsEpochMilliseconds
 import de.westnordost.streetcomplete.util.logs.Log
@@ -58,6 +59,15 @@ class QuestPinsManager(
 
     private val viewLifecycleScope: CoroutineScope = CoroutineScope(SupervisorJob())
 
+    // todo
+    //  how to organize?
+    //   merge manager and component?
+    //   edit pins have a separate component?
+    //   try a QuestPinsSource instead of manager and component?
+    //  try only z14 tiles -> actually works well, but maybe also try on S4 Mini
+    //   also maybe spatial cache for pins would be possible (simple, but feels like overkill)
+    //  overlays
+    //   will have the same feature twice in neighboring tiles -> any issues here?
     private val pinsSource = CustomGeometrySource(
         id = "pins-source",
         options = CustomGeometrySourceOptions()
@@ -66,17 +76,17 @@ class QuestPinsManager(
         // alternatively min = max = 14 is possible, but then quests for many more tiles will be loaded unnecessarily (and always!)
         provider = object : GeometryTileProvider {
             override fun getFeaturesForBounds(bounds: LatLngBounds, zoomLevel: Int): FeatureCollection {
-                // looks like it's actually requesting whole tiles (didn't verify though)
-                val bbox = listOf(bounds.northEast.toLatLon(), bounds.southWest.toLatLon()).enclosingBoundingBox()
+                val bbox = bounds.toBoundingBox()
                 val t1 = nowAsEpochMilliseconds()
                 val quests = visibleQuestsSource.getAllVisible(bbox)
                 val t2 = nowAsEpochMilliseconds()
                 // todo: this is inefficient, often creates pins for the same quest again (e.g. on zoom)
                 val pins = quests.map { createQuestPins(it) }.flatten()
-                val features = pins.sortedBy { it.order }.map { it.toFeature() }
                 val t3 = nowAsEpochMilliseconds()
+                val features = pins.sortedBy { it.order }.map { it.toFeature() }
+                val t4 = nowAsEpochMilliseconds()
                 // todo: performance check
-                Log.i("test", "get features for z $zoomLevel, took ${t2-t1}+${t3-t2} ms")
+                Log.i("test", "get pins for z $zoomLevel, took ${t2-t1}+${t3-t2}+${t4-t3} ms")
                 return FeatureCollection.fromFeatures(features)
             }
         }
@@ -101,7 +111,7 @@ class QuestPinsManager(
 
     private val visibleQuestsListener = object : VisibleQuestsSource.Listener {
         override fun onUpdatedVisibleQuests(added: Collection<Quest>, removed: Collection<QuestKey>) {
-            Log.i("test", "update pins -> invalidate and hope for reload")
+            Log.i("test", "update pins -> invalidate all and wait for reload")
             pinsSource.invalidateRegion(LatLngBounds.world())
         }
 
