@@ -64,23 +64,17 @@ class QuestPinsManager(
     //   merge manager and component?
     //   edit pins have a separate component?
     //   try a QuestPinsSource instead of manager and component?
-    //  try only z14 tiles -> actually works well, but maybe also try on S4 Mini
-    //   also maybe spatial cache for pins would be possible (simple, but feels like overkill)
-    //  overlays
-    //   will have the same feature twice in neighboring tiles -> any issues here?
     private val pinsSource = CustomGeometrySource(
         id = "pins-source",
         options = CustomGeometrySourceOptions()
-            .withMaxZoom(TILES_ZOOM) // avoids requesting data at zoom higher than 16 (thanks to overscale)
-            .withMinZoom(14), // we will have to create all pins up to 3 times for z14, z15, and z16 (if the user zooms to those levels)
-        // alternatively min = max = 14 is possible, but then quests for many more tiles will be loaded unnecessarily (and always!)
+            .withMaxZoom(14) // always load quests in z14 tiles to solve issues with quests for long ways disappearing on zoom in
+            .withMinZoom(14),
         provider = object : GeometryTileProvider {
             override fun getFeaturesForBounds(bounds: LatLngBounds, zoomLevel: Int): FeatureCollection {
                 val bbox = bounds.toBoundingBox()
                 val t1 = nowAsEpochMilliseconds()
                 val quests = visibleQuestsSource.getAllVisible(bbox)
                 val t2 = nowAsEpochMilliseconds()
-                // todo: this is inefficient, often creates pins for the same quest again (e.g. on zoom)
                 val pins = quests.map { createQuestPins(it) }.flatten()
                 val t3 = nowAsEpochMilliseconds()
                 val features = pins.sortedBy { it.order }.map { it.toFeature() }
