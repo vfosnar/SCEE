@@ -35,6 +35,8 @@ import de.westnordost.streetcomplete.screens.main.map.maplibre.isPoint
 import de.westnordost.streetcomplete.screens.main.map.maplibre.toMapLibreGeometry
 import de.westnordost.streetcomplete.screens.main.map.maplibre.toPoint
 import de.westnordost.streetcomplete.util.ktx.toRGB
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /** Takes care of displaying styled map data */
 class StyleableOverlayMapComponent(private val context: Context, private val map: MapLibreMap) {
@@ -202,10 +204,10 @@ class StyleableOverlayMapComponent(private val context: Context, private val map
     }
 
     /** Show given map data with each the given style */
-    @UiThread fun set(styledElements: Collection<StyledElement>) {
+    suspend fun set(styledElements: Collection<StyledElement>) {
         val features = styledElements.flatMap { it.toFeatures() }
         val mapLibreFeatures = FeatureCollection.fromFeatures(features)
-        overlaySource.setGeoJson(mapLibreFeatures)
+        withContext(Dispatchers.Main) { overlaySource.setGeoJson(mapLibreFeatures) }
     }
 
     private fun StyledElement.toFeatures(): List<Feature> {

@@ -15,6 +15,8 @@ import org.maplibre.android.style.sources.GeoJsonSource
 import de.westnordost.streetcomplete.data.osm.mapdata.LatLon
 import de.westnordost.streetcomplete.screens.main.map.maplibre.clear
 import de.westnordost.streetcomplete.screens.main.map.maplibre.toPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /** Takes care of displaying pins on the map, e.g. quest pins or pins for recent edits */
 class PinsMapComponent(private val map: MapLibreMap) {
@@ -59,10 +61,10 @@ class PinsMapComponent(private val map: MapLibreMap) {
     }
 
     /** Show given pins. Previously shown pins are replaced with these.  */
-    @UiThread fun set(pins: Collection<Pin>) {
+    suspend fun set(pins: Collection<Pin>) {
         val features = pins.sortedBy { it.order }.map { it.toFeature() }
         val mapLibreFeatures = FeatureCollection.fromFeatures(features)
-        pinsSource.setGeoJson(mapLibreFeatures)
+        withContext(Dispatchers.Main) { pinsSource.setGeoJson(mapLibreFeatures) }
     }
 
     /** Clear pins */

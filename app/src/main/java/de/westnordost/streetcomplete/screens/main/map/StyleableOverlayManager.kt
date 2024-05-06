@@ -167,7 +167,7 @@ class StyleableOverlayManager(
                 mapDataInView[key] = styledElement
             }
             val styledElements = mapDataInView.values
-            withContext(Dispatchers.Main) { mapComponent.set(styledElements) }
+            mapComponent.set(styledElements)
         }
     }
 
@@ -200,7 +200,7 @@ class StyleableOverlayManager(
             if (!hasChanges) return
 
             val styledElements = mapDataInView.values
-            withContext(Dispatchers.Main) { mapComponent.set(styledElements) }
+            mapComponent.set(styledElements)
         }
     }
 

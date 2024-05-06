@@ -184,7 +184,7 @@ class QuestPinsManager(
             questsInView.clear()
             quests.forEach { questsInView[it.key] = createQuestPins(it) }
             val pins = questsInView.values.flatten()
-            withContext(Dispatchers.Main) { pinsMapComponent.set(pins) }
+            pinsMapComponent.set(pins)
         }
     }
 
@@ -208,7 +208,7 @@ class QuestPinsManager(
             if (!hasChanges) return
 
             val pins = questsInView.values.flatten()
-            withContext(Dispatchers.Main) { pinsMapComponent.set(pins) }
+            pinsMapComponent.set(pins)
         }
     }
 
