@@ -52,6 +52,7 @@ class AddPlaceVatinForm : AbstractOsmQuestForm<PlaceVatinAnswer>() {
         // TODO other countries https://en.wikipedia.org/wiki/VAT_identification_number
         return when (countryPrefix) {
             "CZ" -> vatin.length in 2 + 8..2 + 10 && vatin.substring(2).all { it.isDigit() }
+            "HR" -> vatin.length == 2 + 11 && vatin.substring(2).all { it.isDigit() }
             "SK" -> vatin.length == 2 + 10 && vatin.substring(2).all { it.isDigit() }
             else -> vatin.length >= 2 + 2 // Romania
         }

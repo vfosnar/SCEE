@@ -62,7 +62,7 @@ class AddPlaceVatin(
                 tags["ref:vatin:signed"] = "no"
             }
             is PlaceVatin -> {
-                tags["ref:vatin"] = answer.ico
+                tags["ref:vatin"] = answer.vatin
             }
         }
     }

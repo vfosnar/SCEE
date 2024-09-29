@@ -518,6 +518,14 @@
     <string name="quest_caravanSiteType_beach">"Beach - next to a beach or by the sea."</string>
     <string name="quest_caravanSiteType_supermarket">"Supermarket - on the parking lot of a supermarket."</string>
 
+    <!-- ref:ico -->
+    <string name="quest_placeIco_title">What’s the IČ(O) of this place?</string>
+    <string name="quest_placeIco_no_ico_answer">There is no sign…</string>
+
+    <!-- ref:vatin -->
+    <string name="quest_placeVatin_title">"What’s the VAT number of this place?"</string>
+    <string name="quest_placeVatin_no_vatin_answer">"There is no sign…"</string>
+
     <!-- other -->
     <string name="quest_contact_phone">What is the phone number of this place?</string>
     <string name="quest_contact_website">What is the website of this place?</string>
