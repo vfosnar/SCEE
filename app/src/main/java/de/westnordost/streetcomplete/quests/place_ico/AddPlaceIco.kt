@@ -34,7 +34,7 @@ class AddPlaceIco(
 
         prefs.getString(questPrefix(prefs) + PREF_ELEMENTS, NAME_PLACES)+ "\n" + """
         )
-        and !brand and !ref:ico and ref:ico:signed != yes
+        and !brand and !ref:ico and ref:ico:signed != no
     """).toElementFilterExpression() }
 
     override val changesetComment = "Determine place IČO"

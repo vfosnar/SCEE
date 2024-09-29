@@ -34,7 +34,7 @@ class AddPlaceVatin(
 
         prefs.getString(questPrefix(prefs) + PREF_ELEMENTS, NAME_PLACES)+ "\n" + """
         )
-        and !brand and !ref:vatin and ref:vatin:signed != yes
+        and !brand and !ref:vatin and ref:vatin:signed != no
     """).toElementFilterExpression() }
 
     override val changesetComment = "Determine place VATIN"
