@@ -86,7 +86,7 @@ OpenStreetMap nelze upravovat anonymně. Všechny změny, které provádíte (a 
 
 &lt;h2&gt;Poloha&lt;/h2&gt;
 &lt;p&gt;
-Aplikace s nikým nesdílí vaši GPS polohu. Používá se jen pro automatické stahování dat pro vaše okolí a pro vycentrování mapy na základě vaší polohy. 
+Aplikace s nikým nesdílí vaši GPS polohu. Používá se jen pro automatické stahování dat pro vaše okolí a pro vycentrování mapy na základě vaší polohy.
 &lt;/p&gt;
 
 &lt;h2&gt;Použití dat&lt;/h2&gt;
@@ -1033,6 +1033,8 @@ Také můžete napsat poznámku (s fotografií)"</string>
     <string name="ar_core_tracking_error_camera_unavailable">"Fotoaparát je používán jinou aplikací"</string>
     <string name="quest_bicycle_parking_type_handlebarholder">"Držák na řidítka"</string>
     <string name="quest_bicycle_parking_access_title2">"Kdo tu může zaparkovat kolo? Parkování může být zdarma, nebo placené."</string>
+    <string name="quest_placeVatin_title">Jaké DIČ (VAT IN) má toto místo?</string>
+    <string name="quest_placeVatin_no_vatin_answer">Není zaznačené</string>
     <string name="quest_playground_access_title2">"Kdo může používat toto hřiště?"</string>
     <string name="quest_sidewalk_answer_none_title">"Chybí výběr těchto chodníků"</string>
     <string name="quest_side_select_interface_explanation">"Vyberte jednu stranu a pak správnou odpověď.
@@ -1093,6 +1095,8 @@ Totéž udělejte i pro druhou stranu, pokud je přítomna."</string>
     <string name="quest_openingHours_title">"Jaké jsou tu otevírací hodiny?"</string>
     <string name="quest_openingHours_signed_title">"Jsou tu uvedeny otevírací hodiny?"</string>
     <string name="quest_openingHours_resurvey_title">"Jsou tyto otevírací hodiny stále platné?"</string>
+    <string name="quest_placeIco_title">Jaké IČ(O) má toto místo?</string>
+    <string name="quest_placeIco_no_ico_answer">Není zaznačené</string>
     <string name="quest_placeName_title">"Jaký je název tohoto místa?"</string>
     <string name="quest_shop_type_title2">"Jakého typu je tento obchod?"</string>
     <string name="quest_smoking_title2">"Je tu povoleno kouření?"</string>

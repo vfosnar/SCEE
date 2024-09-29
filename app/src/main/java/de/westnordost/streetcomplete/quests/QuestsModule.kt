@@ -28,8 +28,8 @@ import de.westnordost.streetcomplete.quests.baby_changing_table.AddBabyChangingT
 import de.westnordost.streetcomplete.quests.barrier_bicycle_barrier_installation.AddBicycleBarrierInstallation
 import de.westnordost.streetcomplete.quests.barrier_bicycle_barrier_type.AddBicycleBarrierType
 import de.westnordost.streetcomplete.quests.barrier_height.AddBarrierHeight
-import de.westnordost.streetcomplete.quests.barrier_opening.AddBarrierOpening
 import de.westnordost.streetcomplete.quests.barrier_locked.AddBarrierLocked
+import de.westnordost.streetcomplete.quests.barrier_opening.AddBarrierOpening
 import de.westnordost.streetcomplete.quests.barrier_type.AddBarrierOnPath
 import de.westnordost.streetcomplete.quests.barrier_type.AddBarrierOnRoad
 import de.westnordost.streetcomplete.quests.barrier_type.AddBarrierType
@@ -148,7 +148,9 @@ import de.westnordost.streetcomplete.quests.piste_difficulty.AddPisteDifficulty
 import de.westnordost.streetcomplete.quests.piste_lit.AddPisteLit
 import de.westnordost.streetcomplete.quests.piste_ref.AddPisteRef
 import de.westnordost.streetcomplete.quests.pitch_lit.AddPitchLit
+import de.westnordost.streetcomplete.quests.place_ico.AddPlaceIco
 import de.westnordost.streetcomplete.quests.place_name.AddPlaceName
+import de.westnordost.streetcomplete.quests.place_vatin.AddPlaceVatin
 import de.westnordost.streetcomplete.quests.playground_access.AddPlaygroundAccess
 import de.westnordost.streetcomplete.quests.police_type.AddPoliceType
 import de.westnordost.streetcomplete.quests.postbox_collection_times.AddPostboxCollectionTimes
@@ -166,7 +168,9 @@ import de.westnordost.streetcomplete.quests.road_name.AddRoadName
 import de.westnordost.streetcomplete.quests.road_name.RoadNameSuggestionsSource
 import de.westnordost.streetcomplete.quests.roof_colour.AddRoofColour
 import de.westnordost.streetcomplete.quests.roof_shape.AddRoofShape
+import de.westnordost.streetcomplete.quests.sac_scale.AddSacScale
 import de.westnordost.streetcomplete.quests.sanitary_dump_station.AddSanitaryDumpStation
+import de.westnordost.streetcomplete.quests.sauna_availability.AddSaunaAvailability
 import de.westnordost.streetcomplete.quests.seating.AddOutdoorSeatingType
 import de.westnordost.streetcomplete.quests.seating.AddSeating
 import de.westnordost.streetcomplete.quests.segregated.AddCyclewaySegregation
@@ -218,8 +222,6 @@ import de.westnordost.streetcomplete.quests.traffic_signals_sound.AddTrafficSign
 import de.westnordost.streetcomplete.quests.traffic_signals_vibrate.AddTrafficSignalsVibration
 import de.westnordost.streetcomplete.quests.trail_visibility.AddTrailVisibility
 import de.westnordost.streetcomplete.quests.tree.AddTreeGenus
-import de.westnordost.streetcomplete.quests.sac_scale.AddSacScale
-import de.westnordost.streetcomplete.quests.sauna_availability.AddSaunaAvailability
 import de.westnordost.streetcomplete.quests.valves.AddValves
 import de.westnordost.streetcomplete.quests.via_ferrata_scale.AddViaFerrataScale
 import de.westnordost.streetcomplete.quests.way_lit.AddWayLit
@@ -637,6 +639,8 @@ fun getQuestTypeList(
     EE_QUEST_OFFSET + 52 to AddSaunaAvailability(),
     EE_QUEST_OFFSET + 10 to OsmoseQuest(osmoseDao),
     EE_QUEST_OFFSET + 11 to CustomQuest(customQuestList),
+    EE_QUEST_OFFSET + 60 to AddPlaceIco(getFeature),
+    EE_QUEST_OFFSET + 61 to AddPlaceVatin(getFeature),
     // POI quests
     EE_QUEST_OFFSET + 12 to ShowBusiness(),
     EE_QUEST_OFFSET + 13 to ShowBicycleStuff(),
