@@ -69,6 +69,8 @@ class AddPlaceIco(
 
     override val hasQuestSettings = true
 
+    override val defaultDisabledMessage = R.string.default_disabled_msg_ee
+
     override fun getQuestSettingsDialog(context: Context) =
         fullElementSelectionDialog(context, prefs, questPrefix(prefs) + PREF_ELEMENTS, R.string.quest_settings_element_selection, NAME_PLACES)
 }

@@ -168,9 +168,7 @@ import de.westnordost.streetcomplete.quests.road_name.AddRoadName
 import de.westnordost.streetcomplete.quests.road_name.RoadNameSuggestionsSource
 import de.westnordost.streetcomplete.quests.roof_colour.AddRoofColour
 import de.westnordost.streetcomplete.quests.roof_shape.AddRoofShape
-import de.westnordost.streetcomplete.quests.sac_scale.AddSacScale
 import de.westnordost.streetcomplete.quests.sanitary_dump_station.AddSanitaryDumpStation
-import de.westnordost.streetcomplete.quests.sauna_availability.AddSaunaAvailability
 import de.westnordost.streetcomplete.quests.seating.AddOutdoorSeatingType
 import de.westnordost.streetcomplete.quests.seating.AddSeating
 import de.westnordost.streetcomplete.quests.segregated.AddCyclewaySegregation
