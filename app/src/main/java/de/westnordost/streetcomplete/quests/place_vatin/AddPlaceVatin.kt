@@ -151,4 +151,4 @@ private val NAME_PLACES = mapOf(
         "rehabilitation", "hospice", "midwife", "birthing_centre"
     ),
 ).map { it.key + " ~ " + it.value.joinToString("|") }.joinToString("\n  or ")
-private const val PREF_ELEMENTS = "qs_AddPlaceName_element_selection"
+private const val PREF_ELEMENTS = "qs_AddPlaceVatin_element_selection"

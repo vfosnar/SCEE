@@ -168,7 +168,9 @@ import de.westnordost.streetcomplete.quests.road_name.AddRoadName
 import de.westnordost.streetcomplete.quests.road_name.RoadNameSuggestionsSource
 import de.westnordost.streetcomplete.quests.roof_colour.AddRoofColour
 import de.westnordost.streetcomplete.quests.roof_shape.AddRoofShape
+import de.westnordost.streetcomplete.quests.sac_scale.AddSacScale
 import de.westnordost.streetcomplete.quests.sanitary_dump_station.AddSanitaryDumpStation
+import de.westnordost.streetcomplete.quests.sauna_availability.AddSaunaAvailability
 import de.westnordost.streetcomplete.quests.seating.AddOutdoorSeatingType
 import de.westnordost.streetcomplete.quests.seating.AddSeating
 import de.westnordost.streetcomplete.quests.segregated.AddCyclewaySegregation
@@ -206,6 +208,7 @@ import de.westnordost.streetcomplete.quests.surface.AddPathSurface
 import de.westnordost.streetcomplete.quests.surface.AddPitchSurface
 import de.westnordost.streetcomplete.quests.surface.AddRoadSurface
 import de.westnordost.streetcomplete.quests.surface.AddSidewalkSurface
+import de.westnordost.streetcomplete.quests.swimming_pool_availability.AddSwimmingPoolAvailability
 import de.westnordost.streetcomplete.quests.tactile_paving.AddTactilePavingBusStop
 import de.westnordost.streetcomplete.quests.tactile_paving.AddTactilePavingCrosswalk
 import de.westnordost.streetcomplete.quests.tactile_paving.AddTactilePavingKerb
@@ -220,9 +223,6 @@ import de.westnordost.streetcomplete.quests.traffic_signals_sound.AddTrafficSign
 import de.westnordost.streetcomplete.quests.traffic_signals_vibrate.AddTrafficSignalsVibration
 import de.westnordost.streetcomplete.quests.trail_visibility.AddTrailVisibility
 import de.westnordost.streetcomplete.quests.tree.AddTreeGenus
-import de.westnordost.streetcomplete.quests.sac_scale.AddSacScale
-import de.westnordost.streetcomplete.quests.sauna_availability.AddSaunaAvailability
-import de.westnordost.streetcomplete.quests.swimming_pool_availability.AddSwimmingPoolAvailability
 import de.westnordost.streetcomplete.quests.valves.AddValves
 import de.westnordost.streetcomplete.quests.via_ferrata_scale.AddViaFerrataScale
 import de.westnordost.streetcomplete.quests.way_lit.AddWayLit
@@ -641,8 +641,8 @@ fun getQuestTypeList(
     EE_QUEST_OFFSET + 53 to AddSwimmingPoolAvailability(),
     EE_QUEST_OFFSET + 10 to OsmoseQuest(osmoseDao),
     EE_QUEST_OFFSET + 11 to CustomQuest(customQuestList),
-    EE_QUEST_OFFSET + 60 to AddPlaceIco(getFeature),
-    EE_QUEST_OFFSET + 61 to AddPlaceVatin(getFeature),
+    EE_QUEST_OFFSET + 54 to AddPlaceIco(getFeature),
+    EE_QUEST_OFFSET + 55 to AddPlaceVatin(getFeature),
     // POI quests
     EE_QUEST_OFFSET + 12 to ShowBusiness(),
     EE_QUEST_OFFSET + 13 to ShowBicycleStuff(),
